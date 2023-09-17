@@ -10,9 +10,11 @@ declare global {
       emailjs?: any;
     }
   }
+  // send email using client-side javascript only
+  // https://mailtrap.io/blog/react-send-email/
 export const sendEmail = (templateId: string, params: EmailParams) => {
   window.emailjs
-    .send('service_e4fgffq', templateId, params)
+    .send('service_3nd80hl', "kXaTHz14VSEfoqAtv", params)
     .then(() => {
       console.log('Email successfully sent!')
     })

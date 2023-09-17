@@ -1,10 +1,10 @@
 # FreeBee
 Built using [Vite](https://vitejs.dev/) and [Firebase](https://firebase.google.com/)
 
-### Getting Stared
+### Quick Start
+- `git clone && cd freebee`
 - `npm install`
 - `npm run dev`
-
 
 ### Deployment
 Deployed follwing [vite docs](vitejs.dev/guide/static-deploy.html#google-firebase)
