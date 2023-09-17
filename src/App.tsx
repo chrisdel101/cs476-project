@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import { Routes } from '../constants'
 import styled from 'styled-components'
 import Footer from './components/Footer'
