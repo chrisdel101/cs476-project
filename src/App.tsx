@@ -5,13 +5,7 @@ import Footer from './components/Footer'
 import Navigation from './components/Navigation'
 import IndexScreen from './components/IndexScreen/IndexScreen'
 import { useState } from 'react'
-
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    emailjs?: any;
-  }
-}
+import { sendEmail } from './utilities/sendEmail'
 
 const App = () => {
   const [feedback, setFeedback] = useState("")
@@ -30,23 +24,9 @@ const App = () => {
     }
     console.log(template_params)
     const templateId = 'template_kw5x49q'
-    sendFeedback(templateId,template_params)
+    sendEmail(templateId,template_params)
   }
 
-  const sendFeedback = (templateId: string, variables: object) => {
-    window.emailjs
-      .send('service_e4fgffq', templateId, variables)
-      .then((_res) => {
-        console.log('Email successfully sent!')
-      })
-      // Handle errors here however you like, or use a React error boundary
-      .catch((err: Error) =>
-        console.error(
-          'Oh well, you failed. Here some thoughts on the error that occured:',
-          err
-        )
-      )
-  }
   return (
     <Router>
       <form className="test-mailing">
