@@ -1,27 +1,30 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  createRoutesFromElements,
-  Route,
-  Link,
-  } from "react-router-dom";
-import React from "react";
-import Layout from "./components/Layout";
-import Index from "./components/Index";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { Routes } from '../constants'
+import styled from 'styled-components'
+import Footer from './components/Footer'
+import Navigation from './components/Navigation'
+import IndexScreen from './components/IndexScreen/IndexScreen'
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-      <Route path="/index" element={<Index />} />
-      
-    </Route>
+const App = () => {
+  return (
+    <Router>
+      <Layout>
+        <Navigation />
+        <Switch>
+          <Route path={Routes.Index}>
+            <IndexScreen />
+          </Route>
+        </Switch>
+        <Footer />
+      </Layout>
+    </Router>
   )
-);
- const App: React.FC = () => {
-  return <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />;
 }
 
-if (import.meta.hot) {
-  import.meta.hot.dispose(() => router.dispose());
-}
 export default App
+
+const Layout = styled.div`
+  background-color: #cccccc;
+  width: 100%;
+  overflow-y: scroll;
+`
