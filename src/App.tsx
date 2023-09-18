@@ -1,10 +1,15 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, useParams } from 'react-router-dom'
 import { Routes } from '../constants'
 import styled from 'styled-components'
 import Footer from './components/Footer'
 import Navigation from './components/Navigation'
 import IndexScreen from './components/IndexScreen/IndexScreen'
 import LoginScreen from './components/LoginScreen/LoginScreen'
+
+const LoginScreenToggle = () => {
+  const  {userType} = useParams<{ userType: string }>();
+  return <LoginScreen userType={userType} />
+}
 
 const App = () => {
   
@@ -16,9 +21,9 @@ const App = () => {
         <Navigation />
         <Switch>
           <Route path={Routes.Login}>
-            <LoginScreen />
+            <LoginScreenToggle />
           </Route>
-          <Route path={Routes.Index}>
+          <Route exact path={Routes.Index}>
             <IndexScreen />
           </Route>
         </Switch>

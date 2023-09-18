@@ -1,4 +1,4 @@
 export enum Routes {
     Index = '/',
-    Login = '/login'
+    Login = '/login/:userType'
 }

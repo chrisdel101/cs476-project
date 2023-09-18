@@ -44,7 +44,11 @@ const handleSubmit = (e) => {
   }
 
 }
-const Login = () => {
+interface Iprops {
+    userType: string
+}
+const Login = ({userType}: Iprops) => {
+    console.log(userType)
   return (
     <ContainerWrapper>
       <form onSubmit={handleSubmit}>
