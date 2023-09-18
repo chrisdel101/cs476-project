@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Footer from './components/Footer'
 import Navigation from './components/Navigation'
 import IndexScreen from './components/IndexScreen/IndexScreen'
+import LoginScreen from './components/LoginScreen/LoginScreen'
 
 const App = () => {
   
@@ -14,6 +15,9 @@ const App = () => {
       <Layout>
         <Navigation />
         <Switch>
+          <Route path={Routes.Login}>
+            <LoginScreen />
+          </Route>
           <Route path={Routes.Index}>
             <IndexScreen />
           </Route>
