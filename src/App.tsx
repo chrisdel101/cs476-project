@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Footer from './components/Footer'
 import Navigation from './components/Navigation'
 import IndexScreen from './components/IndexScreen/IndexScreen'
-import LoginScreen from './components/LoginScreen/LoginScreen'
+import LoginScreen from './components/LoginScreen/components/LoginScreen'
 
 const LoginScreenToggle = () => {
   const  {userType} = useParams<{ userType: string }>();

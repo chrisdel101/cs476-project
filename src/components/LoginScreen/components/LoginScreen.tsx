@@ -1,23 +1,6 @@
-import { auth } from '../../services/firebase.config'
+import { auth } from '../../../services/firebase.config'
 import styled from 'styled-components'
 import { Auth, getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
-
-const isSignedIn: any = () => {
-   return onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/auth.user
-          const uid = user.uid;
-          console.log('UID', uid)
-          return true
-          // ...
-        } else {
-           return  false
-          // User is signed out
-          // ...
-        }
-      });
-}
 
 const signIn = (email, password) => {
   signInWithEmailAndPassword(auth, email, password)

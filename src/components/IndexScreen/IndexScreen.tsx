@@ -1,6 +1,9 @@
 import styled from "styled-components"
+import useUserAutentication from "../LoginScreen/hooks/useUserAuthenicated";
 
 const Index = () => {
+    const isLoggedIn  = useUserAutentication();
+    console.log(isLoggedIn, "isLoggedIN")
     return <ContainerWrapper>
     {
         // some space fillers - to be replaced
