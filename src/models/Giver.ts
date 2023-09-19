@@ -9,7 +9,7 @@ class Giver extends User {
     location: string
   ) {
       // must call super()
-    super(name, email, phone, password, location) 
+    super({name, email, phone, password, location}) 
   }
 }
 export default Giver

@@ -16,7 +16,9 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
+    /* false to build in dev w errors */
+    "noUnusedLocals": true, 
+    /* false to build in dev w errors */
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
