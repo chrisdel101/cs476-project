@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../../services/firebase.config'
-import {
-  Auth,
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from 'firebase/auth'
+
 
 const useUserAutentication = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
@@ -23,7 +19,7 @@ const useUserAutentication = () => {
         setLoggedIn(false)
       }
     })
-  });
+  })
 
   return loggedIn
 }
