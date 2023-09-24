@@ -1,6 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import isLoggedIn from "../../controllers/hooks/authenitication/useUserSessions"
+import User from '../../models/abstractClasses/User';
 
 const Navigation = () => {
   return (
@@ -11,8 +13,8 @@ const Navigation = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/login/giver">Giver Login</Nav.Link>
-            <Nav.Link href="/login/reciever">Reciever Login</Nav.Link>
+            <Nav.Link href="/log_in/giver">Giver Login</Nav.Link>
+            <Nav.Link href="/log_in/reciever">Reciever Login</Nav.Link>
             <Nav.Link href="#accont">Account</Nav.Link>
             {/* DELETE IF UNUSED */}
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -33,4 +35,23 @@ const Navigation = () => {
   );
 }
 
+const NavigationAuth = (user: User) => {
+  return (
+    isLoggedIn()
+      ? (
+        <>
+          <Nav.Link href={`/log_in/${user.userType}`}>Log Out</Nav.Link>
+          <Nav.Link href="/log_out/reciever">Receiver Login</Nav.Link>
+        </>
+      )
+      : (
+        <>
+          <Nav.Link href={`/log_in/$`}>Giver Login</Nav.Link>
+          <Nav.Link href="/log_in/reciever">Receiver Login</Nav.Link>
+      </>
+      )
+  );
+  
+  
+}
 export default Navigation;

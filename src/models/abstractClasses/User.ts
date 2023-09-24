@@ -1,9 +1,12 @@
+import {UserTypes} from '../../../constants'
+
 interface UserInterface {
     name: string
     email: string
     password: string
     phone: string
     location: string
+    userType: UserTypes;
 }
 
 abstract class User {
@@ -12,13 +15,15 @@ abstract class User {
     phone: string;
     password: string;
     location: string;
+    userType: UserTypes;
     
-    constructor({name, email, password, phone, location}: UserInterface) {
+    constructor({name, email, password, phone, location, userType}: UserInterface) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.location = location;
+        this.userType = userType;
     }
 
     display(): void{
@@ -26,3 +31,4 @@ abstract class User {
     }
 }
 export default User;
+export type {UserInterface};

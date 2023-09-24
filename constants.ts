@@ -1,6 +1,6 @@
 export enum Routes {
     Index = '/',
-    Login = '/login/:userType'
+    Login = '/log_in/:userType'
 }
 
 export enum UserTypes {
@@ -20,4 +20,22 @@ export enum ItemTypes {
     HOUSEHOLD = 'household',
     AUTOMOTIVE = 'automotive',
     OTHER = 'other'
+}
+
+export enum Locations {
+    TEL_AVIV = 'tel_aviv',
+    JERUSALEM = 'jerusalem',
+    HAIFA = 'haifa',
+    BEER_SHEVA = 'beer_sheva',
+    NEW_YORK = 'new_york',
+    LOS_ANGELES = 'los_angeles',
+    LONDON = 'london',
+    PARIS = 'paris',
+    BERLIN = 'berlin',
+    ROME = 'rome',
+    TOKYO = 'tokyo',
+    BEIJING = 'beijing',
+    MOSCOW = 'moscow',
+    SYDNEY = 'sydney',
+    REGINA = 'regina'
 }

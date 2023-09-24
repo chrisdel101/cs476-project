@@ -1,12 +1,27 @@
 import styled from 'styled-components'
-import { signIn, handleSubmit } from '../../../../controllers/LoginScreen/loginScreenController.ts'
+import { handleSubmit } from '../../../../controllers/LoginScreen/loginScreenController.ts'
 import { UserTypes } from '../../../../../constants'
+import useUserSessions from '../../../../controllers/hooks/authenitication/useUserSessions'
+import authFunctions from '../../../../api/authFunctions'
 
 interface Iprops {
     userType: UserTypes
 }
 
 const Login = ({userType}: Iprops) => {
+  const {isLoggedIn, currentUser} = useUserSessions()
+  console.log(isLoggedIn, 'isLoggedIN') 
+  // console.log(currentUser, 'currentUser'  )
+  if (isLoggedIn) {
+    console.log(currentUser)
+    return (
+      <>
+      
+      <h1>you are logged in</h1>
+      <button onClick={authFunctions.logoutUser}>Logout</button>
+      </>
+    )
+  } else {
   return (
     <PageContainer>
       <h5>{userType}</h5>
@@ -17,6 +32,7 @@ const Login = ({userType}: Iprops) => {
       </form>
     </PageContainer>
   )
+  }
 }
 export default Login
 

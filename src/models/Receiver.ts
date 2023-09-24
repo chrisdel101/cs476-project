@@ -1,15 +1,12 @@
-import User from './abstractClasses/User'
+import User, { UserInterface } from './abstractClasses/User'
+import {UserTypes} from '../../constants'
 
 class Receiver extends User {
-  constructor(
-    name: string,
-    email: string,
-    password: string,
-    phone: string,
-    location: string
-  ) {
-      // must call super()
-    super({name, email, phone, password, location}) 
+
+ constructor({name, email, password, phone, location, userType}: UserInterface) {
+    // must call super()
+    super({ name, email, phone, password, location, userType })
+    this.userType = UserTypes.RECEIVER
   }
 }
 export default Receiver

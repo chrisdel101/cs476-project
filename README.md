@@ -10,3 +10,8 @@ Built using [Vite](https://vitejs.dev/) and [Firebase](https://firebase.google.c
 Deployed follwing [vite docs](vitejs.dev/guide/static-deploy.html#google-firebase)
 - `firebase deploy`
 -  Visit: [https://cs476-freebee.web.app/](https://cs476-freebee.web.app/)
+
+### Developer Notes
+
+#### Adding Users to Auth
+- From the Firebase console, open the Auth in the left-hand panel. Go to [Email/Password Setup](https://firebaseopensource.com/projects/firebase/quickstart-android/auth/readme/#getting_started)

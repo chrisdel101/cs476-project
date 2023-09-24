@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import useUserAutentication from '../../../controllers/hooks/authenitication/useIsUserAuthenicated'
+import useUserSessions from '../../../controllers/hooks/authenitication/useUserSessions'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { useState } from 'react'
@@ -10,7 +10,7 @@ const Index = () => {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-  const isLoggedIn = useUserAutentication()
+  const {isLoggedIn, currentUser} = useUserSessions()
   console.log(isLoggedIn, 'isLoggedIN')
   return (
     <PageContainer>
@@ -23,7 +23,7 @@ const Index = () => {
             Array.from(Array(3)).map((_, i) => {
             return (
                 <div key={i} style={{ border: '5px white solid' }}>
-                <img src={'https://place-puppy.com/200x200'} />
+                <img src={'https://placekitten.com/200/200'} />
                 </div>
             )
             })
