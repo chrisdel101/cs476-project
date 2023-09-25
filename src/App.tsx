@@ -10,6 +10,7 @@ import Footer from './views/components/Footer'
 import Navigation from './views/components/Navigation'
 import IndexScreen from './views/components/IndexScreen/IndexScreen'
 import LoginScreen from './views/components/LoginScreen/components/LoginScreen'
+import AddUserScreen from './views/components/AddUserScreen/AddUserScreen'
 import { UserTypes } from '../constants'
 
 // toggle bwt Giver and Reciever specfic screen
@@ -25,6 +26,9 @@ const App = () => {
         <Navigation />
         <HeroContainer>
           <Switch>
+            <Route path={"/add"}>
+              <AddUserScreen />
+            </Route>
             <Route path={Routes.Login}>
               <LoginScreenSwitch />
             </Route>
