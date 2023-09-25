@@ -8,7 +8,7 @@ import Giver from '../models/Giver'
 import Receiver from '../models/Receiver'
 
 
-const firebaseFunctions = {
+const crudFunctions = {
   // https://css-tricks.com/user-registration-authentication-firebase-react/#creating-user-registration-functionality
   createNewUser: async (name: string, email: string, password: string) => {
     console.log('createNewUser', email, password)
@@ -58,4 +58,4 @@ const firebaseFunctions = {
     })
   },
 }
-export default firebaseFunctions
+export default crudFunctions

@@ -1,4 +1,4 @@
-import firebaseFunctions from "../../api/firebaseFuncs"
+import crudFunctions from "../../api/crudFunctions"
 
   export const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -7,7 +7,7 @@ import firebaseFunctions from "../../api/firebaseFuncs"
     const email = target.email.value 
     const password = target.password.value
 
-    const user = firebaseFunctions.addNewUser({
+    const user = crudFunctions.addNewUser({
       email, password
     })
     console.log(user)
