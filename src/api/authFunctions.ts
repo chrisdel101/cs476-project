@@ -1,6 +1,7 @@
 // import { getFirestore } from 'firebase-admin/firestore'
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../services/firebase.config'
+import firebase from 'firebase/compat/app';
 
 const authFunctions = {
   getSignInState: async () => {
@@ -15,13 +16,23 @@ const authFunctions = {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user
-        user
+        return user
       })
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
-        console.log(errorCode, errorMessage)
+        console.error(errorCode, errorMessage)
       }),
-    logoutUser: () => {}
+    // logs out user in firebase
+    logoutUser: async (): Promise<boolean> => {
+      return signOut(auth).then(() => {
+        return true
+      }).catch((error) => {
+        console.error(error, 'logoutUser')
+        return false
+        // An error happened.
+      });
+    }
+
 }
 export default authFunctions

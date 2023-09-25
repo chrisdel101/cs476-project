@@ -13,11 +13,7 @@ import LoginScreen from './views/components/LoginScreen/components/LoginScreen'
 import AddUserScreen from './views/components/AddUserScreen/AddUserScreen'
 import { UserTypes } from '../constants'
 
-// toggle bwt Giver and Reciever specfic screen
-const LoginScreenSwitch = () => {
-  const { userType } = useParams<{ userType: UserTypes }>()
-  return <LoginScreen userType={userType} />
-}
+
 
 const App = () => {
   return (
@@ -30,7 +26,7 @@ const App = () => {
               <AddUserScreen />
             </Route>
             <Route path={Routes.Login}>
-              <LoginScreenSwitch />
+              <LoginUserTypeScreen />
             </Route>
             <Route exact path={Routes.Index}>
               <IndexScreen />
@@ -43,6 +39,11 @@ const App = () => {
   )
 }
 
+// toggle bwt Giver and Reciever specfic screen by passing in the user type as a param
+const LoginUserTypeScreen = () => {
+  const { userType } = useParams<{ userType: UserTypes }>()
+  return <LoginScreen userType={userType} />
+}
 export default App
 
 // HERO styles for all pages 

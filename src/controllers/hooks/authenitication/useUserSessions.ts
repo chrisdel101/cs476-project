@@ -3,7 +3,8 @@ import User from '../../../models/abstractClasses/User';
 import authFunctions from '../../../api/authFunctions';
 
 
-
+// authFunctions
+// - can be used inside components see index screen exmaple
 const useUserSessions = () => {
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false)
   const [currentUser, setCurrentUser] = useState<User | null>(null)
