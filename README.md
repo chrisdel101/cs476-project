@@ -14,7 +14,6 @@ Built using [Vite](https://vitejs.dev/) and [Firebase](https://firebase.google.c
 - make sure npm is installed `npm -v`
 - now run Quick Start section
 
-![run dev prompt](/Users/chrisdielschnieder/code_work/firebase/cs457_project/freebee/public/run_dev_prompt.jpg)
 
 
 ### Deployment
