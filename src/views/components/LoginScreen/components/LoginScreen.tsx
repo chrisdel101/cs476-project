@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { handleSubmit } from '../../../../controllers/LoginScreen/loginScreenController.ts'
 import { UserTypes } from '../../../../../constants'
-import useUserSessions from '../../../../controllers/hooks/authenitication/useUserSessions'
+import useUserSessions from '../../../../controllers/hooks/sessions/useUserSessions.ts'
 import {handleLogout} from '../../../../controllers/LoginScreen/loginScreenController.ts'
 
 interface Iprops {
@@ -17,7 +17,7 @@ const Login = ({userType}: Iprops) => {
       <>
       
       <h1>you are logged in</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={() => handleLogout(isLoggedIn)}>Logout</button>
       </>
     )
   } else {

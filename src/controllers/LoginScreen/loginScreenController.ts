@@ -11,6 +11,7 @@ export const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     authFunctions.loginUser(email, password) 
 }
 
-export const handleLogout = async () => {
+export const handleLogout = async (isLoggedIn: boolean) => {
   await authFunctions.logoutUser()
+  console.log('isloggedIN', isLoggedIn)
 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import useUserSessions from '../../../controllers/hooks/authenitication/useUserSessions'
+import useUserSessions from '../../../controllers/hooks/sessions/useUserSessions'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { useState } from 'react'

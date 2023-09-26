@@ -1,10 +1,10 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import isLoggedIn from "../../controllers/hooks/authenitication/useUserSessions"
-import User from '../../models/abstractClasses/User';
+import useUserSessions from '../../controllers/hooks/sessions/useUserSessions';
 
 const Navigation = () => {
+  const {isLoggedIn} = useUserSessions()
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -35,7 +35,7 @@ const Navigation = () => {
   );
 }
 
-const NavigationAuth = (user: User) => {
+const NavigationAuth = ({user: User, isLoggedIN: boolean}) => {
   return (
     isLoggedIn()
       ? (
