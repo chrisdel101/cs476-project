@@ -1,6 +1,7 @@
 export enum Routes {
     Index = '/',
-    Login = '/log_in/:userType'
+    Login = '/log_in/:userType',
+    Logout = '/log_out'
 }
 
 export enum UserTypes {

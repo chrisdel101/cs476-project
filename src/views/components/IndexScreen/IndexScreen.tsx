@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import useUserSessions from '../../../controllers/hooks/sessions/useUserSessions'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { useState } from 'react'
+import useUserContext from '../../../controllers/context/useUserContext'
 
 
 const Index = () => {
@@ -10,7 +10,8 @@ const Index = () => {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-  const {isLoggedIn, currentUser} = useUserSessions()
+  const {isLoggedIn} = useUserContext();
+  
   console.log(isLoggedIn, 'isLoggedIN')
   return (
     <PageContainer>

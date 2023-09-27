@@ -1,12 +1,12 @@
 import {UserTypes} from '../../../constants'
 
 interface UserInterface {
-    name: string
-    email: string
-    password: string
-    phone: string
-    location: string
-    userType: UserTypes;
+    name?: string
+    email?: string
+    password?: string
+    phone?: string
+    location?: string
+    userType?: UserTypes;
 }
 
 abstract class User {
