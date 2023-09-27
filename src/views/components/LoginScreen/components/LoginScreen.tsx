@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { handleSubmit } from '../../../../controllers/LoginScreen/loginScreenController.ts'
+import { handleLogin } from '../../../../controllers/LoginScreen/loginScreenController.ts'
 import { UserTypes } from '../../../../../constants'
 import useUserSessions from '../../../../controllers/hooks/sessions/useUserSessions.ts'
 import {handleLogout} from '../../../../controllers/LoginScreen/loginScreenController.ts'
@@ -26,7 +26,7 @@ const Login = () => {
   return (
     <PageContainer>
       <h5>{userType}</h5>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <input type="text" name="email" id="email" />
         <input type="password" name="password" id="password" />
         <input type="submit" value="Login" />

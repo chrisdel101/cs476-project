@@ -1,7 +1,7 @@
 import authFunctions from '../../api/authFunctions'
 
 
-export const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+export const handleLogin = (e:React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
     // weird syntax only for typescript
     const target = e.currentTarget

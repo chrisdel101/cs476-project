@@ -2,7 +2,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useParams,
   Redirect,
   useLocation,
 } from 'react-router-dom'
@@ -13,52 +12,21 @@ import Navigation from './views/components/Navigation'
 import IndexScreen from './views/components/IndexScreen/IndexScreen'
 import LoginScreen from './views/components/LoginScreen/components/LoginScreen'
 import AddUserScreen from './views/components/AddUserScreen/AddUserScreen'
-import { UserTypes } from '../constants'
-import useUserSessions from './controllers/hooks/sessions/useUserSessions'
-import { Auth } from 'firebase-admin/auth'
-import { AuthenticatedLayout } from './views/components/AuthenticatedLayout'
-import { ReactNode, createContext, useContext } from 'react'
-import User from './models/abstractClasses/User'
-import authFunctions from './api/authFunctions'
+import { ProvideAuth } from './controllers/context/userProvider'
+import useUserContext from './controllers/context/useUserContext'
+import { ReactNode } from 'react'
 
-interface LoginUserTypeOnAuthInterface {
-  isLoggedIn: boolean
-}
-interface IUserContext {
-  currentUser?: User | null
-  isLoggedIn?: boolean
-}
 
-const authContext = createContext<IUserContext>({
-  currentUser: undefined,
-  isLoggedIn: false,
-})
-interface UserProviderProps {
-  children: ReactNode
-}
 interface CustomRouteProps {
   children: ReactNode
   path?: string
 }
 
-function ProvideAuth({ children }: UserProviderProps) {
-  const { currentUser, isLoggedIn } = useUserSessions()
-  return (
-    <authContext.Provider value={{ currentUser, isLoggedIn }}>
-      {children}
-    </authContext.Provider>
-  )
-}
 
-function useAuth() {
-  return useContext(authContext)
-}
-
-// Only acessible when not logged in
+// Only acessible when NOT logged in
 function NonAuthenticatedRoute({ children }: CustomRouteProps) {
   // const {pathname} = useLocation();
-  const auth = useAuth()
-  // console.log('locaton ', auth.currentUser  )
+  const auth = useUserContext();
   return (
     <Route
       render={() =>
@@ -72,7 +40,8 @@ function NonAuthenticatedRoute({ children }: CustomRouteProps) {
 function AuthenticatedRoute({ children }: CustomRouteProps) {
   const { pathname } = useLocation()
   console.log('pathname ', pathname)
-  const auth = useAuth()
+    const auth = useUserContext();
+
   // console.log('auth.currentUser ', auth.currentUser  )
   return (
     <Route
@@ -87,7 +56,6 @@ const App = () => {
   return (
     <ProvideAuth>
       <Router>
-        {/* <AuthenticatedLayout> */}
         <LayoutContainer>
           <Navigation />
           <HeroContainer>
@@ -95,9 +63,6 @@ const App = () => {
               <AuthenticatedRoute path={'/add'}>
                 <AddUserScreen />
               </AuthenticatedRoute>
-              {/* <Route path={'/add'}>
-                <AddUserScreen />
-              </Route> */}
               <NonAuthenticatedRoute path={Routes.Login}>
                 <LoginScreen />
               </NonAuthenticatedRoute>
@@ -109,25 +74,11 @@ const App = () => {
           </HeroContainer>
           <Footer />
         </LayoutContainer>
-        {/* </AuthenticatedLayout> */}
       </Router>
     </ProvideAuth>
   )
 }
-// toggle bwt Giver and Reciever specfic screen by passing in the user type as a param
-const LoginUserTypeOnAuthScreen = ({
-  isLoggedIn,
-}: LoginUserTypeOnAuthInterface) => {
-  // if (isLoggedIn) {
-  //   console.log("APP logged in", isLoggedIn)
-  //   return <Redirect to={Routes.Index} />
-  // } else {
-  console.log('APP not  logged in')
-  // takes the userType in /log_in/:userType
-  const { userType } = useParams<{ userType: UserTypes }>()
-  return <LoginScreen userType={userType} />
-  // }
-}
+
 export default App
 
 // HERO styles for all pages
