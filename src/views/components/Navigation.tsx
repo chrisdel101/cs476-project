@@ -2,8 +2,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import useUserContext from '../../controllers/context/useUserContext';
-import { Routes } from '../../../constants';
 import { handleLogout } from '../../controllers/LoginScreen/loginScreenController';
+import { useHistory } from 'react-router-dom';
+
 const Navigation = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -34,13 +35,14 @@ const Navigation = () => {
 }
 
 const NavigationAuth = () => {
-  const {currentUser} = useUserContext();
+  const {currentUser, setCurrentUser, setIsLoggedIn} = useUserContext();
+  const history = useHistory();
   return (
     currentUser
       ? (
         <>
           <Nav.Link href="#accont">My Account</Nav.Link>
-          <Nav.Link onClick={handleLogout} >Log Out</Nav.Link>
+          <Nav.Link onClick={() => handleLogout(history, setCurrentUser, setIsLoggedIn)} >Log Out</Nav.Link>
         </>
       )
       : (

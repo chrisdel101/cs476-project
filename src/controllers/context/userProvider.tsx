@@ -7,8 +7,8 @@ import Donor from '../../models/Donor'
 export interface IUserContext {
   currentUser?: User | null
   isLoggedIn?: boolean | null
-  // setIsLoggedIn: (isLoggedIn: boolean) => void
-  // setCurrentUser: (user: User | null) => void
+  setIsLoggedIn: (isLoggedIn: boolean) => void
+  setCurrentUser: (user: User | null) => void
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -45,17 +45,15 @@ function useProviderAuth() {
     }
   }, [])
   // call firebase to check if user is signed in
-  return { isLoggedIn, currentUser }
+  return { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn }
 }
 
 export function ProvideAuth({ children }: UserProviderProps) {
-  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-  // const [currentUser, setCurrentUser] = useState<User | null>(null)
-  const { isLoggedIn, currentUser } = useProviderAuth()
+  const { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn } = useProviderAuth()
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, isLoggedIn }}
+      value={{ currentUser, isLoggedIn, setIsLoggedIn, setCurrentUser }}
     >
       {children}
     </AuthContext.Provider>

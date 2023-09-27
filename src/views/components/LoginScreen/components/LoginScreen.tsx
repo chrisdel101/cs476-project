@@ -1,29 +1,18 @@
 import styled from 'styled-components'
 import { handleLogin } from '../../../../controllers/LoginScreen/loginScreenController.ts'
 import { UserTypes } from '../../../../../constants'
-import {handleLogout} from '../../../../controllers/LoginScreen/loginScreenController.ts'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import useUserContext from '../../../../controllers/context/useUserContext.ts'
 
 const Login = () => {
   const { userType } = useParams<{ userType: UserTypes }>()
-  const {isLoggedIn, currentUser} = useUserContext();
+  const {setIsLoggedIn, setCurrentUser} = useUserContext();
+  const history = useHistory()
 
-
-  if (isLoggedIn) {
-    console.log(currentUser)
-    return (
-      <>
-      
-      <h1>you are logged in</h1>
-      <button onClick={() => handleLogout(isLoggedIn)}>Logout</button>
-      </>
-    )
-  } else {
   return (
     <PageContainer>
       <h5>{userType}</h5>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={(e) => handleLogin(e, history,setIsLoggedIn, setCurrentUser )}>
         <input type="text" name="email" id="email" />
         <input type="password" name="password" id="password" />
         <input type="submit" value="Login" />
@@ -31,7 +20,6 @@ const Login = () => {
     </PageContainer>
   )
   }
-}
 export default Login
 
 const PageContainer = styled.div`
