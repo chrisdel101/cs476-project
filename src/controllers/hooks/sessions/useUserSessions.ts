@@ -17,11 +17,12 @@ const useUserSessions = () => {
           // TODO: build the user object from incoming data here
           console.log(signedInUser, "signedInUser");
           if (signedInUser) { 
-          setisLoggedIn(true)
-          setCurrentUser(signedInUser)
+            setisLoggedIn(true)
+            setCurrentUser(signedInUser)
           } else {
             console.log('isSignedIn hook: USER IS NOT SIGNED IN')
             setisLoggedIn(false)
+            setCurrentUser(null)
           }
           
         } catch (error) {

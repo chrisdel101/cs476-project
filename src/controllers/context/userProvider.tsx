@@ -1,23 +1,25 @@
 import { ReactNode, useState } from 'react';
 import { createContext } from 'react';
 import User from '../../models/abstractClasses/User';
+import useUserSessions from '../hooks/sessions/useUserSessions';
 
 export interface IUserContext {
-  user?: User;
+currentUser?: User | null;
   isLoggedIn?: boolean;
-  setUser: any;
-  setisLoggedIn: any;
 }
 
-export const UserContext = createContext<IUserContext>(null!);
+export const UserContext = createContext<IUserContext>({
+    currentUser: undefined,
+    isLoggedIn: false
+});
 
 interface UserProviderProps {
   children: ReactNode;
 }
 
 export function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState<User>();
-  const [isLoggedIn, setisLoggedIn] = useState<boolean>();
+  const {isLoggedIn, currentUser} = useUserSessions()
 
-  return <UserContext.Provider value={{ user, isLoggedIn, setUser, setisLoggedIn }}>{children}</UserContext.Provider>;
+
+  return <UserContext.Provider value={{ currentUser, isLoggedIn}}>{children}</UserContext.Provider>;
 }

@@ -3,12 +3,14 @@ import { handleSubmit } from '../../../../controllers/LoginScreen/loginScreenCon
 import { UserTypes } from '../../../../../constants'
 import useUserSessions from '../../../../controllers/hooks/sessions/useUserSessions.ts'
 import {handleLogout} from '../../../../controllers/LoginScreen/loginScreenController.ts'
+import { useParams } from 'react-router-dom'
 
 interface Iprops {
     userType: UserTypes
 }
 
-const Login = ({userType}: Iprops) => {
+const Login = () => {
+  const { userType } = useParams<{ userType: UserTypes }>()
   const {isLoggedIn, currentUser} = useUserSessions()
 
   if (isLoggedIn) {

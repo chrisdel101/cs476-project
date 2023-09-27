@@ -1,7 +1,6 @@
 // import { getFirestore } from 'firebase-admin/firestore'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../services/firebase.config'
-import firebase from 'firebase/compat/app';
 
 const authFunctions = {
   getSignInState: async () => {
