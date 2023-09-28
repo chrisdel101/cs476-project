@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { handleLogin } from '../../../../controllers/LoginScreen/loginScreenController.ts'
-import { UserTypes } from '../../../../../constants'
+import { handleLogin } from '../../../controllers/LoginScreen/loginScreenController.ts'
+import { UserTypes } from '../../../../constants.ts'
 import { useHistory, useParams } from 'react-router-dom'
-import useUserContext from '../../../../controllers/context/useUserContext.ts'
+import useUserContext from '../../../controllers/context/useUserContext.ts'
 
 const Login = () => {
   const { userType } = useParams<{ userType: UserTypes }>()
