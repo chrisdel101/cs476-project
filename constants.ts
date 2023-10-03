@@ -1,17 +1,18 @@
 export enum Routes {
     Index = '/',
     Login = '/log_in/:userType',
-    Logout = '/log_out'
+    Logout = '/log_out',
+    Account = '/account'
 }
 
 export enum UserTypes {
-    GIVER = 'giver',
+    DONOR = 'donor',
     RECEIVER = 'receiver'
 }
 
 export enum ItemTypes {
     FOOD = 'food',
-    CLOTHES = 'clothes',
+    CLOTHING = 'clothes',
     TOYS = 'toys',
     ELECTRONICS = 'electronics',
     MUSICAL_INSTRUMENTS = 'musical_instruments',

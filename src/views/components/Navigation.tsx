@@ -47,7 +47,7 @@ const NavigationAuth = () => {
       )
       : (
         <>
-          <Nav.Link href={`/log_in/giver`}>Giver Login</Nav.Link>
+          <Nav.Link href={`/log_in/donor`}>Donor Login</Nav.Link>
           <Nav.Link href="/log_in/reciever">Receiver Login</Nav.Link>
       </>
       )

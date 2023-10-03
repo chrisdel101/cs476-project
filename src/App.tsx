@@ -15,6 +15,7 @@ import AddUserScreen from './views/components/AddUserScreen/AddUserScreen'
 import { ProvideAuth } from './controllers/context/userProvider'
 import useUserContext from './controllers/context/useUserContext'
 import { ReactNode } from 'react'
+import AccountScreen from './views/components/AccountScreen/AccountScreen'
 
 
 interface CustomRouteProps {
@@ -60,6 +61,9 @@ const App = () => {
           <Navigation />
           <HeroContainer>
             <Switch>
+              <Route path={Routes.Account}>
+                <AccountScreen />
+              </Route>
               <AuthenticatedRoute path={'/add'}>
                 <AddUserScreen />
               </AuthenticatedRoute>
