@@ -1,19 +1,28 @@
 import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
+import AddUserModal from './AddUserModal'
 import { useState } from 'react'
 
+import AddItemModal from './AddItemModal'
 
 const Index = () => {
-  const [show, setShow] = useState<boolean>(false)
+  const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
+  const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
 
+  const handleCloseAddUserModal = () => setShowAddUserModal(false)
+  const handleShowAddUserModal = () => setShowAddUserModal(true)
+  const handleCloseAddItemModal = () => setShowAddItemModal(false)
+  const handleShowAddItemModal = () => setShowAddItemModal(true)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   
   return (
     <PageContainer>
-      <SytledButton variant="primary" onClick={handleShow}>
-        Launch demo modal
+      <SytledButton variant="primary" onClick={handleShowAddUserModal}>
+       Create An Account
+      </SytledButton>
+      <SytledButton variant="primary" onClick={handleShowAddItemModal}>
+       Create An Item
       </SytledButton>
       <div className="demo-container" style={{display: "flex", justifyContent: "space-evenly"}}>
         {
@@ -27,23 +36,8 @@ const Index = () => {
             })
         }
       </div>
-      <div>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add An Item </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Demo to show how modal works!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      </div>
+      <AddUserModal show={showAddUserModal} handleClose={handleCloseAddUserModal} />
+      <AddItemModal show={showAddItemModal} handleClose={handleCloseAddItemModal} />
     </PageContainer>
   )
 }
