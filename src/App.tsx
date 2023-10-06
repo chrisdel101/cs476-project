@@ -64,9 +64,6 @@ const App = () => {
               <Route path={Routes.Account}>
                 <AccountScreen />
               </Route>
-              <AuthenticatedRoute path={'/add'}>
-                <AddUserScreen />
-              </AuthenticatedRoute>
               <NonAuthenticatedRoute path={Routes.Login}>
                 <LoginScreen />
               </NonAuthenticatedRoute>
@@ -74,7 +71,6 @@ const App = () => {
                 <IndexScreen />
               </Route>
             </Switch>
-            z
           </HeroContainer>
           <Footer />
         </LayoutContainer>

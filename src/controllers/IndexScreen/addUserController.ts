@@ -1,14 +1,13 @@
 import crudFunctions from "../../api/crudFunctions"
 
-  export const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  export const handleSubmit = (e:React.FormEvent<HTMLFormElement>, currentRadio: string) => {
     e.preventDefault()
-    const target = e.currentTarget
-    console.log(target.email.value)
-    const email = target.email.value 
-    const password = target.password.value
+    const target = e
+    console.log(currentRadio)
+    // console.log(target.email)
+    // const email = target.email.value 
+    // const password = target.password.value
 
-    const user = crudFunctions.addNewUser({
-      email, password
-    })
-    console.log(user)
+   
+    // console.log(email, password)
   }

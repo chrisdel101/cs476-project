@@ -13,8 +13,7 @@ const Index = () => {
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+
   
   return (
     <PageContainer>
