@@ -25,6 +25,7 @@ export enum ItemTypes {
 }
 
 export enum Locations {
+    REGINA = 'regina',
     TEL_AVIV = 'tel_aviv',
     JERUSALEM = 'jerusalem',
     HAIFA = 'haifa',
@@ -38,6 +39,5 @@ export enum Locations {
     TOKYO = 'tokyo',
     BEIJING = 'beijing',
     MOSCOW = 'moscow',
-    SYDNEY = 'sydney',
-    REGINA = 'regina'
+    SYDNEY = 'sydney'
 }
