@@ -7,10 +7,12 @@ interface IForm {
   e: React.FormEvent<HTMLFormElement>
   currentRadio: UserTypes
   setValidated: (bool: boolean) => void
-  setPasswordMatchingError: (bool: boolean|undefined) => void,
+  setPasswordMatchingError: (bool: boolean) => void,
   setFireBaseEmailErrorMsg: (str: string|undefined) => void,
   setFireBasePasswordErrorMsg: (str: string|undefined) => void,
   setErrorMsg: (str: string|undefined) => void,
+  handleCloseAddUserModal: (bool: boolean) => void,
+  setSuccessMsg: (str: string|undefined) => void
 }
 
 export const handleSubmit = async ({
@@ -20,10 +22,12 @@ export const handleSubmit = async ({
   setPasswordMatchingError,
   setFireBaseEmailErrorMsg,
   setFireBasePasswordErrorMsg,
-  setErrorMsg
+  setErrorMsg,
+  handleCloseAddUserModal,
+  setSuccessMsg
 }: IForm) => {
+  // stop default submission
   e.preventDefault()
-  e.stopPropagation()
   // get user data from form
   const form = e?.currentTarget
   
@@ -47,6 +51,8 @@ export const handleSubmit = async ({
   emailElem.reportValidity()
   emailElem.setCustomValidity("")
   emailElem.reportValidity()
+  setErrorMsg(undefined)
+
  
   // if PW fields not blank - check if they match
   if (password && confirmPassword) {
@@ -57,6 +63,7 @@ export const handleSubmit = async ({
        confirmPasswordElem.setCustomValidity("Passwords don't match")
        confirmPasswordElem.reportValidity()
        setPasswordMatchingError(true)
+       console.log("HERE1")
       //  return // early return
      } else {
       // reset any custom form validation message prev set
@@ -67,21 +74,16 @@ export const handleSubmit = async ({
   }
    // handle required fields validation
    if (form.checkValidity() === false) {
-    e.preventDefault()
     setValidated(true)
     return
   } 
   // sends validations back to form
-  // build User obj
-
+  // build User objs
   const user =
     userType === UserTypes.DONOR
       ? new Donor({ name, email, phone, location, userType, password })
       : new Receiver({ name, email, phone, location, userType, password })
   // add user to db
-  // const test = await crudFunctions.addNewUser(user)
-  // console.log(test, "HERE")
-  // setErrorMsg(test.message)
   const response =  await crudFunctions.createNewUser(user)
   console.log(response, "HERE2")
   // if firebase error send to form
@@ -101,18 +103,12 @@ export const handleSubmit = async ({
     } else {
       setErrorMsg(response.errorMessage)
     }
-    e.preventDefault()
-  } else if(response.status === FunctionStatus.OK) {
-    e.preventDefault()
-    e.stopPropagation()
-    if(response && response.status === FunctionStatus.OK) {
-      //ok else {
-  
-    }
-
-  }
- 
-  // console.log(response, 'response from createNewUser func')
+    return
+  } 
+  // close modal
+  handleCloseAddUserModal(true)
+  // set msg
+  setSuccessMsg(`User Successfully Created`)
 }
 
 

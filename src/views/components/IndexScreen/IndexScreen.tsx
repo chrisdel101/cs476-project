@@ -11,6 +11,7 @@ const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
   const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
+  const [successMsg, setSuccessMsg] = useState<string|undefined>(undefined)
 
   const handleCloseAddUserModal = () => setShowAddUserModal(false)
   const handleShowAddUserModal = () => setShowAddUserModal(true)
@@ -20,7 +21,7 @@ const Index = () => {
 
   return (
     <PageContainer>
-      <Alert variant={AlertTypes.PRIMARY} message={errorMsg} />
+      <Alert variant={AlertTypes.SUCCESS} message={successMsg} />
 
       <SytledButton variant="primary" onClick={crudFunctions.testAddNewUser}>
        Test Add
@@ -45,7 +46,8 @@ const Index = () => {
       </div>
       <AddUserModal 
         show={showAddUserModal} 
-        handleClose={handleCloseAddUserModal} 
+        handleClose={handleCloseAddUserModal}
+        setSuccessMsg={setSuccessMsg} 
       />
       <AddItemModal show={showAddItemModal} handleClose={handleCloseAddItemModal} />
     </PageContainer>

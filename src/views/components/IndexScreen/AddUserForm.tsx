@@ -5,17 +5,21 @@ import { handleSubmit } from '../../../controllers/IndexScreen/addUserController
 import { useState } from 'react'
 import { AppAlert as Alert }  from '../Alert'
 
+interface IForm {
+  handleCloseAddUserModal: () => void;
+  setSuccessMsg: (str: string|undefined) => void;
+}
 
-const AddUserForm = () => {
+const AddUserForm = ({handleCloseAddUserModal, setSuccessMsg}: IForm) => {
   const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
   const [currentRadio, setCurrentRadio] = useState<UserTypes>(UserTypes.DONOR)
   const [validated, setValidated] = useState(false)
-  // if undefined feilds are blank, false if passwords dont match
-  const [passwordMatchingError, setPasswordMatchingError] = useState<boolean | undefined>(
-    undefined
-  )
+  const [passwordMatchingError, setPasswordMatchingError] = useState<boolean>(false)
   const [fireBaseEmailErrorMsg, setFireBaseEmailErrorMsg] = useState<string|undefined>(undefined)
   const [fireBasePasswordErrorMsg, setFireBasePasswordErrorMsg] = useState<string|undefined>(undefined)
+
+
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentRadio(e.target.value as UserTypes)
   }
@@ -33,7 +37,9 @@ const AddUserForm = () => {
           setPasswordMatchingError,
           setFireBaseEmailErrorMsg,
           setFireBasePasswordErrorMsg,
-          setErrorMsg
+          setErrorMsg,
+          handleCloseAddUserModal,
+          setSuccessMsg
         })
       }
     >
@@ -126,7 +132,7 @@ const AddUserForm = () => {
           name="confirm-password"
         />
         <Form.Control.Feedback type="invalid">
-        {passwordMatchingError === false ? 'Passwords do not match.' : "Cannot be blank."}
+        {passwordMatchingError === true ? 'Passwords do not match.' : "Cannot be blank."}
         </Form.Control.Feedback>
       </Form.Group>
      
