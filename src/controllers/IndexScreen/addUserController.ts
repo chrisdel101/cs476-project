@@ -12,7 +12,10 @@ interface IForm {
   setFireBasePasswordErrorMsg: (str: string|undefined) => void,
   setErrorMsg: (str: string|undefined) => void,
   handleCloseAddUserModal: (bool: boolean) => void,
-  setSuccessMsg: (str: string|undefined) => void
+  setSuccessMsg: (str: string|undefined) => void,
+  setCurrentUser: (user: Donor|Receiver|null) => void,
+  setIsLoggedIn: (bool: boolean) => void,
+  isLoggedIn: boolean | null | undefined,
 }
 
 export const handleSubmit = async ({
@@ -24,10 +27,15 @@ export const handleSubmit = async ({
   setFireBasePasswordErrorMsg,
   setErrorMsg,
   handleCloseAddUserModal,
-  setSuccessMsg
+  setSuccessMsg,
+  setIsLoggedIn,
+  setCurrentUser,
+  isLoggedIn
 }: IForm) => {
   // stop default submission
   e.preventDefault()
+  // don't allow submit when user logged in
+  if(isLoggedIn) return
   // get user data from form
   const form = e?.currentTarget
   
@@ -109,8 +117,9 @@ export const handleSubmit = async ({
   handleCloseAddUserModal(true)
   // set msg
   setSuccessMsg(`User Successfully Created`)
+  setIsLoggedIn(true)
+  setCurrentUser(user)
 }
-
 
 const doPasswordsMatch = (password: string, confirmPassword: string) => {
   return password === confirmPassword

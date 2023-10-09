@@ -1,21 +1,21 @@
 import {UserTypes} from '../../../constants'
 
 interface UserInterface {
-    name?: string | null
-    email?: string | null
-    password?: string | null
-    phone?: string | null
-    location?: string | null
-    userType?: UserTypes | null
+    name: string
+    email: string
+    password: string
+    phone?: string
+    location: string
+    userType: UserTypes
 }
 
-abstract class User {
-    name: string | null
-    email: string | null;
-    phone: string | null;
-    password: string | null;
-    location: string | null;
-    userType: UserTypes | null;
+abstract class User implements UserInterface{
+    name: string
+    email: string;
+    phone?: string;
+    password: string;
+    location: string;
+    userType: UserTypes;
     
     constructor({name, email, password, phone, location, userType}: UserInterface) {
         this.name = name;

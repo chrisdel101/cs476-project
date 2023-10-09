@@ -4,6 +4,7 @@ import { AlertTypes, Locations, UserTypes } from '../../../../constants'
 import { handleSubmit } from '../../../controllers/IndexScreen/addUserController'
 import { useState } from 'react'
 import { AppAlert as Alert }  from '../Alert'
+import useUserContext from '../../../controllers/context/useUserContext'
 
 interface IForm {
   handleCloseAddUserModal: () => void;
@@ -17,7 +18,7 @@ const AddUserForm = ({handleCloseAddUserModal, setSuccessMsg}: IForm) => {
   const [passwordMatchingError, setPasswordMatchingError] = useState<boolean>(false)
   const [fireBaseEmailErrorMsg, setFireBaseEmailErrorMsg] = useState<string|undefined>(undefined)
   const [fireBasePasswordErrorMsg, setFireBasePasswordErrorMsg] = useState<string|undefined>(undefined)
-
+  const {isLoggedIn, setIsLoggedIn, setCurrentUser} = useUserContext();
 
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +30,7 @@ const AddUserForm = ({handleCloseAddUserModal, setSuccessMsg}: IForm) => {
       noValidate
       validated={validated}
       className="add-user-form"
-      onSubmit={(e) =>
+      onSubmit={(e) => 
         handleSubmit({
           e,
           currentRadio,
@@ -39,7 +40,10 @@ const AddUserForm = ({handleCloseAddUserModal, setSuccessMsg}: IForm) => {
           setFireBasePasswordErrorMsg,
           setErrorMsg,
           handleCloseAddUserModal,
-          setSuccessMsg
+          setSuccessMsg, 
+          setIsLoggedIn,
+          setCurrentUser,
+          isLoggedIn,
         })
       }
     >

@@ -27,7 +27,7 @@ export const handleLogout = async (history: any, setCurrentUser: any, setIsLogge
     console.log('handleLogout: logged out')
     history.push(Routes.Index);
     setCurrentUser(null)
-    setIsLoggedIn
+    setIsLoggedIn(false)
 
   }
 }
