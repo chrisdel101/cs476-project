@@ -41,3 +41,20 @@ export enum Locations {
     MOSCOW = 'moscow',
     SYDNEY = 'sydney'
 }
+export enum FunctionStatus {
+    OK = 'ok',
+    ERROR = 'error'
+}
+export enum Collections {
+    DONORS = 'donors',
+    RECEIVERS = 'receivers',
+    ITEMS = 'items'
+}
+export enum AlertTypes {
+   PRIMARY = 'primary',
+   SECONDARY = 'secondary',
+   SUCCESS = 'success',
+   DANGER = 'danger',
+   WARNING = 'warning',
+   INFO = 'info'
+}

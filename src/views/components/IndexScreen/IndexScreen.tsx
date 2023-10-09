@@ -2,21 +2,29 @@ import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
 import { useState } from 'react'
-
+import { AlertTypes } from '../../../../constants'
 import AddItemModal from './AddItemModal'
+import crudFunctions from '../../../api/crudFunctions'
+import { AppAlert as Alert }  from '../Alert'
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
   const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
+  const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
 
   const handleCloseAddUserModal = () => setShowAddUserModal(false)
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
 
-  
+
   return (
     <PageContainer>
+      <Alert variant={AlertTypes.PRIMARY} message={errorMsg} />
+
+      <SytledButton variant="primary" onClick={crudFunctions.testAddNewUser}>
+       Test Add
+      </SytledButton>
       <SytledButton variant="primary" onClick={handleShowAddUserModal}>
        Create An Account
       </SytledButton>
@@ -35,7 +43,10 @@ const Index = () => {
             })
         }
       </div>
-      <AddUserModal show={showAddUserModal} handleClose={handleCloseAddUserModal} />
+      <AddUserModal 
+        show={showAddUserModal} 
+        handleClose={handleCloseAddUserModal} 
+      />
       <AddItemModal show={showAddItemModal} handleClose={handleCloseAddItemModal} />
     </PageContainer>
   )

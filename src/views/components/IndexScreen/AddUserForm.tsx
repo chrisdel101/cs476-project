@@ -1,16 +1,21 @@
-import { Button, InputGroup } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
-import { Locations, UserTypes } from '../../../../constants'
+import { AlertTypes, Locations, UserTypes } from '../../../../constants'
 import { handleSubmit } from '../../../controllers/IndexScreen/addUserController'
 import { useState } from 'react'
+import { AppAlert as Alert }  from '../Alert'
+
 
 const AddUserForm = () => {
+  const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
   const [currentRadio, setCurrentRadio] = useState<UserTypes>(UserTypes.DONOR)
   const [validated, setValidated] = useState(false)
   // if undefined feilds are blank, false if passwords dont match
-  const [comparePasswords, setComparePassword] = useState<boolean | undefined>(
+  const [passwordMatchingError, setPasswordMatchingError] = useState<boolean | undefined>(
     undefined
   )
+  const [fireBaseEmailErrorMsg, setFireBaseEmailErrorMsg] = useState<string|undefined>(undefined)
+  const [fireBasePasswordErrorMsg, setFireBasePasswordErrorMsg] = useState<string|undefined>(undefined)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentRadio(e.target.value as UserTypes)
   }
@@ -25,10 +30,14 @@ const AddUserForm = () => {
           e,
           currentRadio,
           setValidated,
-          setComparePassword,
+          setPasswordMatchingError,
+          setFireBaseEmailErrorMsg,
+          setFireBasePasswordErrorMsg,
+          setErrorMsg
         })
       }
     >
+       <Alert variant={AlertTypes.DANGER} message={errorMsg} />
       <Form.Group className="mb-3" controlId="formBasicName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -51,7 +60,7 @@ const AddUserForm = () => {
           placeholder="Enter email"
         />
         <Form.Control.Feedback type="invalid">
-          Cannot be blank and must be in valid email format.
+        {fireBaseEmailErrorMsg ? fireBaseEmailErrorMsg : "Cannot be blank and must be in valid email format"}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -103,7 +112,7 @@ const AddUserForm = () => {
           name="password"
         />
         <Form.Control.Feedback type="invalid">
-          Cannot be blank.
+        {fireBasePasswordErrorMsg ? fireBasePasswordErrorMsg : "Cannot be blank."}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -117,7 +126,7 @@ const AddUserForm = () => {
           name="confirm-password"
         />
         <Form.Control.Feedback type="invalid">
-        {comparePasswords === false ? 'Passwords do not match.' : "Cannot be blank."}
+        {passwordMatchingError === false ? 'Passwords do not match.' : "Cannot be blank."}
         </Form.Control.Feedback>
       </Form.Group>
      
