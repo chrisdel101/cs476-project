@@ -1,6 +1,7 @@
 import {UserTypes} from '../../../constants'
 
 interface UserInterface {
+    id?: string
     name: string
     email: string
     password?: string
@@ -10,6 +11,7 @@ interface UserInterface {
 }
 
 abstract class User implements UserInterface{
+    id?: string
     name: string
     email: string;
     phone?: string;
@@ -17,7 +19,8 @@ abstract class User implements UserInterface{
     location: string;
     userType: UserTypes;
     
-    constructor({name, email, password, phone, location, userType}: UserInterface) {
+    constructor({id, name, email, password, phone, location, userType}: UserInterface) {
+        this.id = id
         this.name = name;
         this.email = email;
         this.password = password;
@@ -26,8 +29,8 @@ abstract class User implements UserInterface{
         this.userType = userType;
     }
 
-    display(): void{
-        console.log(this.name);
+    set setId(id: string){
+        this.id = id
     }
 }
 export default User;

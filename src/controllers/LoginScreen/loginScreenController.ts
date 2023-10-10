@@ -22,7 +22,7 @@ export const handleLogin = async (
   if (loggedInUser) {
     // - use auth loggedInUser email to get full user details
     const userData = await crudFunctions.getUser({
-      email: loggedInUser.email as string,
+      id: loggedInUser.uid as string,
       userType: userType,
     })
     console.log('handleLogin: logged in', userData)

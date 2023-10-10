@@ -26,12 +26,13 @@ type UserObj = {
 type T = {
   createNewUser: (User: User) => Promise<ReturnObj>
   addNewUser: (User: User) => Promise<ReturnObj>
-  getUser: ({email, userType}: {email: string, userType: UserTypes}) => Promise<UserObj|undefined>
+  getUser: ({id, userType}: {id: string, userType: UserTypes}) => Promise<UserObj|undefined>
   testAddNewUser: (user: any) => any
 }
 const crudFunctions: T = {
   // https://css-tricks.com/user-registration-authentication-firebase-react/#creating-user-registration-functionality
   // create a new Auth user & add new User to db as document
+  // user obj comes from form
   createNewUser: async (User: User) => {
     // call firebase func to add auth user first
     return createUserWithEmailAndPassword(auth, User.email, User.password as string)
@@ -39,6 +40,8 @@ const crudFunctions: T = {
         // Signed in + created auth user ok
         const authUser = userCredential.user
         console.log(authUser, 'authUser')
+        // add ID to user obj
+        User.setId = authUser.uid
         // const {...user} = User
         try {
           const newUser = await crudFunctions.addNewUser(User)
@@ -74,9 +77,9 @@ const crudFunctions: T = {
       try {
         const usersRef = collection(db, Collections.DONORS)
         const { ...user } = User
-        // delete PW so not saved as text
+        // hacky quick fix: delete PW so not saved as text
         user && delete user?.password
-        await setDoc(doc(usersRef, user.email), user)
+        await setDoc(doc(usersRef, user.id), user)
         return {
           status: FunctionStatus.OK,
           errorCode: undefined,
@@ -115,10 +118,10 @@ const crudFunctions: T = {
       })
     }
   },
-  getUser: async ({email, userType}) => {
+  getUser: async ({id, userType}) => {
     const pluarlizedUserType = `${userType}s`
-    console.log(pluarlizedUserType, 'pluarlizedUserType')
-    const docRef = doc(db, pluarlizedUserType, email)
+    console.log(id, 'id')
+    const docRef = doc(db, pluarlizedUserType, id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
       return docSnap.data()
