@@ -3,9 +3,9 @@ import {UserTypes} from '../../constants'
 
 class Donor extends User {
 
-  constructor({name, email, password, phone, location, userType}: UserInterface) {
+  constructor({id, name, email, password, phone, location, userType}: UserInterface) {
      // must call super()
-     super({ name, email, phone, password, location, userType })
+     super({id, name, email, phone, password, location, userType })
      this.userType = UserTypes.DONOR
    }
    

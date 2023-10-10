@@ -9,12 +9,13 @@ import Receiver from '../models/Receiver'
 import User from '../models/abstractClasses/User'
 
 // general format return for firebase crud functions
-type ReturnObj = {
+type ReturnStatusObj = {
   status: FunctionStatus
   errorCode?: string
   errorMessage?: string
 }
 type UserObj = {
+  id: string
   name: string
   email: string
   password?: string
@@ -22,11 +23,16 @@ type UserObj = {
   location: string
   userType: UserTypes
 }
+export type UserTypeObj = {
+  data: UserObj
+  userType: UserTypes
+}
 // types for each funciont in crudFunctions
 type T = {
-  createNewUser: (User: User) => Promise<ReturnObj>
-  addNewUser: (User: User) => Promise<ReturnObj>
-  getUser: ({id, userType}: {id: string, userType: UserTypes}) => Promise<UserObj|undefined>
+  createNewUser: (User: User) => Promise<ReturnStatusObj>
+  addNewUser: (User: User) => Promise<ReturnStatusObj>
+  getUserUnknowType: (id: string) => Promise<UserTypeObj|undefined>
+  getUserByType: ({id, userType}: {id: string, userType: UserTypes}) => Promise<UserObj|undefined>
   testAddNewUser: (user: any) => any
 }
 const crudFunctions: T = {
@@ -118,13 +124,33 @@ const crudFunctions: T = {
       })
     }
   },
-  getUser: async ({id, userType}) => {
+  // check both donor and receiver collections for ID
+  getUserUnknowType: async (id: string) => {
+    let docRef = doc(db, 'donors', id)
+    let docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      return {
+          data: docSnap.data() as UserObj,
+          userType: UserTypes.DONOR
+        } as UserTypeObj
+    }
+    docRef = doc(db, 'receivers', id)
+    docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      return {
+          data: docSnap.data() as UserObj,
+          userType: UserTypes.RECEIVER
+        } as UserTypeObj
+    }
+    return 
+  },
+  getUserByType: async ({id, userType}) => {
     const pluarlizedUserType = `${userType}s`
     console.log(id, 'id')
     const docRef = doc(db, pluarlizedUserType, id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
-      return docSnap.data()
+      return docSnap.data() as UserObj
     } else {
       // docSnap.data() will be undefined in this case
       console.error("No such user document found!");

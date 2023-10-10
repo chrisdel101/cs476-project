@@ -9,7 +9,7 @@ const Account = () => {
     const {isLoggedIn, currentUser} = useUserContext();
     return (
         <PageContainer>
-            {currentUser && currentUser.userType === UserTypes.DONOR ? <DonorCard/> : currentUser && currentUser.userType === UserTypes.RECEIVER ? <ReceiverCard/>: <div>Not Logged In</div>}
+            {currentUser && currentUser.userType === UserTypes.DONOR ? <DonorCard/> : currentUser && currentUser.userType === UserTypes.RECEIVER ? <ReceiverCard/>: <div>Loading....</div>}
         </PageContainer>
     )
 }
