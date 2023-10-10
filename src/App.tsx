@@ -4,6 +4,7 @@ import {
   Route,
   Redirect,
   useLocation,
+  useParams,
 } from 'react-router-dom'
 import { Routes } from '../constants'
 import styled from 'styled-components'
@@ -17,19 +18,18 @@ import useUserContext from './controllers/context/useUserContext'
 import { ReactNode } from 'react'
 import AccountScreen from './views/components/AccountScreen/AccountScreen'
 
-
 interface CustomRouteProps {
   children: ReactNode
   path?: string
 }
 
-
 // Only acessible when NOT logged in
-function NonAuthenticatedRoute({ children }: CustomRouteProps) {
-  // const {pathname} = useLocation();
-  const auth = useUserContext();
+function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
+
+  const auth = useUserContext()
   return (
     <Route
+    {...rest}
       render={() =>
         auth.currentUser ? <Redirect to={Routes.Index} /> : children
       }
@@ -38,14 +38,15 @@ function NonAuthenticatedRoute({ children }: CustomRouteProps) {
 }
 
 // Only acessible when user logged in
-function AuthenticatedRoute({ children }: CustomRouteProps) {
+function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const { pathname } = useLocation()
   console.log('pathname ', pathname)
-    const auth = useUserContext();
+  const auth = useUserContext()
 
   // console.log('auth.currentUser ', auth.currentUser  )
   return (
     <Route
+    {...rest}
       render={() =>
         auth.currentUser ? children : <Redirect to={Routes.Index} />
       }
@@ -54,6 +55,8 @@ function AuthenticatedRoute({ children }: CustomRouteProps) {
 }
 
 const App = () => {
+ 
+
   return (
     <ProvideAuth>
       <Router>

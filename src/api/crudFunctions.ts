@@ -1,7 +1,7 @@
 // import { getFirestore } from 'firebase-admin/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../services/firebase.config'
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { Collections, FunctionStatus } from '../../constants'
 import { UserTypes } from '../../constants'
 import Donor from '../models/Donor'
@@ -14,10 +14,19 @@ type ReturnObj = {
   errorCode?: string
   errorMessage?: string
 }
+type UserObj = {
+  name: string
+  email: string
+  password?: string
+  phone?: string
+  location: string
+  userType: UserTypes
+}
 // types for each funciont in crudFunctions
 type T = {
   createNewUser: (User: User) => Promise<ReturnObj>
   addNewUser: (User: User) => Promise<ReturnObj>
+  getUser: ({email, userType}: {email: string, userType: UserTypes}) => Promise<UserObj|undefined>
   testAddNewUser: (user: any) => any
 }
 const crudFunctions: T = {
@@ -25,21 +34,22 @@ const crudFunctions: T = {
   // create a new Auth user & add new User to db as document
   createNewUser: async (User: User) => {
     // call firebase func to add auth user first
-    return createUserWithEmailAndPassword(auth, User.email, User.password)
+    return createUserWithEmailAndPassword(auth, User.email, User.password as string)
       .then(async (userCredential) => {
         // Signed in + created auth user ok
         const authUser = userCredential.user
         console.log(authUser, 'authUser')
         // const {...user} = User
         try {
-          await crudFunctions.addNewUser(User)
+          const newUser = await crudFunctions.addNewUser(User)
+          console.log('NEW USER', newUser)
           return {
             status: FunctionStatus.OK,
             errorCode: undefined,
             errorMessage: undefined,
           }
         } catch (error) {
-          console.error(error, "Error in crudFunctions.createNewUser")
+          console.error(error, 'Error in crudFunctions.createNewUser')
           return {
             status: FunctionStatus.ERROR,
             errorCode: undefined,
@@ -52,8 +62,10 @@ const crudFunctions: T = {
         const errorCode: string = error.code
         const errorMessage: string = error.message
         console.error(errorCode, errorMessage)
-        return { 
-          status: FunctionStatus.ERROR, errorCode: errorCode, errorMessage:errorMessage 
+        return {
+          status: FunctionStatus.ERROR,
+          errorCode: errorCode,
+          errorMessage: errorMessage,
         }
       })
   },
@@ -62,6 +74,8 @@ const crudFunctions: T = {
       try {
         const usersRef = collection(db, Collections.DONORS)
         const { ...user } = User
+        // delete PW so not saved as text
+        user && delete user?.password
         await setDoc(doc(usersRef, user.email), user)
         return {
           status: FunctionStatus.OK,
@@ -94,10 +108,23 @@ const crudFunctions: T = {
       }
     } else {
       const error = new Error('user type not found: Must be donor or receiver')
-      return Promise.reject({status: FunctionStatus.ERROR,
+      return Promise.reject({
+        status: FunctionStatus.ERROR,
         errorCode: undefined,
-        errorMessage: error
+        errorMessage: error,
       })
+    }
+  },
+  getUser: async ({email, userType}) => {
+    const pluarlizedUserType = `${userType}s`
+    console.log(pluarlizedUserType, 'pluarlizedUserType')
+    const docRef = doc(db, pluarlizedUserType, email)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      return docSnap.data()
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.error("No such user document found!");
     }
   },
   testAddNewUser: async (User: User) => {

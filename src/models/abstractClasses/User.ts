@@ -3,7 +3,7 @@ import {UserTypes} from '../../../constants'
 interface UserInterface {
     name: string
     email: string
-    password: string
+    password?: string
     phone?: string
     location: string
     userType: UserTypes
@@ -13,7 +13,7 @@ abstract class User implements UserInterface{
     name: string
     email: string;
     phone?: string;
-    password: string;
+    password?: string;
     location: string;
     userType: UserTypes;
     

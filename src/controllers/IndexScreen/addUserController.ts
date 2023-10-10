@@ -71,7 +71,6 @@ export const handleSubmit = async ({
        confirmPasswordElem.setCustomValidity("Passwords don't match")
        confirmPasswordElem.reportValidity()
        setPasswordMatchingError(true)
-       console.log("HERE1")
       //  return // early return
      } else {
       // reset any custom form validation message prev set
@@ -93,7 +92,7 @@ export const handleSubmit = async ({
       : new Receiver({ name, email, phone, location, userType, password })
   // add user to db
   const response =  await crudFunctions.createNewUser(user)
-  console.log(response, "HERE2")
+  // console.log(response, "HERE2")
   // if firebase error send to form
   if (response.status === FunctionStatus.ERROR) {
     if (response.errorCode === 'auth/email-already-in-use') {
@@ -118,6 +117,9 @@ export const handleSubmit = async ({
   // set msg
   setSuccessMsg(`User Successfully Created`)
   setIsLoggedIn(true)
+  // attempt to remove PW as plain text
+  user && delete user?.password
+  console.log(user, "Add to session")
   setCurrentUser(user)
 }
 

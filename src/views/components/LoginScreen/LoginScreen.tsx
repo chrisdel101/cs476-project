@@ -12,7 +12,9 @@ const Login = () => {
   return (
     <PageContainer>
       <h5>{userType}</h5>
-      <form onSubmit={(e) => handleLogin(e, history,setIsLoggedIn, setCurrentUser )}>
+      <form
+        onSubmit={(e) => handleLogin(e, history, setIsLoggedIn, setCurrentUser, userType)}
+      >
         <input type="text" name="email" id="email" />
         <input type="password" name="password" id="password" />
         <input type="submit" value="Login" />

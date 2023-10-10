@@ -41,14 +41,14 @@ const NavigationAuth = () => {
     currentUser
       ? (
         <>
-          <Nav.Link href="#accont">My Account</Nav.Link>
+          <Nav.Link href="account">My Account</Nav.Link>
           <Nav.Link onClick={() => handleLogout(history, setCurrentUser, setIsLoggedIn)} >Log Out</Nav.Link>
         </>
       )
       : (
         <>
           <Nav.Link href={`/log_in/donor`}>Donor Login</Nav.Link>
-          <Nav.Link href="/log_in/reciever">Receiver Login</Nav.Link>
+          <Nav.Link href="/log_in/receiver">Receiver Login</Nav.Link>
       </>
       )
   );
