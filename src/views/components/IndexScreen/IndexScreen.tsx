@@ -7,6 +7,8 @@ import AddItemModal from './AddItemModal'
 import crudFunctions from '../../../api/crudFunctions'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/useUserContext'
+import ItemCard from './ItemCard'
+import Item from '../../../models/Item'
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
@@ -36,20 +38,29 @@ const Index = () => {
       <StyledButton variant="primary" onClick={handleShowAddItemModal}>
         Create An Item
       </StyledButton>
+
       <div
         className="demo-container"
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
-        {
-          // some space fillers - to be replaced
-          Array.from(Array(3)).map((_, i) => {
+        {// testing item cards
+          Array.from(Array(1)).map((_, i) => {
             return (
-              <div key={i} style={{ border: '5px white solid' }}>
-                <img src={'https://placekitten.com/200/200'} />
-              </div>
+              <ItemCard></ItemCard>
             )
           })
         }
+        {
+          // some space fillers - to be replaced
+          // Array.from(Array(3)).map((_, i) => {
+          //   return (
+          //     <div key={i} style={{ border: '5px white solid' }}>
+          //       <img src={'https://placekitten.com/200/200'} />
+          //     </div>
+          //   )
+          // })
+        }
+
       </div>
       <AddUserModal
         show={showAddUserModal}
