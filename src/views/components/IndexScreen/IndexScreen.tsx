@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
-import { useState } from 'react'
-import { AlertTypes } from '../../../../constants'
+import { useEffect, useState } from 'react'
+import { AlertTypes, UserTypes } from '../../../../constants'
 import AddItemModal from './AddItemModal'
 import crudFunctions from '../../../api/crudFunctions'
 import { AppAlert as Alert } from '../Alert'
@@ -13,29 +13,37 @@ const Index = () => {
   const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
   const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined)
-  const { isLoggedIn } = useUserContext()
+  const { isLoggedIn, currentUser } = useUserContext()
 
   const handleCloseAddUserModal = () => setShowAddUserModal(false)
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
 
+
+  useEffect(() => {
+    (async () => {
+      // fetch items test
+        const items = await crudFunctions.getItems()
+        console.log(items)
+        // TODO: store in hook
+    })()
+  }, [])
   return (
     <PageContainer>
       <Alert variant={AlertTypes.SUCCESS} message={successMsg} />
 
-      <StyledButton variant="primary" onClick={crudFunctions.testAddNewUser}>
-        Test Add
-      </StyledButton>
       {isLoggedIn ? null : (
         <StyledButton variant="primary" onClick={handleShowAddUserModal}>
           Create An Account
         </StyledButton>
       )}
+      {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
+       <StyledButton variant="primary" onClick={handleShowAddItemModal}>
+       Donate An Item
+     </StyledButton>
+      ) : null}
 
-      <StyledButton variant="primary" onClick={handleShowAddItemModal}>
-        Create An Item
-      </StyledButton>
       <div
         className="demo-container"
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
@@ -59,6 +67,7 @@ const Index = () => {
       <AddItemModal
         show={showAddItemModal}
         handleClose={handleCloseAddItemModal}
+        setSuccessMsg={setSuccessMsg}
       />
     </PageContainer>
   )

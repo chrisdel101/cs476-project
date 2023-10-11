@@ -5,8 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 
 const Donor = () => {
-  const {currentUser, setCurrentUser, setIsLoggedIn} = useUserContext();
-  console.log(currentUser);
+  const {currentUser} = useUserContext();
   return (
     <StyledContainer fluid>
       <Styledh2>Donor Details</Styledh2>

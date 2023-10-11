@@ -3,7 +3,7 @@ import { createContext } from 'react'
 import User from '../../models/abstractClasses/User'
 import authFunctions from '../../api/authFunctions'
 import Donor from '../../models/Donor'
-import crudFunctions, {UserTypeObj} from '../../api/crudFunctions'
+import crudFunctions from '../../api/crudFunctions'
 import { UserTypes } from '../../../constants'
 import Receiver from '../../models/Receiver'
 export interface IUserContext {
@@ -28,9 +28,8 @@ function useProviderAuth() {
     try {
       (async () => {
         const signedInAuthUser: any = await authFunctions.getSignInState()
-        
+        // TODO: fix  this to be less hacky
         if (signedInAuthUser) {
-          // console.log(signedInAuthUser, "signedInAuthUser");
           // we don't know if it's Donor or Reciever here - need to check both
           // not a great way to do this 
           const userData = await crudFunctions.getUserUnknowType(signedInAuthUser.uid)
@@ -61,8 +60,6 @@ function useProviderAuth() {
       console.error('Error:', error)
     }
   }, [isLoggedIn])
-  console.log('isLoggedIn', isLoggedIn)
-  console.log('currentUser', currentUser)
   // call firebase to check if user is signed in
   return { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn }
 }

@@ -3,7 +3,7 @@ import crudFunctions from '../../api/crudFunctions'
 import Donor from '../../models/Donor'
 import Receiver from '../../models/Receiver'
 
-interface IForm {
+interface IHandleSubmit {
   e: React.FormEvent<HTMLFormElement>
   currentRadio: UserTypes
   setValidated: (bool: boolean) => void
@@ -31,7 +31,7 @@ export const handleSubmit = async ({
   setIsLoggedIn,
   setCurrentUser,
   isLoggedIn
-}: IForm) => {
+}: IHandleSubmit) => {
   // stop default submission
   e.preventDefault()
   // don't allow submit when user logged in

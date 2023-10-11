@@ -14,7 +14,9 @@ const AddUserModal = ({show, handleClose, setSuccessMsg}: IProps) => {
         <Modal.Title>Create An Account</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddUserForm handleCloseAddUserModal={handleClose} setSuccessMsg={setSuccessMsg}/>
+        <AddUserForm 
+        handleCloseAddUserModal={handleClose} 
+        setSuccessMsg={setSuccessMsg}/>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

@@ -1,39 +1,38 @@
 // import { getFirestore } from 'firebase-admin/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../services/firebase.config'
-import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
-import { Collections, FunctionStatus } from '../../constants'
+import { addDoc, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import { Collections, FunctionStatus, ItemTypes } from '../../constants'
 import { UserTypes } from '../../constants'
-import Donor from '../models/Donor'
-import Receiver from '../models/Receiver'
 import User from '../models/abstractClasses/User'
+import Item from '../models/Item'
 
-// general format return for firebase crud functions
-type ReturnStatusObj = {
+// wrapper return details on add funcs
+// lets us know if ok or error
+type AddFuncStatusReturn = {
   status: FunctionStatus
   errorCode?: string
   errorMessage?: string
 }
-type UserObj = {
-  id: string
-  name: string
-  email: string
-  password?: string
-  phone?: string
-  location: string
-  userType: UserTypes
-}
-export type UserTypeObj = {
-  data: UserObj
+// wrapper for FB return to know type
+export type UserGetByTypeReturn = {
+  data: User
   userType: UserTypes
 }
 // types for each funciont in crudFunctions
 type T = {
-  createNewUser: (User: User) => Promise<ReturnStatusObj>
-  addNewUser: (User: User) => Promise<ReturnStatusObj>
-  getUserUnknowType: (id: string) => Promise<UserTypeObj|undefined>
-  getUserByType: ({id, userType}: {id: string, userType: UserTypes}) => Promise<UserObj|undefined>
-  testAddNewUser: (user: any) => any
+  createNewUser: (User: User) => Promise<AddFuncStatusReturn>
+  addNewUser: (User: User) => Promise<AddFuncStatusReturn>
+  getUserUnknowType: (id: string) => Promise<UserGetByTypeReturn | undefined>
+  getUserByType: ({
+    id,
+    userType,
+  }: {
+    id: string
+    userType: UserTypes
+  }) => Promise<User | undefined>
+  addNewItem: (item: any) => Promise<AddFuncStatusReturn>
+  getItems: () =>  Promise<Item[]> 
 }
 const crudFunctions: T = {
   // https://css-tricks.com/user-registration-authentication-firebase-react/#creating-user-registration-functionality
@@ -41,7 +40,11 @@ const crudFunctions: T = {
   // user obj comes from form
   createNewUser: async (User: User) => {
     // call firebase func to add auth user first
-    return createUserWithEmailAndPassword(auth, User.email, User.password as string)
+    return createUserWithEmailAndPassword(
+      auth,
+      User.email,
+      User.password as string
+    )
       .then(async (userCredential) => {
         // Signed in + created auth user ok
         const authUser = userCredential.user
@@ -124,59 +127,70 @@ const crudFunctions: T = {
       })
     }
   },
+  addNewItem: async (Item: Item) => {
+    const itemsRef = collection(db, Collections.ITEMS)
+    const { ...item } = Item
+    await addDoc(itemsRef, {
+      item,
+    })
+    try {
+      return Promise.resolve({
+        status: FunctionStatus.OK,
+        errorCode: undefined,
+        errorMessage: undefined,
+      }) // used to send return val to cntrl
+    } catch (error) {
+      return Promise.reject({
+        status: FunctionStatus.ERROR,
+        errorCode: undefined,
+        errorMessage: error as string,
+      })
+    }
+  },
+  getItems: async () => {
+    const querySnapshot = await getDocs(collection(db, Collections.ITEMS))
+    // inferred type
+    const items: Item[] = []
+    querySnapshot.forEach((doc) => {
+      // build new Item
+      const item = new Item(doc.data()?.item)
+      // manually add ID
+      item.setItemId = doc.id
+      items.push(item)  
+    }) 
+    // return array of items
+    return items
+  },
   // check both donor and receiver collections for ID
   getUserUnknowType: async (id: string) => {
     let docRef = doc(db, 'donors', id)
     let docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
       return {
-          data: docSnap.data() as UserObj,
-          userType: UserTypes.DONOR
-        } as UserTypeObj
+        data: docSnap.data() as User,
+        userType: UserTypes.DONOR,
+      } as UserGetByTypeReturn
     }
     docRef = doc(db, 'receivers', id)
     docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
       return {
-          data: docSnap.data() as UserObj,
-          userType: UserTypes.RECEIVER
-        } as UserTypeObj
+        data: docSnap.data() as User,
+        userType: UserTypes.RECEIVER,
+      } as UserGetByTypeReturn
     }
-    return 
+    return
   },
-  getUserByType: async ({id, userType}) => {
+  getUserByType: async ({ id, userType }) => {
     const pluarlizedUserType = `${userType}s`
     console.log(id, 'id')
     const docRef = doc(db, pluarlizedUserType, id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
-      return docSnap.data() as UserObj
+      return docSnap.data() as User
     } else {
       // docSnap.data() will be undefined in this case
-      console.error("No such user document found!");
-    }
-  },
-  testAddNewUser: async (User: User) => {
-    // // https://stackoverflow.com/a/66774294/5972531
-    // // extract into a vanilla obj for firebase
-    const { ...donor } = new Donor({
-      name: 'test',
-      email: 'test5@hello.com',
-      password: 'test3',
-      location: 'test3',
-      userType: UserTypes.DONOR,
-    })
-    // Add a new document in collection "cities"
-    try {
-      const userRef = doc(db, 'users', donor.email)
-
-      // const cityRef = doc(db, 'cities', 'BJ');
-      // setDoc(cityRef, { capital: true }, { merge: true });
-      const response = await setDoc(userRef, donor)
-      console.log(response, 'response')
-    } catch (error) {
-      // send error to alert
-      return new Error('user type not found: Must be donor or receiver')
+      console.error('No such user document found!')
     }
   },
 }
