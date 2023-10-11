@@ -17,7 +17,6 @@ const Account = () => {
 export default Account
 
 const PageContainer = styled.div`
-  display: flex;
   background-color: orange;
   height: 100%;
   width: 100%;

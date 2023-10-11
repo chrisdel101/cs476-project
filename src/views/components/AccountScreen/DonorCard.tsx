@@ -8,27 +8,37 @@ const Donor = () => {
   const {currentUser, setCurrentUser, setIsLoggedIn} = useUserContext();
   console.log(currentUser);
   return (
-    <Container fluid>
-      <h2>Donor</h2>
+    <StyledContainer fluid>
+      <Styledh2>Donor Details</Styledh2>
       <Row>
-        <Col>Name</Col>
-        <Col>{currentUser?.name}</Col>
+        <Col xs={4}>Name:</Col>
+        <Col xs={4}>{currentUser?.name}</Col>
       </Row>
       <Row>
-        <Col>Email</Col>
-        <Col>{currentUser?.email}</Col>
+        <Col xs={4}>Email:</Col>
+        <Col xs={4}>{currentUser?.email}</Col>
       </Row>
+      {(currentUser?.phone ?
+        <Row>
+          <Col xs={4}>Phone:</Col>
+          <Col xs={4}>{currentUser?.phone}</Col>
+        </Row>
+        : null)
+      }
       <Row>
-        <Col>Phone</Col>
-        <Col>{currentUser?.phone}</Col>
-      </Row>
-      <Row>
-        <Col>Location</Col>
-        <Col>{currentUser?.location}</Col>
+        <Col xs={4}>Location:</Col>
+        <Col xs={4}>{currentUser?.location}</Col>
       </Row>
   
-    </Container>
+    </StyledContainer>
   )
 }
 export default Donor
 
+const StyledContainer = styled(Container)`
+  margin: 0 7em;
+  padding-top: 3em;
+`
+const Styledh2 = styled.h2`
+  margin-bottom: 25px;
+`
