@@ -24,13 +24,7 @@ type T = {
   createNewUser: (User: User) => Promise<AddFuncStatusReturn>
   addNewUser: (User: User) => Promise<AddFuncStatusReturn>
   getUserUnknowType: (id: string) => Promise<UserGetByTypeReturn | undefined>
-  getUserByType: ({
-    id,
-    userType,
-  }: {
-    id: string
-    userType: UserTypes
-  }) => Promise<User | undefined>
+  getUserByType: ({id,userType}: {id: string, userType: UserTypes}) => Promise<User | undefined>
   addNewItem: (item: any) => Promise<AddFuncStatusReturn>
   getItems: () =>  Promise<Item[]> 
 }
@@ -105,7 +99,9 @@ const crudFunctions: T = {
       try {
         const usersRef = collection(db, Collections.RECEIVERS)
         const { ...user } = User
-        await setDoc(doc(usersRef, user.email), user)
+         // hacky quick fix: delete PW so not saved as text
+         user && delete user?.password
+        await setDoc(doc(usersRef, user.id), user)
         return Promise.resolve({
           status: FunctionStatus.OK,
           errorCode: undefined,
@@ -147,6 +143,7 @@ const crudFunctions: T = {
       })
     }
   },
+  // get all items
   getItems: async () => {
     const querySnapshot = await getDocs(collection(db, Collections.ITEMS))
     // inferred type
@@ -183,7 +180,7 @@ const crudFunctions: T = {
   },
   getUserByType: async ({ id, userType }) => {
     const pluarlizedUserType = `${userType}s`
-    console.log(id, 'id')
+    console.log(id, 'getUserByType id')
     const docRef = doc(db, pluarlizedUserType, id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
