@@ -3,9 +3,24 @@ import useUserContext from "../../../controllers/context/useUserContext";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import ItemCard from "../IndexScreen/ItemCard";
+import crudFunctions from "../../../api/crudFunctions";
+import { useEffect, useState } from "react";
+import Item from "../../../models/Item";
 
 const Donor = () => {
   const {currentUser} = useUserContext();
+  const [userItems, setUserITems] = useState<Item[]>([])
+  useEffect(() => {
+    (async () => {
+      // fetch items test
+      if(currentUser){
+        const userItems =  await crudFunctions.getItemsByUser(currentUser) 
+        setUserITems(userItems)
+      }
+
+    })()
+  },[])
   return (
     <StyledContainer fluid>
       <Styledh2>Donor Details</Styledh2>
@@ -28,7 +43,16 @@ const Donor = () => {
         <Col xs={4}>Location:</Col>
         <Col xs={4}>{currentUser?.location}</Col>
       </Row>
-  
+      
+
+      <div>
+       
+        {userItems.map((item) => {
+          return <ItemCard item={item}/>
+          })
+        }
+      </div>
+      
     </StyledContainer>
   )
 }

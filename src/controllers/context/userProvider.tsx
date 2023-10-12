@@ -32,7 +32,7 @@ function useProviderAuth() {
         if (signedInAuthUser) {
           // we don't know if it's Donor or Reciever here - need to check both
           // not a great way to do this 
-          const userData = await crudFunctions.getUserUnknowType(signedInAuthUser.uid)
+          const userData = await crudFunctions.getUserTypeUnkown(signedInAuthUser.uid)
           if(userData && userData?.userType  === UserTypes.DONOR){
             const getDonor = await crudFunctions.getUserByType({
               userType: UserTypes.DONOR,

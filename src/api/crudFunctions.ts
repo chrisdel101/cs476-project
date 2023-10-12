@@ -1,11 +1,12 @@
 // import { getFirestore } from 'firebase-admin/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../services/firebase.config'
-import { addDoc, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
-import { Collections, FunctionStatus, ItemStates } from '../../constants'
+import { DocumentData, addDoc, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore'
+import { Collections, FunctionStatus } from '../../constants'
 import { UserTypes } from '../../constants'
 import User from '../models/abstractClasses/User'
 import Item  from '../models/Item'
+import { Query } from 'firebase/firestore/lite'
 
 // wrapper return details on add funcs
 // lets us know if ok or error
@@ -21,13 +22,14 @@ export type UserGetByTypeReturn = {
 }
 // types for each funciont in crudFunctions
 type T = {
-  createNewUser: (User: User) => Promise<AddFuncStatusReturn>
-  addNewUser: (User: User) => Promise<AddFuncStatusReturn>
-  getUserUnknowType: (id: string) => Promise<UserGetByTypeReturn | undefined>
-  getUserByType: ({id,userType}: {id: string, userType: UserTypes}) => Promise<User | undefined>
-  updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined> 
-  addNewItem: (item: any) => Promise<AddFuncStatusReturn>
-  getItems: () =>  Promise<Item[]> 
+  createNewUser: (User: User) => Promise<AddFuncStatusReturn>;
+  addNewUser: (User: User) => Promise<AddFuncStatusReturn>;
+  getUserTypeUnkown: (id: string) => Promise<UserGetByTypeReturn | undefined>;
+  getUserByType: ({id,userType}: {id: string, userType: UserTypes}) => Promise<User | undefined>;
+  getItemsByUser: (user: User) => Promise<Query<DocumentData, DocumentData> | typeof Query>;
+  updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
+  addNewItem: (item: any) => Promise<AddFuncStatusReturn>;
+  getItems: () =>  Promise<Item[]>; 
 }
 const crudFunctions: T = {
   // https://css-tricks.com/user-registration-authentication-firebase-react/#creating-user-registration-functionality
@@ -163,6 +165,25 @@ const crudFunctions: T = {
     // return array of items
     return items
   },
+  // get all items
+  getItemsByUser: async (user:User) => {
+    const userType = user.userType
+    const pluarlizedUserType = `${userType}s`
+    // get all donors or recievers
+    const itemsRef = collection(db, pluarlizedUserType);
+    // query for all items matching user id
+    if(userType === UserTypes.DONOR) {
+      const q = query(itemsRef, where("donorId", "==", "user.id"));
+      return q
+    } else {
+      const q = query(itemsRef, where("receiverId", "==", "user.id"));
+      return q
+    }
+
+
+
+
+  },
   updateItem: async (item: Item, propToUpdate: string, value: any) => {
     const itemRef = doc(db, `${Collections.ITEMS}/${item.id}`);
     console.log(itemRef, 'itemRef')
@@ -187,7 +208,7 @@ const crudFunctions: T = {
     }
   },
   // check both donor and receiver collections for ID
-  getUserUnknowType: async (id: string) => {
+  getUserTypeUnkown: async (id: string) => {
     let docRef = doc(db, 'donors', id)
     let docSnap = await getDoc(docRef)
     if (docSnap.exists()) {

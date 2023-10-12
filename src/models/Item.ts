@@ -1,31 +1,35 @@
 import { ItemStates, ItemTypes } from '../../constants.ts';
 export interface ItemInterface {
-    id?: string
+    id?: string | null
     name: string
     description: string
     location: string;
     itemType: ItemTypes
     itemState?: ItemStates
     donorId: string
-    receiverId?: string
+    receiverId?: string | null
 }
 
 class Item implements ItemInterface{
-    id?: string;
+    id?: string | null
     name: string;
     description: string;
     location: string;
     itemType: ItemTypes;
     itemState?: ItemStates
     donorId: string
-    receiverId?: string
-    constructor({name, description, location, itemType, donorId, itemState}: ItemInterface) {
+    receiverId?: string | null
+    constructor({id, name, description, location, itemType, donorId, receiverId, itemState}: ItemInterface) {
+        // might not need this
+        this.id = id || null;
         this.name = name;
         this.description = description;
         this.location = location;
         this.itemType = itemType;
         this.donorId = donorId;
         this.itemState = itemState || ItemStates.AVAILABLE
+        // must be null to show up in FB
+        this.receiverId = receiverId || null
     }
     // SETTERS
     set setItemState(newState: ItemStates){

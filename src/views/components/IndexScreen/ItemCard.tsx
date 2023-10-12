@@ -7,9 +7,13 @@ import { ItemTypes } from '../../../../constants';
 //import { Row } from 'react-bootstrap';
 //import { Col } from 'react-bootstrap';
 
-const ItemCard = () => {
+interface IProps {
+    item: Item
+}
+
+const ItemCard = ({item}: IProps) => {
     // generate a basic one for testing
-    const item1 = new Item({donorId:"KG9fbpszbveuz2kTmNwZUJraR1J3", name: "A shirt", description: "A yellow t-shirt, good condition, from pet-free home.", location: Locations.REGINA, itemType: ItemTypes.CLOTHING})
+    // const item1 = new Item({donorId:"KG9fbpszbveuz2kTmNwZUJraR1J3", name: "A shirt", description: "A yellow t-shirt, good condition, from pet-free home.", location: Locations.REGINA, itemType: ItemTypes.CLOTHING})
 
     // template for the card contents
   return (
@@ -52,7 +56,7 @@ const ItemCard = () => {
     // </Card>
 
     // third attempt, following the information at https://getbootstrap.com/docs/4.3/components/card/ but with the boostrap 5 card elements found at //https://react-bootstrap.netlify.app/docs/components/cards
-    <Card border='light' style={{ width: '90%', maxHeight: '100%' }}>
+    <Card border='light' style={{ width: '80%', maxHeight: '100%' }}>
         <Card.Body>
             <div className="row no-gutters">
                 <ImgContainer className="col-md-3">
@@ -61,8 +65,8 @@ const ItemCard = () => {
                 </ImgContainer>
                 <CardContainer className="col-md-6">
                     <div className="card-body">
-                        <Card.Title>{item1.name}</Card.Title>
-                        <p className="card-text">{item1.description}</p>
+                        <Card.Title>{item?.name}</Card.Title>
+                        <p className="card-text">{item?.description}</p>
                         <p className="card-text"><small className="text-muted">Date posted</small></p>
                     </div>
                 </CardContainer>
