@@ -9,7 +9,7 @@ import { ItemTypes } from '../../../../constants';
 
 const ItemCard = () => {
     // generate a basic one for testing
-    const item1 = new Item({name: "A shirt", description: "A yellow t-shirt, good condition, from pet-free home.", location: Locations.REGINA, itemType: ItemTypes.CLOTHING})
+    const item1 = new Item({donorId:"KG9fbpszbveuz2kTmNwZUJraR1J3", name: "A shirt", description: "A yellow t-shirt, good condition, from pet-free home.", location: Locations.REGINA, itemType: ItemTypes.CLOTHING})
 
     // template for the card contents
   return (
