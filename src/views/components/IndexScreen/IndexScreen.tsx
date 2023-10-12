@@ -9,6 +9,7 @@ import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/useUserContext'
 import Item from '../../../models/Item'
 import { handleRequestItem } from '../../../controllers/IndexScreen/requestItemController'
+import ItemCard from './ItemCard'
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)

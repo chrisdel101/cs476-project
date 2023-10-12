@@ -8,7 +8,7 @@ import ReceiverCard from './ReceiverCard';
 const Account = () => {
     const {isLoggedIn, currentUser} = useUserContext();
     return (
-        <PageContainer>
+        <PageContainer usertypecontainer={currentUser?.userType}>
             {currentUser && currentUser.userType === UserTypes.DONOR ? <DonorCard/> : currentUser && currentUser.userType === UserTypes.RECEIVER ? <ReceiverCard/>: <div>Loading....</div>}
         </PageContainer>
     )
@@ -16,8 +16,8 @@ const Account = () => {
 
 export default Account
 
-const PageContainer = styled.div`
-  background-color: orange;
+const PageContainer = styled.div <{ usertypecontainer?: UserTypes }>`
+  background-color: ${props => props.usertypecontainer === UserTypes.DONOR ? 'powderblue' : 'salmon'};
   height: 100%;
   width: 100%;
 `
