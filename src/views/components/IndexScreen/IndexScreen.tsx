@@ -2,11 +2,13 @@ import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
 import { useEffect, useState } from 'react'
-import { AlertTypes, UserTypes } from '../../../../constants'
+import { AlertTypes, ItemStates, UserTypes } from '../../../../constants'
 import AddItemModal from './AddItemModal'
 import crudFunctions from '../../../api/crudFunctions'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/useUserContext'
+import Item from '../../../models/Item'
+import { handleRequestItem } from '../../../controllers/IndexScreen/requestItemController'
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
@@ -19,14 +21,15 @@ const Index = () => {
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
+  const [items, setItems] = useState<Item[]>([])
 
 
   useEffect(() => {
     (async () => {
       // fetch items test
-        const items = await crudFunctions.getItems()
+        const fetchItems = await crudFunctions.getItems()
+        setItems(fetchItems)
         console.log(items)
-        // TODO: store in hook
     })()
   }, [])
   return (
@@ -48,16 +51,28 @@ const Index = () => {
         className="demo-container"
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
-        {
-          // some space fillers - to be replaced
-          Array.from(Array(3)).map((_, i) => {
+        {items.length === 0 ? (
+        <div>No Items</div>
+      ) : (
+        items.map((item, i) => {
+          if (item.itemState === ItemStates.AVAILABLE) {
             return (
-              <div key={i} style={{ border: '5px white solid' }}>
-                <img src={'https://placekitten.com/200/200'} />
+              <div key={i} style={{ border: '1px solid black', backgroundColor: 'white', margin: '0 5px' }}>
+                <h1>Item {i}</h1>
+                <p>Item Name: {item?.name}</p>
+                <p>Item Donor: {item?.donorId}</p>
+                <p>Item Donor: {item?.itemState}</p>
+                {currentUser?.userType === UserTypes.RECEIVER ? (
+                  <Button onClick={() => handleRequestItem(currentUser, item)}>Request item</Button>
+                ) : null}
               </div>
-            )
-          })
-        }
+            );
+          } else {
+            return null;
+          }
+        })
+      )}
+        
       </div>
       <AddUserModal
         show={showAddUserModal}

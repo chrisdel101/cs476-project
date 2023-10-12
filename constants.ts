@@ -12,7 +12,7 @@ export enum UserTypes {
 
 export enum ItemTypes {
     FOOD = 'food',
-    CLOTHING = 'clothes',
+    CLOTHING = 'clothing',
     TOYS = 'toys',
     ELECTRONICS = 'electronics',
     MUSICAL_INSTRUMENTS = 'musical_instruments',
@@ -23,7 +23,11 @@ export enum ItemTypes {
     AUTOMOTIVE = 'automotive',
     OTHER = 'other'
 }
-
+export enum ItemStates {
+    AVAILABLE = 'available',
+    PENDING = 'pending',
+    DONATED = 'donated', // unavailable
+}
 export enum Locations {
     REGINA = 'regina',
     TEL_AVIV = 'tel_aviv',

@@ -1,11 +1,11 @@
 // import { getFirestore } from 'firebase-admin/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../services/firebase.config'
-import { addDoc, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
-import { Collections, FunctionStatus, ItemTypes } from '../../constants'
+import { addDoc, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
+import { Collections, FunctionStatus, ItemStates } from '../../constants'
 import { UserTypes } from '../../constants'
 import User from '../models/abstractClasses/User'
-import Item from '../models/Item'
+import Item  from '../models/Item'
 
 // wrapper return details on add funcs
 // lets us know if ok or error
@@ -25,6 +25,7 @@ type T = {
   addNewUser: (User: User) => Promise<AddFuncStatusReturn>
   getUserUnknowType: (id: string) => Promise<UserGetByTypeReturn | undefined>
   getUserByType: ({id,userType}: {id: string, userType: UserTypes}) => Promise<User | undefined>
+  updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined> 
   addNewItem: (item: any) => Promise<AddFuncStatusReturn>
   getItems: () =>  Promise<Item[]> 
 }
@@ -125,9 +126,11 @@ const crudFunctions: T = {
   },
   addNewItem: async (Item: Item) => {
     const itemsRef = collection(db, Collections.ITEMS)
+    // get JS obj out of class
     const { ...item } = Item
     await addDoc(itemsRef, {
-      item,
+      // spread into DB to avoid nested obj
+      ...item
     })
     try {
       return Promise.resolve({
@@ -146,17 +149,42 @@ const crudFunctions: T = {
   // get all items
   getItems: async () => {
     const querySnapshot = await getDocs(collection(db, Collections.ITEMS))
+
     // inferred type
     const items: Item[] = []
     querySnapshot.forEach((doc) => {
       // build new Item
-      const item = new Item(doc.data()?.item)
+      const item = new Item(doc.data() as Item)
+      // console.log(item)
       // manually add ID
       item.setItemId = doc.id
       items.push(item)  
     }) 
     // return array of items
     return items
+  },
+  updateItem: async (item: Item, propToUpdate: string, value: any) => {
+    const itemRef = doc(db, `${Collections.ITEMS}/${item.id}`);
+    console.log(itemRef, 'itemRef')
+    if(itemRef) {
+      try {
+        await updateDoc(itemRef, {
+          // propToUpdate should only be a value from within ItemInterface
+           [propToUpdate]: value
+         });
+         return Promise.resolve({
+          status: FunctionStatus.OK,
+          errorCode: undefined,
+          errorMessage: undefined,
+        }) // used to send return val to cntrl
+      } catch (error) {
+        return Promise.reject({
+          status: FunctionStatus.ERROR,
+          errorCode: undefined,
+          errorMessage: error as string,
+        })
+      }
+    }
   },
   // check both donor and receiver collections for ID
   getUserUnknowType: async (id: string) => {
@@ -180,7 +208,7 @@ const crudFunctions: T = {
   },
   getUserByType: async ({ id, userType }) => {
     const pluarlizedUserType = `${userType}s`
-    console.log(id, 'getUserByType id')
+    // console.log(id, 'getUserByType id')
     const docRef = doc(db, pluarlizedUserType, id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
