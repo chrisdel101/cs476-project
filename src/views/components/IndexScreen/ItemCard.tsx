@@ -6,12 +6,15 @@ import { Locations } from '../../../../constants';
 import { ItemTypes } from '../../../../constants';
 //import { Row } from 'react-bootstrap';
 //import { Col } from 'react-bootstrap';
+import {handleAcceptItem, handleRejectItem} from '../../../controllers/AccountScreen/manageItemController';
+import useUserContext from '../../../controllers/context/useUserContext';
 
 interface IProps {
     item: Item
 }
 
 const ItemCard = ({item}: IProps) => {
+    const {currentUser} = useUserContext();
     // generate a basic one for testing
     // const item1 = new Item({donorId:"KG9fbpszbveuz2kTmNwZUJraR1J3", name: "A shirt", description: "A yellow t-shirt, good condition, from pet-free home.", location: Locations.REGINA, itemType: ItemTypes.CLOTHING})
 
@@ -67,15 +70,17 @@ const ItemCard = ({item}: IProps) => {
                     <div className="card-body">
                         <Card.Title>{item?.name}</Card.Title>
                         <p className="card-text">{item?.description}</p>
+                        <p className="card-text">{item?.itemState}</p>
+                        <p className="card-text">{item?.receiverId}</p>
                         <p className="card-text"><small className="text-muted">Date posted</small></p>
                     </div>
                 </CardContainer>
                 <ButtonContainer className='col-md-3'>
-                    <StyledButton variant="primary">
+                    <StyledButton variant="primary" onClick={()=> handleAcceptItem(item,currentUser)}>
                         Accept Request
                     </StyledButton>
-                    <StyledButton variant="primary">
-                        Reject Request
+                    <StyledButton variant="primary" onClick={()=> handleRejectItem(item, currentUser)}>
+                        Accept Request
                     </StyledButton>
                 </ButtonContainer>
             </div>

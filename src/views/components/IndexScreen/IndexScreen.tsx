@@ -95,7 +95,6 @@ const PageContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   background-color: blue;
-  height: 100%;
   width: 100%;
 `
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

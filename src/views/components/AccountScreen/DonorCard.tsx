@@ -3,7 +3,7 @@ import useUserContext from "../../../controllers/context/useUserContext";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import ItemCard from "../IndexScreen/ItemCard";
+import UserItemCard from "./UserItemCard";
 import crudFunctions from "../../../api/crudFunctions";
 import { useEffect, useState } from "react";
 import Item from "../../../models/Item";
@@ -23,7 +23,7 @@ const Donor = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
-    <StyledContainer fluid>
+    <StyledContainer>
       <Styledh2>Donor Details</Styledh2>
       <Row>
         <Col xs={4}>Name:</Col>
@@ -45,20 +45,26 @@ const Donor = () => {
         <Col xs={4}>{currentUser?.location}</Col>
       </Row>
       
-      <div>       
+      <CardsContainer className='card-container'>       
         {userItems.map((item: Item, i: number) => {
-          return <ItemCard item={item} key={i}/>
+          return(
+            <Col md={6}>
+              <UserItemCard item={item} key={i}/>
+            </Col>
+          )
           })
         }
-      </div>
+      </CardsContainer>
       
     </StyledContainer>
   )
 }
 export default Donor
 
+const CardsContainer = styled(Row)`
+  margin-top: 2em;
+`
 const StyledContainer = styled(Container)`
-  margin: 0 7em;
   padding-top: 3em;
 `
 const Styledh2 = styled.h2`

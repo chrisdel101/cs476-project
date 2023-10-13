@@ -1,6 +1,6 @@
 import { FunctionStatus, ItemTypes, UserTypes } from '../../../constants'
 import crudFunctions from '../../api/crudFunctions'
-import Item from '../../models/Item'
+import Item, { ItemInterface } from '../../models/Item'
 import User from '../../models/abstractClasses/User'
 
 interface IHandleSubmit {
@@ -42,15 +42,15 @@ export const handleSubmit = async ({
     setValidated(true)
     return
   }
-  const item = new Item({
+  const item = {
     name,
     description,
     location,
     itemType: category as ItemTypes,
     donorId: currentUser?.id as string
-  })
+  } as ItemInterface
    // add item to db
-   const response =  await crudFunctions.addNewItem(item)
+   const response =  await crudFunctions.addNewItem(new Item(item))
    if (response.status === FunctionStatus.ERROR) {
     console.log(`Error in addItem submit ${response.errorMessage}`)
     setErrorMsg(`Error adding Item: ${response.errorMessage}`)

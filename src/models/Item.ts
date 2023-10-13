@@ -8,6 +8,9 @@ export interface ItemInterface {
     itemState?: ItemStates
     donorId: string
     receiverId?: string | null
+    addedAtTimeStamp: number
+    donatedAtTimeStamp?: number
+
 }
 
 class Item implements ItemInterface{
@@ -19,6 +22,8 @@ class Item implements ItemInterface{
     itemState?: ItemStates
     donorId: string
     receiverId?: string | null
+    addedAtTimeStamp: number
+    donatedAtTimeStamp?: number
     constructor({id, name, description, location, itemType, donorId, receiverId, itemState}: ItemInterface) {
         // might not need this
         this.id = id || null;
@@ -30,6 +35,8 @@ class Item implements ItemInterface{
         this.itemState = itemState || ItemStates.AVAILABLE
         // must be null to show up in FB
         this.receiverId = receiverId || null
+        this.addedAtTimeStamp = Date.now()
+        
     }
     // SETTERS
     set setItemState(newState: ItemStates){
@@ -40,6 +47,9 @@ class Item implements ItemInterface{
     }
     set setItemId(itemId: string){
         this.id = itemId
+    }
+    set setDonatedAtTimeStamp(timeStamp: number){
+        this.donatedAtTimeStamp = timeStamp
     }
 }
 export default Item;
