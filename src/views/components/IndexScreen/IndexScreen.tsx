@@ -50,6 +50,7 @@ const Index = () => {
      </StyledButton>
       ) : null}
 
+      {/* NEED TO FIX THE FORMATTING ON THIS */}
       <CardsContainer className='card-container'>
         {items.length === 0 ? (
         <div>No Items</div>
