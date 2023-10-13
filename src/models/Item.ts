@@ -42,7 +42,7 @@ class Item implements ItemInterface{
     set setItemState(newState: ItemStates){
         this.itemState = newState
     }
-    set setReceiverId(recvId: string){
+    set setReceiverId(recvId: string|null){
         this.receiverId = recvId
     }
     set setItemId(itemId: string){

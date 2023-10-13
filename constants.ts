@@ -27,6 +27,7 @@ export enum ItemStates {
     AVAILABLE = 'available',
     PENDING = 'pending',
     DONATED = 'donated', // unavailable
+    CLAIMED = 'claimed', // item is picked up and gone
 }
 export enum Locations {
     REGINA = 'regina',

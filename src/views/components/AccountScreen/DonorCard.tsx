@@ -48,8 +48,8 @@ const Donor = () => {
       <CardsContainer className='card-container'>       
         {userItems.map((item: Item, i: number) => {
           return(
-            <Col md={6}>
-              <UserItemCard item={item} key={i}/>
+            <Col md={6} key={i}>
+              <UserItemCard item={item}/>
             </Col>
           )
           })

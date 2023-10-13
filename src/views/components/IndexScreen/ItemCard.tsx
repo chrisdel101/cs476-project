@@ -75,6 +75,7 @@ const ItemCard = ({item}: IProps) => {
                         <p className="card-text"><small className="text-muted">Date posted</small></p>
                     </div>
                 </CardContainer>
+                {/* REMOVE THESE AND ADD IN request Item function */}
                 <ButtonContainer className='col-md-3'>
                     <StyledButton variant="primary" onClick={()=> handleAcceptItem(item,currentUser)}>
                         Accept Request

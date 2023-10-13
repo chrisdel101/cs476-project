@@ -30,6 +30,5 @@ const PageContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   background-color: red;
-  height: 100%;
   width: 100%;
 `

@@ -5,10 +5,11 @@ import Item from '../../../models/Item'
 import { ItemStates } from '../../../../constants'
 import {
   handleAcceptItem,
+  handleCancelRequest,
+  handleClaimItem,
   handleRejectItem,
 } from '../../../controllers/AccountScreen/manageItemController'
 import useUserContext from '../../../controllers/context/useUserContext'
-import { useState } from 'react'
 
 interface IProps {
   item: Item
@@ -26,7 +27,11 @@ const UserItemCard = ({ item }: IProps) => {
   const minute = addedAtTimeStamp.getMinutes()
 
   return (
-    <StyledCard bg={item.itemState === ItemStates.PENDING ? 'success' : ""}>
+    <StyledCard bg={
+      item.itemState === ItemStates.PENDING ? 'success' : 
+      item.itemState === ItemStates.DONATED ? 'primary' :
+      item.itemState === ItemStates.CLAIMED ? 'warning' :
+      ""}>
     <Card.Img src={'https://placekitten.com/100/100'} />
       <Card.Body className="card-body" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
               <Card.Title>
@@ -39,7 +44,7 @@ const UserItemCard = ({ item }: IProps) => {
               </p>
               <p className="card-text">
                 <span>Status: </span>
-                {item?.itemState}
+                {item?.itemState?.toUpperCase()}
               </p>
               {item.receiverId ? 
                 <p className="card-text">
@@ -54,21 +59,39 @@ const UserItemCard = ({ item }: IProps) => {
                   {`${day}-${month}-${year} ${hour}:${minute}`}
                 </small>
               </p>
+            {item.itemState === ItemStates.PENDING ?
             <ButtonContainer>
-
-            <StyledButton
-              variant="primary"
-              onClick={() => handleAcceptItem(item, currentUser)}
-            >
-              Accept Request
-            </StyledButton>
-            <StyledButton
-              variant="primary"
-              onClick={() => handleRejectItem(item, currentUser)}
-            >
-              Accept Request
-            </StyledButton>
+              <StyledButton
+                variant="primary"
+                onClick={() => handleAcceptItem(item, currentUser)}
+              >
+                Accept Request
+              </StyledButton>
+              <StyledButton
+                variant="primary"
+                onClick={() => handleRejectItem(item, currentUser)}
+              >
+                Reject Request
+              </StyledButton>
             </ButtonContainer>
+            : 
+            item.itemState === ItemStates.DONATED ?
+            <ButtonContainer>
+              <StyledButton
+                variant="secondary"
+                onClick={() => handleClaimItem(item, currentUser)}
+              >
+                Item Claimed
+              </StyledButton>
+              <StyledButton
+                variant="secondary"
+                onClick={() => handleCancelRequest(item, currentUser)}
+              >
+               Cancel Donation
+              </StyledButton>
+            </ButtonContainer>
+            : null
+            }
       </Card.Body>
     </StyledCard>
   )

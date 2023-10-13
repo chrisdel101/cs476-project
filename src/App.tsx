@@ -86,8 +86,9 @@ export default App
 
 // HERO styles for all pages
 const HeroContainer = styled.div`
-  height: 500px;
+  min-height: 500px;
   width: 100%;
+  display: flex
 `
 // LAYOUT styles for all pages
 const LayoutContainer = styled.div`

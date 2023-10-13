@@ -38,6 +38,7 @@ type T = {
   getItemsByUser: (
     user: User
   ) => Promise<Item[]>
+  updateEntireItem: (item: Item, ) => Promise<AddFuncStatusReturn | undefined>; 
   updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
   addNewItem: (item: any) => Promise<AddFuncStatusReturn>;
   getItems: () =>  Promise<Item[]>; 
@@ -176,7 +177,7 @@ const crudFunctions: T = {
     // return array of items
     return items
   },
-  // get all items
+  // get all items associate with a user based on user type
   getItemsByUser: async (user: User) => {
     const userType = user.userType
     // get all donors or recievers
@@ -186,7 +187,7 @@ const crudFunctions: T = {
     const IDType = userType === UserTypes.DONOR ? 'donorId' : userType === UserTypes.RECEIVER ? 'receiverId' : undefined 
     if (!IDType) {
       console.error('IDType not set in getItemsByUser')
-      return
+      return []
     }
       const q = query(itemsRef, where(IDType, '==', user.id))
       const querySnapshot = await getDocs(q)
@@ -198,9 +199,9 @@ const crudFunctions: T = {
   
     return items
   },
+  // update an item; takes key/value to update
   updateItem: async (item: Item, propToUpdate: string, value: any) => {
     const itemRef = doc(db, `${Collections.ITEMS}/${item.id}`)
-    console.log(itemRef, 'itemRef')
     if (itemRef) {
       try {
         await updateDoc(itemRef, {
@@ -221,7 +222,38 @@ const crudFunctions: T = {
       }
     }
   },
-  // check both donor and receiver collections for ID
+  // overwrite all item values
+  updateEntireItem: async (item: Item) => {
+    const itemRef = collection(db, Collections.ITEMS)
+    if (itemRef) {
+      try {
+        const { ...newItem } = item
+        if (newItem?.id) {
+          await setDoc(doc(db, "items", newItem.id), newItem)
+         return Promise.resolve({
+          status: FunctionStatus.OK,
+          errorCode: undefined,
+          errorMessage: undefined,
+        }) // used to send return val to cntrl
+
+        } else {
+          console.error('No item id')
+          return Promise.reject({
+            status: FunctionStatus.ERROR,
+            errorCode: undefined,
+            errorMessage: 'No item id',
+          })
+        }
+      } catch (error) {
+        return Promise.reject({
+          status: FunctionStatus.ERROR,
+          errorCode: undefined,
+          errorMessage: error as string,
+        })
+      }
+    }
+  },
+  // gets user by checking Donor or Receiver collection matches id
   getUserTypeUnkown: async (id: string) => {
     let docRef = doc(db, 'donors', id)
     let docSnap = await getDoc(docRef)
@@ -241,6 +273,7 @@ const crudFunctions: T = {
     }
     return
   },
+  // gets user of known type by id
   getUserByType: async ({ id, userType }) => {
     const pluarlizedUserType = `${userType}s`
     // console.log(id, 'getUserByType id')
