@@ -17,7 +17,7 @@ const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
   const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
-  const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined)
+  const [successMsg, setSuccessMsg] = useState<string | undefined>("")
   const { isLoggedIn, currentUser } = useUserContext()
 
   const handleCloseAddUserModal = () => setShowAddUserModal(false)
@@ -37,7 +37,7 @@ const Index = () => {
   }, [])
   return (
     <PageContainer>
-      <Alert variant={AlertTypes.SUCCESS} message={successMsg} />
+      <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={!!successMsg} setShow={setSuccessMsg} duration={6000}/>
 
       {isLoggedIn ? null : (
         <StyledButton variant="primary" onClick={handleShowAddUserModal}>
