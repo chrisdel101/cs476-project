@@ -1,12 +1,21 @@
 // import { getFirestore } from 'firebase-admin/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../services/firebase.config'
-import { DocumentData, addDoc, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 import { Collections, FunctionStatus } from '../../constants'
 import { UserTypes } from '../../constants'
 import User from '../models/abstractClasses/User'
-import Item  from '../models/Item'
-import { Query } from 'firebase/firestore/lite'
+import Item from '../models/Item'
 
 // wrapper return details on add funcs
 // lets us know if ok or error
@@ -26,7 +35,9 @@ type T = {
   addNewUser: (User: User) => Promise<AddFuncStatusReturn>;
   getUserTypeUnkown: (id: string) => Promise<UserGetByTypeReturn | undefined>;
   getUserByType: ({id,userType}: {id: string, userType: UserTypes}) => Promise<User | undefined>;
-  getItemsByUser: (user: User) => Promise<Query<DocumentData, DocumentData> | typeof Query>;
+  getItemsByUser: (
+    user: User
+  ) => Promise<Item[]>
   updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
   addNewItem: (item: any) => Promise<AddFuncStatusReturn>;
   getItems: () =>  Promise<Item[]>; 
@@ -132,7 +143,7 @@ const crudFunctions: T = {
     const { ...item } = Item
     await addDoc(itemsRef, {
       // spread into DB to avoid nested obj
-      ...item
+      ...item,
     })
     try {
       return Promise.resolve({
@@ -166,33 +177,36 @@ const crudFunctions: T = {
     return items
   },
   // get all items
-  getItemsByUser: async (user:User) => {
+  getItemsByUser: async (user: User) => {
     const userType = user.userType
-    const pluarlizedUserType = `${userType}s`
     // get all donors or recievers
-    const itemsRef = collection(db, pluarlizedUserType);
+    const itemsRef = collection(db, Collections.ITEMS)
     // query for all items matching user id
-    if(userType === UserTypes.DONOR) {
-      const q = query(itemsRef, where("donorId", "==", "user.id"));
-      return q
-    } else {
-      const q = query(itemsRef, where("receiverId", "==", "user.id"));
-      return q
+    const items: Item[]  = []
+    const IDType = userType === UserTypes.DONOR ? 'donorId' : userType === UserTypes.RECEIVER ? 'receiverId' : undefined 
+    if (!IDType) {
+      console.error('IDType not set in getItemsByUser')
+      return
     }
-
-
-
-
+      const q = query(itemsRef, where(IDType, '==', user.id))
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        const item = new Item(doc.data() as Item)
+        item.setItemId = doc.id
+        items.push(item)
+      })
+  
+    return items
   },
   updateItem: async (item: Item, propToUpdate: string, value: any) => {
-    const itemRef = doc(db, `${Collections.ITEMS}/${item.id}`);
+    const itemRef = doc(db, `${Collections.ITEMS}/${item.id}`)
     console.log(itemRef, 'itemRef')
-    if(itemRef) {
+    if (itemRef) {
       try {
         await updateDoc(itemRef, {
           // propToUpdate should only be a value from within ItemInterface
-           [propToUpdate]: value
-         });
+          [propToUpdate]: value,
+        })
          return Promise.resolve({
           status: FunctionStatus.OK,
           errorCode: undefined,

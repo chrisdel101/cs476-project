@@ -11,15 +11,16 @@ import Item from "../../../models/Item";
 const Donor = () => {
   const {currentUser} = useUserContext();
   const [userItems, setUserITems] = useState<Item[]>([])
+
   useEffect(() => {
     (async () => {
-      // fetch items test
       if(currentUser){
-        const userItems =  await crudFunctions.getItemsByUser(currentUser) 
-        setUserITems(userItems)
+        const fetchedUserItems =  await crudFunctions.getItemsByUser(currentUser) 
+        setUserITems(fetchedUserItems)
       }
 
     })()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     <StyledContainer fluid>
@@ -44,11 +45,9 @@ const Donor = () => {
         <Col xs={4}>{currentUser?.location}</Col>
       </Row>
       
-
-      <div>
-       
-        {userItems.map((item) => {
-          return <ItemCard item={item}/>
+      <div>       
+        {userItems.map((item: Item, i: number) => {
+          return <ItemCard item={item} key={i}/>
           })
         }
       </div>
