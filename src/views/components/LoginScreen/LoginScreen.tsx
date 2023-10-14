@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { UserTypes } from '../../../../constants.ts'
 import { useParams } from 'react-router-dom'
 import LoginScreenModal from './LoginScreenModal'
+import LoginScreenForm from './LoginScreenForm'
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 
@@ -20,13 +21,12 @@ const LoginScreen = () => {
 
       <h5>{userType.charAt(0).toUpperCase() + userType.slice(1)} Login</h5>
 
-      <StyledButton variant="primary" onClick={handleShowLoginScreenModal}>Login</StyledButton>
-
-      <LoginScreenModal show={showLoginScreenModal} handleClose={handleCloseLoginScreenModal} setSuccessMsg={setSuccessMsg}/>
+      <LoginScreenForm setSuccessMsg={setSuccessMsg}/>
 
     </PageContainer>
   )
-  }
+}
+  
 export default LoginScreen
 
 const PageContainer = styled.div`
@@ -34,7 +34,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: red;
+  background-color: light-gray;
   width: 100%;
 `
 

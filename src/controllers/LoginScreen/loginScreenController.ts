@@ -9,7 +9,8 @@ export const handleLogin = async (
   history: any,
   setIsLoggedIn: (bool: boolean) => void,
   setCurrentUser: (user: Donor | null) => void,
-  userType: UserTypes 
+  userType: UserTypes,
+  setValidated: (bool: boolean) => void 
 ) => {
   e.preventDefault()
   // weird syntax only for typescript
@@ -19,6 +20,9 @@ export const handleLogin = async (
   const {status, data} = await authFunctions.loginUser(email, password)
   // console.log('handleLogin: logged in', data)
 
+  if(!loggedInUser) {
+    setValidated(true)
+  }
   // if logged in, redirect to index
   if (status === FunctionStatus.OK && data) {
     // - use auth loggedInUser email to get full user details
