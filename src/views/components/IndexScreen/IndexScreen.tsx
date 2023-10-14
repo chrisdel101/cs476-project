@@ -10,12 +10,14 @@ import useUserContext from '../../../controllers/context/useUserContext'
 import Item from '../../../models/Item'
 import { handleRequestItem } from '../../../controllers/IndexScreen/requestItemController'
 import ItemCard from './ItemCard'
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
   const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
-  const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined)
+  const [successMsg, setSuccessMsg] = useState<string | undefined>("")
   const { isLoggedIn, currentUser } = useUserContext()
 
   const handleCloseAddUserModal = () => setShowAddUserModal(false)
@@ -34,7 +36,7 @@ const Index = () => {
   }, [])
   return (
     <PageContainer>
-      <Alert variant={AlertTypes.SUCCESS} message={successMsg} />
+      <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={!!successMsg} setShow={setSuccessMsg} duration={6000}/>
 
       {isLoggedIn ? null : (
         <StyledButton variant="primary" onClick={handleShowAddUserModal}>
@@ -47,33 +49,49 @@ const Index = () => {
      </StyledButton>
       ) : null}
 
-      <div
-        className="demo-container"
-        style={{ display: 'flex', justifyContent: 'space-evenly' }}
-      >
+      {/* NEED TO FIX THE FORMATTING ON THIS */}
+      <CardsContainer className='card-container'>
         {items.length === 0 ? (
         <div>No Items</div>
-      ) : (
-        items.map((item, i) => {
-          if (item.itemState === ItemStates.AVAILABLE) {
-            return (
-              <div key={i} style={{ border: '1px solid black', backgroundColor: 'white', margin: '0 5px' }}>
-                <h1>Item {i}</h1>
-                <p>Item Name: {item?.name}</p>
-                <p>Item Donor: {item?.donorId}</p>
-                <p>Item Donor: {item?.itemState}</p>
-                {currentUser?.userType === UserTypes.RECEIVER ? (
-                  <Button onClick={() => handleRequestItem(currentUser, item)}>Request item</Button>
-                ) : null}
-              </div>
-            );
-          } else {
-            return null;
-          }
-        })
-      )}
+        ) : (
+          items.map((item, i) => {
+            if (item.itemState === ItemStates.AVAILABLE) {
+              return (
+                <Col xs={12} key={i}>
+                  <ItemCard item={item}/>
+                </Col>
         
-      </div>
+        // dummy cards
+        // <div
+        //   className="demo-container"
+        //   style={{ display: 'flex', justifyContent: 'space-evenly' }}
+        // >
+        //   {items.length === 0 ? (
+        //   <div>No Items</div>
+        // ) : (
+        //   items.map((item, i) => {
+        //     if (item.itemState === ItemStates.AVAILABLE) {
+        //       return (
+          // items.map((item, i) => {
+          //   if (item.itemState === ItemStates.AVAILABLE) {
+          //     return (
+          //       <div key={i} style={{ border: '1px solid black', backgroundColor: 'white', margin: '0 5px' }}>
+          //         <h1>Item {i}</h1>
+          //         <p>Item Name: {item?.name}</p>
+          //         <p>Item Donor: {item?.donorId}</p>
+          //         <p>Item Donor: {item?.itemState}</p>
+          //         {currentUser?.userType === UserTypes.RECEIVER ? (
+          //           <Button onClick={() => handleRequestItem(currentUser, item)}>Request item</Button>
+          //         ) : null}
+          //       </div>
+              );
+            } else {
+              return null;
+            }
+          })
+        )}
+      </CardsContainer>
+      
       <AddUserModal
         show={showAddUserModal}
         handleClose={handleCloseAddUserModal}
@@ -97,6 +115,14 @@ const PageContainer = styled.div`
   background-color: blue;
   width: 100%;
 `
+
+// stacks cards in a row
+const CardsContainer = styled(Row)`
+  flex-direction: column;
+  margin-top: 2em;
+  justify-content: center;
+`
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // disable required for this styled component only
 const StyledButton = styled(Button)<any>`
