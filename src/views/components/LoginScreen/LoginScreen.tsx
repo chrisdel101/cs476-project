@@ -3,6 +3,7 @@ import { handleLogin } from '../../../controllers/LoginScreen/loginScreenControl
 import { UserTypes } from '../../../../constants.ts'
 import { useHistory, useParams } from 'react-router-dom'
 import useUserContext from '../../../controllers/context/useUserContext.ts'
+import {Form, Button} from 'react-bootstrap'
 
 const Login = () => {
   const { userType } = useParams<{ userType: UserTypes }>()
@@ -11,15 +12,43 @@ const Login = () => {
 
   return (
     <PageContainer>
+      
       <h5>{userType}</h5>
-      <form
-        onSubmit={(e) => handleLogin(e, history, setIsLoggedIn, setCurrentUser, userType)}
+
+      <Form
+        onSubmit={(e) => 
+          handleLogin(
+            e, 
+            history, 
+            setIsLoggedIn, 
+            setCurrentUser, 
+            userType
+        )}
       >
-        <input type="text" name="email" id="email" />
-        <input type="password" name="password" id="password" />
-        <input type="submit" value="Login" />
-      </form>
-    </PageContainer>
+
+      <Form.Group controlId="formBasicEmail">
+        {/*<Form.Label>Email</Form.Label>*/}
+        <Form.Control 
+          required
+          type="text" 
+          name="email"
+          placeholder = "email" />
+      </Form.Group>
+
+      <Form.Group  controlId="formBasicPassword">
+        {/*<Form.Label>Password</Form.Label>*/}
+        <Form.Control
+          required 
+          type="password" 
+          name="password"
+          placeholder = "password" />
+      </Form.Group>
+      
+      <Button variant="primary" type="submit">
+        Login
+      </Button>
+    </Form>
+  </PageContainer>
   )
   }
 export default Login
