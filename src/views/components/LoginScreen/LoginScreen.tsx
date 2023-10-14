@@ -1,57 +1,33 @@
 import styled from 'styled-components'
-import { handleLogin } from '../../../controllers/LoginScreen/loginScreenController.ts'
 import { UserTypes } from '../../../../constants.ts'
-import { useHistory, useParams } from 'react-router-dom'
-import useUserContext from '../../../controllers/context/useUserContext.ts'
-import {Form, Button} from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import LoginScreenModal from './LoginScreenModal'
+import { useState } from 'react'
+import Button from 'react-bootstrap/Button'
 
-const Login = () => {
+const LoginScreen = () => {
   const { userType } = useParams<{ userType: UserTypes }>()
-  const {setIsLoggedIn, setCurrentUser} = useUserContext();
-  const history = useHistory()
+  const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
+  const [successMsg, setSuccessMsg] = useState<string | undefined>("")
+
+  const [showLoginScreenModal, setShowLoginScreenModal] = useState<boolean>(false)
+  const handleCloseLoginScreenModal = () => setShowLoginScreenModal(false)
+  const handleShowLoginScreenModal = ()  => setShowLoginScreenModal(true)
 
   return (
+   
     <PageContainer>
-      
-      <h5>{userType}</h5>
 
-      <Form
-        onSubmit={(e) => 
-          handleLogin(
-            e, 
-            history, 
-            setIsLoggedIn, 
-            setCurrentUser, 
-            userType
-        )}
-      >
+      <h5>{userType.charAt(0).toUpperCase() + userType.slice(1)} Login</h5>
 
-      <Form.Group controlId="formBasicEmail">
-        {/*<Form.Label>Email</Form.Label>*/}
-        <Form.Control 
-          required
-          type="text" 
-          name="email"
-          placeholder = "email" />
-      </Form.Group>
+      <StyledButton variant="primary" onClick={handleShowLoginScreenModal}>Login</StyledButton>
 
-      <Form.Group  controlId="formBasicPassword">
-        {/*<Form.Label>Password</Form.Label>*/}
-        <Form.Control
-          required 
-          type="password" 
-          name="password"
-          placeholder = "password" />
-      </Form.Group>
-      
-      <Button variant="primary" type="submit">
-        Login
-      </Button>
-    </Form>
-  </PageContainer>
+      <LoginScreenModal show={showLoginScreenModal} handleClose={handleCloseLoginScreenModal} setSuccessMsg={setSuccessMsg}/>
+
+    </PageContainer>
   )
   }
-export default Login
+export default LoginScreen
 
 const PageContainer = styled.div`
   display: flex;
@@ -60,4 +36,9 @@ const PageContainer = styled.div`
   align-items: center;
   background-color: red;
   width: 100%;
+`
+
+const StyledButton = styled(Button)<any>`
+  width: 200px;
+  align-self: center;
 `
