@@ -1,3 +1,6 @@
+// Note that none of this code is currently being used
+// It will be left here as reference or to be re-used later if desired
+
 import { Modal, Button } from 'react-bootstrap'
 import LoginScreenForm from './LoginScreenForm';
 

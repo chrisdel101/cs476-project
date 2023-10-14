@@ -17,7 +17,7 @@ const LoginScreenForm = ({setSuccessMsg}: IForm) => {
   const [validated, setValidated] = useState(false)
   
   return (
-
+    <FormContainer> {/* Container for the form with a border */}
       <Form
         noValidate
         validated={validated}
@@ -32,40 +32,42 @@ const LoginScreenForm = ({setSuccessMsg}: IForm) => {
         )}
       >
 
-      <Form.Label className="mb-3" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Login to Your Account</Form.Label>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control 
-          required
-          type="text" 
-          name="email"
-          placeholder="Enter Email"/>
-        <Form.Control.Feedback type="invalid">Cannot be blank</Form.Control.Feedback>
-      </Form.Group>
+        <Form.Label className="mb-3" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Login to Your Account</Form.Label>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control 
+            required
+            type="text" 
+            name="email"
+            placeholder="Enter Email"/>
+          <Form.Control.Feedback type="invalid">Cannot be blank</Form.Control.Feedback>
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          required 
-          type="password" 
-          name="password"
-          placeholder="Enter Password"/>
-        <Form.Control.Feedback type="invalid">Cannot be blank</Form.Control.Feedback>
-      </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            required 
+            type="password" 
+            name="password"
+            placeholder="Enter Password"/>
+          <Form.Control.Feedback type="invalid">Cannot be blank</Form.Control.Feedback>
+        </Form.Group>
       
-      <Button variant="primary" type="submit"> Submit </Button>
-    </Form>
-  
+        <div className="d-flex justify-content-center">
+          <Button variant="primary" type="submit" style={{ width: '150px' }} >
+            Login
+          </Button>
+        </div>
+      </Form>
+    </FormContainer>
   )
 }
 
 export default LoginScreenForm
 
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  background-color: red;
-  width: 100%;
-`
+const FormContainer = styled.div`
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: #ececec;
+`;

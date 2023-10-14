@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { UserTypes } from '../../../../constants.ts'
 import { useParams } from 'react-router-dom'
-import LoginScreenModal from './LoginScreenModal'
+// import LoginScreenModal from './LoginScreenModal'
 import LoginScreenForm from './LoginScreenForm'
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
@@ -19,7 +19,9 @@ const LoginScreen = () => {
    
     <PageContainer>
 
-      <h5>{userType.charAt(0).toUpperCase() + userType.slice(1)} Login</h5>
+      <h5 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+        {userType.charAt(0).toUpperCase() + userType.slice(1)} Login
+      </h5>
 
       <LoginScreenForm setSuccessMsg={setSuccessMsg}/>
 
