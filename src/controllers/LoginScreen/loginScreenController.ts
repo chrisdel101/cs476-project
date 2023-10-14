@@ -1,5 +1,5 @@
 import authFunctions from '../../api/authFunctions'
-import { Routes, UserTypes } from '../../../constants'
+import { FunctionStatus, Routes, UserTypes } from '../../../constants'
 import Donor from '../../models/Donor'
 import crudFunctions from '../../api/crudFunctions'
 import Receiver from '../../models/Receiver'
@@ -16,14 +16,14 @@ export const handleLogin = async (
   const target = e.currentTarget
   const email: string = target?.email?.value
   const password = target?.password?.value
-  const loggedInUser = await authFunctions.loginUser(email, password)
-  console.log('handleLogin: logged in', loggedInUser)
+  const {status, data} = await authFunctions.loginUser(email, password)
+  // console.log('handleLogin: logged in', data)
 
   // if logged in, redirect to index
-  if (loggedInUser) {
+  if (status === FunctionStatus.OK && data) {
     // - use auth loggedInUser email to get full user details
     const userData = await crudFunctions.getUserByType({
-      id: loggedInUser.uid as string,
+      id: data?.uid,
       userType: userType,
     })
     if(userData) {
@@ -31,12 +31,14 @@ export const handleLogin = async (
         const user = new Donor(userData) 
         setCurrentUser(user)
         setIsLoggedIn(true)
-      } else {
+      } else if (userType === UserTypes.RECEIVER) {
         const user = new Receiver(userData) 
         setCurrentUser(user)
         setIsLoggedIn(true)
+      } else {
+        console.error('Invalid User Type: is user type correct, check server logs') 
+        // TODO // invalid user type flash message
       }
-      // TODO // invalid user type flash message
     } else {
       // TODO // add flash message
       console.error('handleLogin: error getting user data')
