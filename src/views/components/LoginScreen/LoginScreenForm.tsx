@@ -32,6 +32,7 @@ const LoginScreenForm = ({setSuccessMsg}: IForm) => {
         )}
       >
 
+      <Form.Label className="mb-3" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Login to Your Account</Form.Label>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email</Form.Label>
         <Form.Control 
