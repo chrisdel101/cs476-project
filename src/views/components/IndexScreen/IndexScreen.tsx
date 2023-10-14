@@ -36,7 +36,7 @@ const Index = () => {
   }, [])
   return (
     <PageContainer>
-      <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={!!successMsg} setShow={setSuccessMsg} duration={6000}/>
+      <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
 
       {isLoggedIn ? null : (
         <StyledButton variant="primary" onClick={handleShowAddUserModal}>
