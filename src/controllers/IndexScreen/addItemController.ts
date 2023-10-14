@@ -61,8 +61,9 @@ export const handleSubmit = async ({
     donorId: currentUser.id
   }) as ItemInterface
   
-   // add item to db
-   const response =  item ? await crudFunctions.addNewItem(new Item(newItem)) : await crudFunctions.updateEntireItem(new Item(newItem))
+   // if !item add item to db
+  //  if item, update item
+   const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem))
    if(!response) {
     setErrorMsg(`Error: item ID is missing. Cannot call DB function`)
     return

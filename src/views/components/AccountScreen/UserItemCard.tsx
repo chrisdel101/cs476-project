@@ -8,7 +8,6 @@ import {
   handleCancelRequest,
   handleClaimItem,
   handleDeleteDonation,
-  handleUpdateDonation,
   handleRejectItem,
 } from '../../../controllers/AccountScreen/donationController'
 import useUserContext from '../../../controllers/context/useUserContext'
@@ -112,7 +111,7 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             <ButtonContainer>
             <StyledButton
               variant="secondary"
-              onClick={() => { setShowUpsertItemModal(true); setSelectedItem(item)}}>
+              onClick={() => {setShowUpsertItemModal(true); setSelectedItem(item)}}>
               Update Donation
             </StyledButton>
             <StyledButton

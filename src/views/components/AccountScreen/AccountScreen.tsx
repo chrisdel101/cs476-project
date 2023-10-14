@@ -20,7 +20,6 @@ const Account = () => {
     (async () => {
       if (currentUser) {
         const fetchedUserItems = await crudFunctions.getItemsByUser(currentUser)
-        console.log(fetchedUserItems)
         setUserITems(fetchedUserItems)
       }
     })()
