@@ -10,6 +10,7 @@ interface IHandleSubmit {
   setErrorMsg: (str: string | undefined) => void
   setSuccessMsg: (str: string | undefined) => void
   currentUser?: User |null
+  item?: Item
 }
 
 export const handleSubmit = async ({
@@ -18,7 +19,8 @@ export const handleSubmit = async ({
   handleCloseAddItemModal,
   setSuccessMsg,
   setErrorMsg,
-  currentUser
+  currentUser, 
+  item
 }: IHandleSubmit) => {
   // stop default submission
   e.preventDefault()
@@ -42,16 +44,29 @@ export const handleSubmit = async ({
     setValidated(true)
     return
   }
-  const item = {
+  const newItem = (item ? 
+  // update item
+  {
+    ...item,
     name,
     description,
     location,
-    itemType: category as ItemTypes,
-    donorId: currentUser?.id as string
-  } as ItemInterface
+    itemType: category
+  } :
+  {
+    name,
+    description,
+    location,
+    itemType: category,
+    donorId: currentUser.id
+  }) as ItemInterface
+  
    // add item to db
-   const response =  await crudFunctions.addNewItem(new Item(item))
-   if (response.status === FunctionStatus.ERROR) {
+   const response =  item ? await crudFunctions.addNewItem(new Item(newItem)) : await crudFunctions.updateEntireItem(new Item(newItem))
+   if(!response) {
+    setErrorMsg(`Error: item ID is missing. Cannot call DB function`)
+    return
+   } else if (response?.status === FunctionStatus.ERROR) {
     console.log(`Error in addItem submit ${response.errorMessage}`)
     setErrorMsg(`Error adding Item: ${response.errorMessage}`)
     return

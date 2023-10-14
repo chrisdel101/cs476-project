@@ -12,7 +12,7 @@ export const handleRequestItem = (currentUser: User, item: Item) => {
        item.setItemState = ItemStates.PENDING
        item.setReceiverId = currentUser.id as string
     // update item in db
-    crudFunctions.updateItem(item, 'itemState', ItemStates.PENDING)
+    crudFunctions.updateEntireItem(item)
     } else {
         console.error('Item is not available')
     }

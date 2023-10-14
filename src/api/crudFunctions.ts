@@ -4,6 +4,7 @@ import { auth, db } from '../services/firebase.config'
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -40,6 +41,7 @@ type T = {
   ) => Promise<Item[]>
   updateEntireItem: (item: Item, ) => Promise<AddFuncStatusReturn | undefined>; 
   updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
+  deleteItem: (item: Item) => Promise<AddFuncStatusReturn | undefined>;
   addNewItem: (item: any) => Promise<AddFuncStatusReturn>;
   getItems: () =>  Promise<Item[]>; 
 }
@@ -169,7 +171,6 @@ const crudFunctions: T = {
     querySnapshot.forEach((doc) => {
       // build new Item
       const item = new Item(doc.data() as Item)
-      // console.log(item)
       // manually add ID
       item.setItemId = doc.id
       items.push(item)  
@@ -179,6 +180,7 @@ const crudFunctions: T = {
   },
   // get all items associate with a user based on user type
   getItemsByUser: async (user: User) => {
+
     const userType = user.userType
     // get all donors or recievers
     const itemsRef = collection(db, Collections.ITEMS)
@@ -224,26 +226,15 @@ const crudFunctions: T = {
   },
   // overwrite all item values
   updateEntireItem: async (item: Item) => {
-    const itemRef = collection(db, Collections.ITEMS)
-    if (itemRef) {
       try {
+        if (!item !|| !item?.id) return
         const { ...newItem } = item
-        if (newItem?.id) {
-          await setDoc(doc(db, "items", newItem.id), newItem)
+        await setDoc(doc(db, "items", newItem.id as string), newItem)
          return Promise.resolve({
           status: FunctionStatus.OK,
           errorCode: undefined,
           errorMessage: undefined,
         }) // used to send return val to cntrl
-
-        } else {
-          console.error('No item id')
-          return Promise.reject({
-            status: FunctionStatus.ERROR,
-            errorCode: undefined,
-            errorMessage: 'No item id',
-          })
-        }
       } catch (error) {
         return Promise.reject({
           status: FunctionStatus.ERROR,
@@ -251,8 +242,24 @@ const crudFunctions: T = {
           errorMessage: error as string,
         })
       }
-    }
   },
+  deleteItem: async (item: Item) => {
+      if (!item !|| !item?.id) return
+    try {
+    await deleteDoc(doc(db, "items", item.id))
+     return Promise.resolve({
+      status: FunctionStatus.OK,
+      errorCode: undefined,
+      errorMessage: undefined,
+    }) 
+  } catch (error) {
+    return Promise.reject({
+      status: FunctionStatus.ERROR,
+      errorCode: undefined,
+      errorMessage: error as string,
+    })
+  }
+},
   // gets user by checking Donor or Receiver collection matches id
   getUserTypeUnkown: async (id: string) => {
     let docRef = doc(db, 'donors', id)

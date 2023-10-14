@@ -6,7 +6,7 @@ import { Locations } from '../../../../constants';
 import { ItemTypes } from '../../../../constants';
 //import { Row } from 'react-bootstrap';
 //import { Col } from 'react-bootstrap';
-import {handleAcceptItem, handleRejectItem} from '../../../controllers/AccountScreen/manageItemController';
+import {handleAcceptItem, handleRejectItem} from '../../../controllers/AccountScreen/donationController';
 import useUserContext from '../../../controllers/context/useUserContext';
 
 interface IProps {

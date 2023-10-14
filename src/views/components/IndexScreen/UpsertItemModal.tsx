@@ -1,22 +1,26 @@
 import { Modal, Button } from 'react-bootstrap'
-import AddItemForm from './AddItemForm';
+import UpsertItemForm from './UpsertItemForm';
+import Item from '../../../models/Item';
 
 interface IProps {
   show: boolean;
   handleClose: () => void;
   setSuccessMsg: (str: string|undefined) => void;
+  title: string;
+  item?: Item;
 }
 
-const AddItemModal = ({show, handleClose, setSuccessMsg}: IProps) => {
+const UpsertItemModal = ({show, handleClose, setSuccessMsg, title, item}: IProps) => {
     return(
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Donate An Item</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddItemForm 
+        <UpsertItemForm 
         handleCloseAddItemModal={handleClose} 
-        setSuccessMsg={setSuccessMsg}/>
+        setSuccessMsg={setSuccessMsg}
+        item={item} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
@@ -26,4 +30,4 @@ const AddItemModal = ({show, handleClose, setSuccessMsg}: IProps) => {
     </Modal>)
 }
 
-export default AddItemModal
+export default UpsertItemModal

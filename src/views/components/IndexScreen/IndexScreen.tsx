@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
 import { useEffect, useState } from 'react'
 import { AlertTypes, ItemStates, UserTypes } from '../../../../constants'
-import AddItemModal from './AddItemModal'
+import UpsertItemModal from './UpsertItemModal'
 import crudFunctions from '../../../api/crudFunctions'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/useUserContext'
@@ -30,7 +30,6 @@ const Index = () => {
       // fetch items test
         const fetchItems = await crudFunctions.getItems()
         setItems(fetchItems)
-        console.log(items)
     })()
   }, [])
   return (
@@ -80,10 +79,11 @@ const Index = () => {
         handleClose={handleCloseAddUserModal}
         setSuccessMsg={setSuccessMsg}
       />
-      <AddItemModal
+      <UpsertItemModal
         show={showAddItemModal}
         handleClose={handleCloseAddItemModal}
         setSuccessMsg={setSuccessMsg}
+        title={'Donate An Item'}
       />
     </PageContainer>
   )

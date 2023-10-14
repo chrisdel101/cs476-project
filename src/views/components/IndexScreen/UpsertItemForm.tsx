@@ -4,13 +4,21 @@ import { ItemTypes, Locations } from '../../../../constants'
 import useUserContext from '../../../controllers/context/useUserContext'
 import { handleSubmit } from '../../../controllers/IndexScreen/addItemController'
 import { useState } from 'react'
+import Item from '../../../models/Item'
 interface IForm {
   handleCloseAddItemModal: () => void;
   setSuccessMsg: (str: string|undefined) => void;
+  item?: Item
 }
-const AddItemForm = ({handleCloseAddItemModal, setSuccessMsg}: IForm) => {
+const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item}: IForm) => {
   const [validated, setValidated] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
+  
+  const [name, setName] = useState<string>(item?.name || '')
+  const [desc, setDesc] = useState<string>(item?.description || '')
+  const [location, setLocation] = useState<string>(item?.location || '')
+  const [itemType, setItemType] = useState<string>(item?.itemType || '')
+
   const {currentUser} = useUserContext();
   return (
     <Form
@@ -24,26 +32,27 @@ const AddItemForm = ({handleCloseAddItemModal, setSuccessMsg}: IForm) => {
           handleCloseAddItemModal,
           setSuccessMsg,
           setErrorMsg,
-          currentUser
+          currentUser,
+          item
         })}>
       <Form.Group className="mb-3" controlId="formBasicName">
         <Form.Label>Name</Form.Label>
-        <Form.Control required type="name" name="item-name" placeholder="Enter Item Name" />
+        <Form.Control required  name="item-name" placeholder="Enter Item Name" onChange={(e) => setName(e.target.value)} value={name}/> 
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+
+      <Form.Group className="mb-3" controlId="formBasicDesc">
         <Form.Label>Description</Form.Label>
         <Form.Control
-        required
-          as="textarea"
+          required
           name="description"
           placeholder="Add Item Description"
-          style={{ height: '50px' }}
+          onChange={(e) => setDesc(e.target.value)}  value={desc}
         />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicLocationSelect">
         <Form.Label>Location</Form.Label>
-        <Form.Select required name="location">
+        <Form.Select required name="location" onChange={(e) => setLocation(e.target.value)}  value={location}>
           {Object.values(Locations).map((location: string, i: number) => {
             return <option key={i}>{location}</option>
           })}
@@ -51,7 +60,7 @@ const AddItemForm = ({handleCloseAddItemModal, setSuccessMsg}: IForm) => {
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicLocationSelect">
         <Form.Label>Item Category</Form.Label>
-        <Form.Select required name="category">
+        <Form.Select required name="category" onChange={(e) => setItemType(e.target.value)} value={itemType}>
           {Object.values(ItemTypes).map((category: string, i: number) => {
             return <option key={i}>{category}</option>
           })}
@@ -68,4 +77,4 @@ const AddItemForm = ({handleCloseAddItemModal, setSuccessMsg}: IForm) => {
   )
 }
 
-export default AddItemForm
+export default UpsertItemForm
