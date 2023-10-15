@@ -8,9 +8,10 @@ import { useState } from 'react'
 
 interface IForm {
     setSuccessMsg: (str: string|undefined) => void;
+    setErrorMsg: (str: string|undefined) => void;
   }
 
-const LoginScreenForm = ({setSuccessMsg}: IForm) => { 
+const LoginScreenForm = ({setSuccessMsg, setErrorMsg}: IForm) => { 
   const { userType } = useParams<{ userType: UserTypes }>()
   const {setIsLoggedIn, setCurrentUser} = useUserContext();
   const history = useHistory()
@@ -28,7 +29,8 @@ const LoginScreenForm = ({setSuccessMsg}: IForm) => {
             setIsLoggedIn, 
             setCurrentUser, 
             userType,
-            setValidated
+            setValidated,
+            setErrorMsg
         )}
       >
 
@@ -37,10 +39,10 @@ const LoginScreenForm = ({setSuccessMsg}: IForm) => {
           <Form.Label>Email</Form.Label>
           <Form.Control 
             required
-            type="text" 
+            type="email" 
             name="email"
             placeholder="Enter Email"/>
-          <Form.Control.Feedback type="invalid">Cannot be blank</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">Cannot be blank and must be a valid email</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">

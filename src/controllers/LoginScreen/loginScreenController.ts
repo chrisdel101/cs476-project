@@ -10,19 +10,22 @@ export const handleLogin = async (
   setIsLoggedIn: (bool: boolean) => void,
   setCurrentUser: (user: Donor | null) => void,
   userType: UserTypes,
-  setValidated: (bool: boolean) => void 
+  setValidated: (bool: boolean) => void,
+  setErrorMsg: (str: string|undefined) => void
 ) => {
   e.preventDefault()
   // weird syntax only for typescript
   const target = e.currentTarget
   const email: string = target?.email?.value
   const password = target?.password?.value
-  const {status, data} = await authFunctions.loginUser(email, password)
+  const {status, data, errorMessage} = await authFunctions.loginUser(email, password)
   // console.log('handleLogin: logged in', data)
 
-  if(!loggedInUser) {
+  if(!(status === FunctionStatus.OK && data)) {
     setValidated(true)
+    setErrorMsg(errorMessage)
   }
+
   // if logged in, redirect to index
   if (status === FunctionStatus.OK && data) {
     // - use auth loggedInUser email to get full user details
@@ -42,9 +45,11 @@ export const handleLogin = async (
       } else {
         console.error('Invalid User Type: is user type correct, check server logs') 
         // TODO // invalid user type flash message
+        setErrorMsg(errorMessage)
       }
     } else {
       // TODO // add flash message
+      setErrorMsg(errorMessage)
       console.error('handleLogin: error getting user data')
     }
   }

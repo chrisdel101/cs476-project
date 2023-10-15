@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import LoginScreenForm from './LoginScreenForm'
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import { AppAlert as Alert }  from '../Alert'
+import { AlertTypes } from '../../../../constants'
 
 const LoginScreen = () => {
   const { userType } = useParams<{ userType: UserTypes }>()
@@ -16,14 +18,16 @@ const LoginScreen = () => {
   const handleShowLoginScreenModal = ()  => setShowLoginScreenModal(true)
 
   return (
-   
+    
     <PageContainer>
+
+      <Alert variant={AlertTypes.DANGER} message={errorMsg} show={errorMsg} setShow={setErrorMsg} duration={6000} />
 
       <h5 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
         {userType.charAt(0).toUpperCase() + userType.slice(1)} Login
       </h5>
 
-      <LoginScreenForm setSuccessMsg={setSuccessMsg}/>
+      <LoginScreenForm setErrorMsg={setErrorMsg} setSuccessMsg={setSuccessMsg}/>
 
     </PageContainer>
   )
