@@ -8,7 +8,7 @@ import { ItemStates } from '../../../../constants'
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import {handleRequestItem} from '../../../controllers/IndexScreen/requestItemController';
-import useUserContext from '../../../controllers/context/useUserContext';
+import useUserContext from '../../../controllers/context/userContext/useUserContext';
 
 interface IProps {
     item: Item

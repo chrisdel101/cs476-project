@@ -4,7 +4,7 @@ import { AlertTypes, Locations, UserTypes } from '../../../../constants'
 import { handleSubmit } from '../../../controllers/IndexScreen/addUserController'
 import { useState } from 'react'
 import { AppAlert as Alert }  from '../Alert'
-import useUserContext from '../../../controllers/context/useUserContext'
+import useUserContext from '../../../controllers/context/userContext/useUserContext'
 
 interface IForm {
   handleCloseAddUserModal: () => void;

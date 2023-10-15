@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import useUserContext from '../../controllers/context/useUserContext';
+import useUserContext from '../../controllers/context/userContext/useUserContext';
 import { handleLogout } from '../../controllers/LoginScreen/loginScreenController';
 import { useHistory } from 'react-router-dom';
 

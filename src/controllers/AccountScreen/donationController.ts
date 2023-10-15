@@ -66,7 +66,3 @@ export const handleDeleteDonation = (item: Item, currentUser?: User|null) => {
     crudFunctions.deleteItem(item)
     // TODO send confirmation 
 }
-export const handleUpdateDonation = (item: Item, currentUser?: User|null) => {
-    if(!currentUser || currentUser.userType === UserTypes.RECEIVER) return
-    
-}

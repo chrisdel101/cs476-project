@@ -10,7 +10,7 @@ import {
   handleDeleteDonation,
   handleRejectItem,
 } from '../../../controllers/AccountScreen/donationController'
-import useUserContext from '../../../controllers/context/useUserContext'
+import useUserContext from '../../../controllers/context/userContext/useUserContext'
 
 interface IProps {
   item: Item

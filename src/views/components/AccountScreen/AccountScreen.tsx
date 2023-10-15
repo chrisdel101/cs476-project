@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import useUserContext from '../../../controllers/context/useUserContext'
+import useUserContext from '../../../controllers/context/userContext/useUserContext'
 
 import { UserTypes } from '../../../../constants'
 import UserAccountCard from './UserAccountCard'

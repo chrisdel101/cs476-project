@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { ItemTypes, Locations } from '../../../../constants'
-import useUserContext from '../../../controllers/context/useUserContext'
+import useUserContext from '../../../controllers/context/userContext/useUserContext'
 import { handleSubmit } from '../../../controllers/IndexScreen/addItemController'
 import { useState } from 'react'
 import Item from '../../../models/Item'

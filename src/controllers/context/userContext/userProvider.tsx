@@ -1,11 +1,11 @@
 import { ReactNode, useEffect, useState } from 'react'
 import { createContext } from 'react'
-import User from '../../models/abstractClasses/User'
-import authFunctions from '../../api/authFunctions'
-import Donor from '../../models/Donor'
-import crudFunctions from '../../api/crudFunctions'
-import { UserTypes } from '../../../constants'
-import Receiver from '../../models/Receiver'
+import User from '../../../models/abstractClasses/User'
+import authFunctions from '../../../api/authFunctions'
+import Donor from '../../../models/Donor'
+import crudFunctions from '../../../api/crudFunctions'
+import { UserTypes } from '../../../../constants'
+import Receiver from '../../../models/Receiver'
 export interface IUserContext {
   currentUser?: User | null
   isLoggedIn?: boolean | null
