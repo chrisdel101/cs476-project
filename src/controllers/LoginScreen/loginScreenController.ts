@@ -45,12 +45,12 @@ export const handleLogin = async (
       } else {
         console.error('Invalid User Type: is user type correct, check server logs') 
         // TODO // invalid user type flash message
-        setErrorMsg(errorMessage)
+        setErrorMsg('Invalid User Type: is user type correct, check server logs')
       }
     } else {
       // TODO // add flash message
-      setErrorMsg(errorMessage)
       console.error('handleLogin: error getting user data')
+      setErrorMsg('handleLogin: error getting user data')
     }
   }
 }
