@@ -57,9 +57,9 @@ const Index = () => {
           items.map((item, i) => {
             if (item.itemState === ItemStates.AVAILABLE) {
               return (
-                <Col xs={12} key={i}>
-                  <ItemCard item={item}/>
-                </Col>
+                //<Col xs={12} key={i}> // remove Col to fix alignment
+                  <ItemCard key={i} item={item}/>
+                //</Col>
         
         // dummy cards
         // <div
@@ -118,7 +118,7 @@ const PageContainer = styled.div`
 
 // stacks cards in a row
 const CardsContainer = styled(Row)`
-  flex-direction: column;
+  // flex-direction: column; // remove this to center cards
   margin-top: 2em;
   justify-content: center;
 `
