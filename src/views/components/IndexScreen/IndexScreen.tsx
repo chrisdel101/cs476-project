@@ -8,9 +8,7 @@ import crudFunctions from '../../../api/crudFunctions'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
 import Item from '../../../models/Item'
-import { handleRequestItem } from '../../../controllers/IndexScreen/requestItemController'
 import ItemCard from './ItemCard'
-import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 const Index = () => {
@@ -49,7 +47,6 @@ const Index = () => {
      </StyledButton>
       ) : null}
 
-      {/* NEED TO FIX THE FORMATTING ON THIS */}
       <CardsContainer className='card-container'>
         {items.length === 0 ? (
         <div>No Items</div>
@@ -57,33 +54,7 @@ const Index = () => {
           items.map((item, i) => {
             if (item.itemState === ItemStates.AVAILABLE) {
               return (
-                //<Col xs={12} key={i}> // remove Col to fix alignment
-                  <ItemCard key={i} item={item}/>
-                //</Col>
-        
-        // dummy cards
-        // <div
-        //   className="demo-container"
-        //   style={{ display: 'flex', justifyContent: 'space-evenly' }}
-        // >
-        //   {items.length === 0 ? (
-        //   <div>No Items</div>
-        // ) : (
-        //   items.map((item, i) => {
-        //     if (item.itemState === ItemStates.AVAILABLE) {
-        //       return (
-          // items.map((item, i) => {
-          //   if (item.itemState === ItemStates.AVAILABLE) {
-          //     return (
-          //       <div key={i} style={{ border: '1px solid black', backgroundColor: 'white', margin: '0 5px' }}>
-          //         <h1>Item {i}</h1>
-          //         <p>Item Name: {item?.name}</p>
-          //         <p>Item Donor: {item?.donorId}</p>
-          //         <p>Item Donor: {item?.itemState}</p>
-          //         {currentUser?.userType === UserTypes.RECEIVER ? (
-          //           <Button onClick={() => handleRequestItem(currentUser, item)}>Request item</Button>
-          //         ) : null}
-          //       </div>
+                  <ItemCard key={i} item={item}/>        
               );
             } else {
               return null;
@@ -118,7 +89,6 @@ const PageContainer = styled.div`
 
 // stacks cards in a row
 const CardsContainer = styled(Row)`
-  // flex-direction: column; // remove this to center cards
   margin-top: 2em;
   justify-content: center;
 `

@@ -4,29 +4,27 @@ import Navbar from 'react-bootstrap/Navbar';
 import useUserContext from '../../controllers/context/userContext/useUserContext';
 import { handleLogout } from '../../controllers/LoginScreen/loginScreenController';
 import { useHistory } from 'react-router-dom';
+import Redbell from '../../../public/assets/svg/notification-14158.svg';
+import WhiteBell from '../../../public/assets/svg/notification-bell-13079.svg';
+import styled from 'styled-components';
+import { useState } from 'react';
 
 const Navigation = () => {
+  const [showWhiteBell, setShowWhiteBell] = useState<boolean>(true)
+  const [showRedBell, setShowRedBell] = useState<boolean>(false)
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">FreeBee</Navbar.Brand>
+      <IconContainer>
+          {showWhiteBell ? <img src={WhiteBell} alt="Your SVG" /> : null}
+          {showRedBell ? <img src={Redbell} alt="Your SVG" /> : null}
+        </IconContainer>
+        <Navbar.Brand className="flex-grow-1" href="/">FreeBee</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <NavigationAuth />
-            {/* DELETE IF UNUSED */}
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -56,3 +54,10 @@ const NavigationAuth = () => {
   
 }
 export default Navigation;
+
+const IconContainer = styled.div`
+  height: 40px;
+  width: 40px;
+  margin-right: 15px;
+
+`
