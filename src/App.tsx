@@ -4,7 +4,6 @@ import {
   Route,
   Redirect,
   useLocation,
-  useParams,
 } from 'react-router-dom'
 import { Routes } from '../constants'
 import styled from 'styled-components'
@@ -12,11 +11,11 @@ import Footer from './views/components/Footer'
 import Navigation from './views/components/Navigation'
 import IndexScreen from './views/components/IndexScreen/IndexScreen'
 import LoginScreen from './views/components/LoginScreen/LoginScreen'
-import AddUserScreen from './views/components/AddUserScreen/AddUserScreen'
 import { ProvideAuth } from './controllers/context/userContext/userProvider'
 import useUserContext from './controllers/context/userContext/useUserContext'
 import { ReactNode } from 'react'
 import AccountScreen from './views/components/AccountScreen/AccountScreen'
+import { ProvideItems } from './controllers/context/itemContext/itemProvider'
 
 interface CustomRouteProps {
   children: ReactNode
@@ -25,7 +24,6 @@ interface CustomRouteProps {
 
 // Only acessible when NOT logged in
 function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
-
   const auth = useUserContext()
   return (
     <Route
@@ -42,8 +40,6 @@ function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const { pathname } = useLocation()
   console.log('pathname ', pathname)
   const auth = useUserContext()
-
-  // console.log('auth.currentUser ', auth.currentUser  )
   return (
     <Route
     {...rest}
@@ -59,14 +55,15 @@ const App = () => {
 
   return (
     <ProvideAuth>
+      <ProvideItems>
       <Router>
         <LayoutContainer>
           <Navigation />
           <HeroContainer>
             <Switch>
-              <Route path={Routes.Account}>
+              <AuthenticatedRoute path={Routes.Account}>
                 <AccountScreen />
-              </Route>
+              </AuthenticatedRoute>
               <NonAuthenticatedRoute path={Routes.Login}>
                 <LoginScreen />
               </NonAuthenticatedRoute>
@@ -78,6 +75,7 @@ const App = () => {
           <Footer />
         </LayoutContainer>
       </Router>
+          </ProvideItems>
     </ProvideAuth>
   )
 }
