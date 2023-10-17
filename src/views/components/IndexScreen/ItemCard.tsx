@@ -69,7 +69,7 @@ const ItemCard = ({item}: IProps) => {
         // </Card>
 
         // third attempt, following the information at https://getbootstrap.com/docs/4.3/components/card/ but with the boostrap 5 card elements found at //https://react-bootstrap.netlify.app/docs/components/cards
-            <Card border='light' style={{ width: '90%', maxHeight: '100%' }}>
+            <Card border='light' style={{ width: '90%', maxHeight: '100%', margin:'10px 0' }}>
                 <Card.Body>
                     <div className="row no-gutters">
                         <ImgContainer className="col-md-3">
@@ -111,6 +111,7 @@ const TextContainer = styled.div`
     flex-direction: column;
     display: flex;
     justify-content: space-evenly;
+    flex: 3;
 `
 // organizes the image content of the item card
 const ImgContainer = styled.div`
@@ -119,6 +120,7 @@ const ImgContainer = styled.div`
     flex-wrap: nowrap;
     justify-content: center;
     align-content: stretch;
+    flex: 1;
 `
 // organizes the button alignment on the item card
 const ButtonContainer = styled.div`
@@ -129,6 +131,7 @@ const ButtonContainer = styled.div`
     align-items: center;
     align-content: center;
     gap: 10px;
+    flex: 1;
 `
 // standardizes the buttons on the card
 const StyledButton = styled(Button)<any>`
