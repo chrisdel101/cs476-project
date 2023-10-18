@@ -11,7 +11,7 @@ export interface Observer {
 export interface Subject {
   attach: (observer: Observer) => void
   detach: (observer: Observer) => void
-  notify: (observer: Observer) => void
+  notify: (observeID: string) => void
   notifyAll: () => void
 }
 
@@ -19,7 +19,7 @@ export interface Subject {
 export const ItemsContext = createContext<Subject>(null!)
 
 // hooks for keeping items up to date
-const useItemsProvider = () => {
+const useFetchItems = () => {
     const [items, setItems] = useState<Item[]>([])
     useEffect(() => { 
         try {
@@ -39,25 +39,37 @@ interface IProps {
   children: ReactNode
 }
 
+// handle storing all item Observers
+// put into a context allows access in children
 export function ProvideItems({ children }: IProps) {
-  const {items, setItems} = useItemsProvider();
-  // console.log('items ', items)
+  // stores all items from the DB
+  const {items, setItems} = useFetchItems();
+  // stores list of resgistered observers
   const [observersArr, setObserversArr] = useState<Observer[]>([])
   // console.log('observers log ', observersArr)
 
-
+  useEffect(() => {
+    // console.log('items in index', items)
+    // build observers - this can be class
+    if (items) {
+      // loop over all observers onLoad
+      observersArr.forEach((observer) => {
+        // pass them inital items for paint
+        observer.update(items);
+      });
+    }
+  }, [])
   const attach = (observer: Observer) => {
-    // console.log('attach', observersArr)
     // check if observer exists in list already
     const exists = observersArr.some((obs: Observer) => 
       obs.id === observer.id)
-      console.log('exists ', exists)
+      // if not exists add to list; don't want dupes
     if(!exists) {
-      console.log('ADD')
+      console.log('attaching')
       const tempArr = [...observersArr, observer]
-      console.log('tempArr ', tempArr)
+      // console.log('tempArr ', tempArr)
       setObserversArr(tempArr);
-      console.log('after add ', observersArr)
+      // console.log('after add ', observersArr)
     }
   };
 
@@ -76,21 +88,16 @@ export function ProvideItems({ children }: IProps) {
       observer.update(items);
     });
   };
-  // notify a speficit observer
-  const notify = (observer: Observer) => {
-    // const o = observersArr.filter((obs) => {
-    //   console.log('obs.id ', obs.id)
-    //   if(obs.id === observer.id) {
-    //     return obs
-    //   }
-    // })
-    // console.log('o ', o)
-    const index = observersArr.findIndex(o => observer.id === o.id)
-    console.log('inde ', index)
+  // notify a specific observer - save memory since we don't need to notify all observers on other pages
+  const notify = async (observerID: string) => {
+    const index = observersArr.findIndex(o => observerID === o.id)
+    console.log('calling  ', notify)
     if (index !== -1) {
       const currentObserver = observersArr[index]
+      // fetch the items
+      const items = await crudFunctions.getItems()
       // pass an observer it's new list of items
-
+      setItems(items)
       currentObserver.update(items)
     }
   };

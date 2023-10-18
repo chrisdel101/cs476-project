@@ -5,6 +5,7 @@ import useUserContext from '../../../controllers/context/userContext/useUserCont
 import { handleSubmit } from '../../../controllers/IndexScreen/addItemController'
 import { useState } from 'react'
 import Item from '../../../models/Item'
+import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 interface IForm {
   handleCloseAddItemModal: () => void;
   setSuccessMsg: (str: string|undefined) => void;
@@ -18,6 +19,7 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item}: IForm) =
   const [desc, setDesc] = useState<string>(item?.description || '')
   const [location, setLocation] = useState<string>(item?.location || '')
   const [itemType, setItemType] = useState<string>(item?.itemType || '')
+  const { notify } = useItemsContext()
 
   const {currentUser} = useUserContext();
   return (
@@ -33,7 +35,8 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item}: IForm) =
           setSuccessMsg,
           setErrorMsg,
           currentUser,
-          item
+          item,
+          notify
         })}>
       <Form.Group className="mb-3" controlId="formBasicName">
         <Form.Label>Name</Form.Label>

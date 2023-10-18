@@ -63,3 +63,6 @@ export enum AlertTypes {
    WARNING = 'warning',
    INFO = 'info'
 }
+export enum Observers {
+    INDEX = 'index',
+}
