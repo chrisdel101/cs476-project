@@ -16,6 +16,7 @@ import useUserContext from './controllers/context/userContext/useUserContext'
 import { ReactNode } from 'react'
 import AccountScreen from './views/components/AccountScreen/AccountScreen'
 import { ProvideItems } from './controllers/context/itemContext/itemProvider'
+import Loading from './views/components/Loading'
 
 interface CustomRouteProps {
   children: ReactNode
@@ -28,7 +29,7 @@ function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
   return (
     <>
-    { !auth.isLoaded ?  <div>Loading...</div>  :
+    { !auth.isLoaded ?   <Loading/>  :
       <Route
       {...rest}
         render={() =>
@@ -45,7 +46,7 @@ function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
   return (
     <>
-    { !auth.isLoaded ?  <div>Loading...</div>  :
+    { !auth.isLoaded ? <Loading/>  :
       <Route
       {...rest}
         render={() =>

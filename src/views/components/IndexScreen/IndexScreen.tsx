@@ -11,6 +11,7 @@ import ItemCard from './ItemCard'
 import Row from 'react-bootstrap/Row';
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 import { Observer } from '../../../controllers/context/itemContext/itemProvider'
+import Loading from '../Loading'
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
@@ -56,45 +57,49 @@ const Index = () => {
   return (
     <PageContainer>
       <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
-
-      {isLoggedIn ? null : (
-        <StyledButton variant="primary" onClick={handleShowAddUserModal}>
-          Create An Account
+      { !itemsSubject?.isLoaded ? <Loading/> : 
+        <>
+          {isLoggedIn ? null : (
+            <StyledButton variant="primary" onClick={handleShowAddUserModal}>
+              Create An Account
+            </StyledButton>
+          )}
+          {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
+          <StyledButton variant="primary" onClick={handleShowAddItemModal}>
+          Donate An Item
         </StyledButton>
-      )}
-      {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
-       <StyledButton variant="primary" onClick={handleShowAddItemModal}>
-       Donate An Item
-     </StyledButton>
-      ) : null}
+          ) : null}
 
-      <CardsContainer className='card-container'>
-        {items.length === 0 ? (
-        <div>No Items</div>
-        ) : (
-          items.map((item, i) => {
-            if (item.itemState === ItemStates.AVAILABLE) {
-              return (
-                  <ItemCard key={i} item={item}/>        
-              );
-            } else {
-              return null;
-            }
-          })
-        )}
-      </CardsContainer>
-      
-      <AddUserModal
-        show={showAddUserModal}
-        handleClose={handleCloseAddUserModal}
-        setSuccessMsg={setSuccessMsg}
-      />
-      <UpsertItemModal
-        show={showAddItemModal}
-        handleClose={handleCloseAddItemModal}
-        setSuccessMsg={setSuccessMsg}
-        title={'Donate An Item'}
-      />
+          <CardsContainer className='card-container'>
+            {items.length === 0 ? (
+            <h2>No Items</h2>
+            ) : (
+              items.map((item, i) => {
+                if (item.itemState === ItemStates.AVAILABLE) {
+                  return (
+                      <ItemCard key={i} item={item}/>        
+                  );
+                } else {
+                  return null;
+                }
+              })
+            )}
+          </CardsContainer>
+          
+          <AddUserModal
+            show={showAddUserModal}
+            handleClose={handleCloseAddUserModal}
+            setSuccessMsg={setSuccessMsg}
+          />
+          <UpsertItemModal
+            show={showAddItemModal}
+            handleClose={handleCloseAddItemModal}
+            setSuccessMsg={setSuccessMsg}
+            title={'Donate An Item'}
+          />
+          
+        </>
+      }
     </PageContainer>
   )
 }
@@ -111,6 +116,8 @@ const PageContainer = styled.div`
 // stacks cards in a row
 const CardsContainer = styled(Row)`
   margin-top: 2em;
+  display: flex;
+  text-align: center;
   justify-content: center;
 `
 

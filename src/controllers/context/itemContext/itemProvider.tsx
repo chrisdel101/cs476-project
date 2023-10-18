@@ -13,6 +13,7 @@ export interface Subject {
   detach: (observer: Observer) => void
   notify: (observeID: string) => void
   notifyAll: () => void
+  isLoaded?: boolean
 }
 
 
@@ -44,6 +45,7 @@ interface IProps {
 export function ProvideItems({ children }: IProps) {
   // stores all items from the DB
   const {items, setItems} = useFetchItems();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   // stores list of resgistered observers
   const [observersArr, setObserversArr] = useState<Observer[]>([])
   // console.log('observers log ', observersArr)
@@ -57,8 +59,9 @@ export function ProvideItems({ children }: IProps) {
         // pass them inital items for paint
         observer.update(items);
       });
+      setIsLoaded(true)
     }
-  }, [])
+  },[items, observersArr])
   const attach = (observer: Observer) => {
     // check if observer exists in list already
     const exists = observersArr.some((obs: Observer) => 
@@ -67,9 +70,9 @@ export function ProvideItems({ children }: IProps) {
     if(!exists) {
       console.log('attaching')
       const tempArr = [...observersArr, observer]
-      // console.log('tempArr ', tempArr)
+      console.log('tempArr ', tempArr)
       setObserversArr(tempArr);
-      // console.log('after add ', observersArr)
+      console.log('after add ', observersArr)
     }
   };
 
@@ -91,7 +94,7 @@ export function ProvideItems({ children }: IProps) {
   // notify a specific observer - save memory since we don't need to notify all observers on other pages
   const notify = async (observerID: string) => {
     const index = observersArr.findIndex(o => observerID === o.id)
-    console.log('calling  ', notify)
+    console.log('calling  ', index)
     if (index !== -1) {
       const currentObserver = observersArr[index]
       // fetch the items
@@ -103,7 +106,7 @@ export function ProvideItems({ children }: IProps) {
   };
 
   return (
-    <ItemsContext.Provider value={{ attach, detach, notify, notifyAll }}>
+    <ItemsContext.Provider value={{ attach, detach, notify, notifyAll, isLoaded}}>
     {children}
   </ItemsContext.Provider>
   );
