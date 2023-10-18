@@ -11,6 +11,7 @@ import {
   handleRejectItem,
 } from '../../../controllers/AccountScreen/donationController'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
+import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 
 interface IProps {
   item: Item
@@ -20,8 +21,8 @@ interface IProps {
 
 const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) => {
   const { currentUser } = useUserContext()
-
-  const addedAtTimeStamp = new Date(item.addedAtTimeStamp)
+  const {notify} = useItemsContext()
+  const addedAtTimeStamp = new Date(item.addedAtTimeStamp ?? new Date())
   const day = addedAtTimeStamp.getDate()
   const month = addedAtTimeStamp.getMonth() + 1 // Months are zero-based, so add 1
   const year = addedAtTimeStamp.getFullYear()
@@ -81,7 +82,7 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             <ButtonContainer>
               <StyledButton
                 variant="primary"
-                onClick={() => handleAcceptItem(item, currentUser)}
+                onClick={() => handleAcceptItem(item, notify, currentUser)}
               >
                 Accept Request
               </StyledButton>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
 import { useEffect, useState } from 'react'
-import { AlertTypes, ItemStates, UserTypes, Observers } from '../../../../constants'
+import { AlertTypes, ItemStates, UserTypes, Observers, Notifications } from '../../../../constants'
 import UpsertItemModal from './UpsertItemModal'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
@@ -31,7 +31,6 @@ const Index = () => {
   const observer: Observer = {
     id: Observers.INDEX,
     update: (newItems: Item[]) => {
-      console.log('new items', newItems)
       // Update the component's local items state
       setItems(newItems);
     },
@@ -51,8 +50,10 @@ const Index = () => {
 
   useEffect(() => {
     // call notify on load for init paint  
-    itemsSubject.notify(observer?.id);
-  }, [])
+    itemsSubject.notify(observer?.id, Notifications.GET_ITEMS);
+  // make sure observersArr state is udated before notify called 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemsSubject.observersArr])
 
   return (
     <PageContainer>
@@ -69,7 +70,6 @@ const Index = () => {
           Donate An Item
         </StyledButton>
           ) : null}
-
           <CardsContainer className='card-container'>
             {items.length === 0 ? (
             <h2>No Items</h2>

@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
 
-import { UserTypes } from '../../../../constants'
+import { Notifications, Observers, UserTypes } from '../../../../constants'
 import UserAccountCard from './UserAccountCard'
 import { useEffect, useState } from 'react'
 import Item from '../../../models/Item'
 import crudFunctions from '../../../api/crudFunctions'
 import UpsertItemModal from '../IndexScreen/UpsertItemModal'
+import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 
 const Account = () => {
   const { currentUser } = useUserContext()
@@ -15,20 +16,48 @@ const Account = () => {
   const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined)
   const handleCloseUpsertItemModal = () => setShowUpsertItemModal(false)
   const [selectedItem, setSelectedItem] = useState<Item | undefined>(undefined)
+  const itemsSubject = useItemsContext()
+
+  // attach all observers
+  const observer: Observer = {
+    id: Observers.ACCOUNT,
+    update: (newItems: Item[]) => {
+      console.log('ACCOUNT new items', newItems)
+      // Update the component's local items state
+      setUserITems(newItems);
+    },
+  };
+  useEffect(() => {
+    // (async () => {
+    //   if (itemsSubject) {
+    //     const fetchedUserItems = await crudFunctions.getItemsByUser(currentUser)
+    //     setUserITems(fetchedUserItems)
+    //   }
+    // })() 
+    if (itemsSubject) {
+      // attach to curent observer on
+      itemsSubject.attach(observer);
+      console.log('itemsSubject', itemsSubject)
+      // return () => {
+      //   itemsSubject.detach(observer);
+      // };
+    }
+  })
+
 
   useEffect(() => {
-    (async () => {
-      if (currentUser) {
-        const fetchedUserItems = await crudFunctions.getItemsByUser(currentUser)
-        setUserITems(fetchedUserItems)
-      }
-    })()
-  }, [currentUser])
+    // call notify on load for init paint  
+    itemsSubject.notify(observer?.id, Notifications.GET_ITEMS_BY_USER, currentUser);
+  // monitor array of observers for changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemsSubject.observersArr])
+
   return (
     <PageContainer $usertypecontainer={currentUser?.userType}>
       {currentUser ? (
         <UserAccountCard 
-        userItems={userItems} currentUser={currentUser} 
+        userItems={userItems} 
+        currentUser={currentUser} 
         setShowUpsertItemModal={setShowUpsertItemModal}
         setSelectedItem={setSelectedItem}
         />

@@ -4,8 +4,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import useUserContext from '../../controllers/context/userContext/useUserContext';
 import { handleLogout } from '../../controllers/LoginScreen/loginScreenController';
 import { useHistory } from 'react-router-dom';
-import Redbell from '../../../public/assets/svg/notification-14158.svg';
-import WhiteBell from '../../../public/assets/svg/notification-bell-13079.svg';
+import Redbell from '../../assets/svg/notification-14158.svg';
+import WhiteBell from '../../assets/svg/notification-bell-13079.svg';
 import styled from 'styled-components';
 import { useState } from 'react';
 
