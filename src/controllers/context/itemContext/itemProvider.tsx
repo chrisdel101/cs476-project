@@ -3,8 +3,9 @@ import Item from '../../../models/Item';
 import crudFunctions from '../../../api/crudFunctions';
 
 
-interface Observer {
+export interface Observer {
   update: (items: Item[]) => void
+  id: string
 }
 
 export interface Subject {
@@ -40,11 +41,26 @@ interface IProps {
 
 export function ProvideItems({ children }: IProps) {
   const {items, setItems} = useItemsProvider();
+  // console.log('items ', items)
   const [observersArr, setObserversArr] = useState<Observer[]>([])
+  // console.log('observers log ', observersArr)
+
 
   const attach = (observer: Observer) => {
-    setObserversArr(observersArr => [...observersArr, observer]);
+    // console.log('attach', observersArr)
+    // check if observer exists in list already
+    const exists = observersArr.some((obs: Observer) => 
+      obs.id === observer.id)
+      console.log('exists ', exists)
+    if(!exists) {
+      console.log('ADD')
+      const tempArr = [...observersArr, observer]
+      console.log('tempArr ', tempArr)
+      setObserversArr(tempArr);
+      console.log('after add ', observersArr)
+    }
   };
+
   const detach = (observer: Observer) => {
     const index = observersArr.indexOf(observer);
     if (index !== -1) {
@@ -62,7 +78,15 @@ export function ProvideItems({ children }: IProps) {
   };
   // notify a speficit observer
   const notify = (observer: Observer) => {
-    const index = observersArr.indexOf(observer);
+    // const o = observersArr.filter((obs) => {
+    //   console.log('obs.id ', obs.id)
+    //   if(obs.id === observer.id) {
+    //     return obs
+    //   }
+    // })
+    // console.log('o ', o)
+    const index = observersArr.findIndex(o => observer.id === o.id)
+    console.log('inde ', index)
     if (index !== -1) {
       const currentObserver = observersArr[index]
       // pass an observer it's new list of items

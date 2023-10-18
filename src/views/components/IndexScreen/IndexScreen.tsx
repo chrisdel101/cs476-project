@@ -10,6 +10,8 @@ import useUserContext from '../../../controllers/context/userContext/useUserCont
 import Item from '../../../models/Item'
 import ItemCard from './ItemCard'
 import Row from 'react-bootstrap/Row';
+import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
+import { Observer } from '../../../controllers/context/itemContext/itemProvider'
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
@@ -22,16 +24,41 @@ const Index = () => {
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
+  const itemsSubject = useItemsContext()
   const [items, setItems] = useState<Item[]>([])
 
-
+  // attach all observers
+  const observer: Observer = {
+    id: 'IndexObserver',
+    update: (newItems) => {
+      // Update the component's local items state
+      setItems(newItems);
+    },
+  };
   useEffect(() => {
-    (async () => {
-      // fetch items test
-        const fetchItems = await crudFunctions.getItems()
-        setItems(fetchItems)
-    })()
-  }, [])
+    console.log('items in index', items)
+    // build observers - this can be class
+    if (itemsSubject) {
+      // attach to curent observer
+      itemsSubject.attach(observer);
+
+      // return () => {
+      //   itemsSubject.detach(observer);
+      // };
+    }
+  }, [items]);
+
+  useEffect(() => { 
+    itemsSubject.notify(observer);
+  })
+
+  // useEffect(() => {
+  //   (async () => {
+  //     // fetch items test
+  //       const fetchItems = await crudFunctions.getItems()
+  //       setItems(fetchItems)
+  //   })()
+  // }, [])
   return (
     <PageContainer>
       <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
