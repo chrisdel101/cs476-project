@@ -82,13 +82,13 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             <ButtonContainer>
               <StyledButton
                 variant="primary"
-                onClick={() => handleAcceptItem(item, notify, currentUser)}
+                onClick={() => handleAcceptItem({item, notify, currentUser})}
               >
                 Accept Request
               </StyledButton>
               <StyledButton
                 variant="primary"
-                onClick={() => handleRejectItem(item, currentUser)}
+                onClick={() => handleRejectItem({item, notify, currentUser})}
               >
                 Reject Request
               </StyledButton>
@@ -97,13 +97,13 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             <ButtonContainer>
               <StyledButton
                 variant="secondary"
-                onClick={() => handleClaimItem(item, currentUser)}
+                onClick={() => handleClaimItem({item, notify, currentUser})}
               >
                 Item Claimed
               </StyledButton>
               <StyledButton
                 variant="secondary"
-                onClick={() => handleCancelRequest(item, currentUser)}
+                onClick={() => handleCancelRequest({item, notify, currentUser})}
               >
                 Cancel Donation
               </StyledButton>
@@ -117,7 +117,7 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             </StyledButton>
             <StyledButton
               variant="secondary"
-              onClick={() => handleDeleteDonation(item, currentUser)}>
+              onClick={() => handleDeleteDonation({item, notify, currentUser})}>
               Delete Donation
             </StyledButton>
             </ButtonContainer>
@@ -127,7 +127,7 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
           <ButtonContainer>
             <StyledButton
               variant="secondary"
-              onClick={() => handleCancelRequest(item, currentUser)}
+              onClick={() => handleCancelRequest({item, notify, currentUser})}
             >
               Cancel Donation
             </StyledButton>
