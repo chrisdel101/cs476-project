@@ -20,33 +20,40 @@ import { ProvideItems } from './controllers/context/itemContext/itemProvider'
 interface CustomRouteProps {
   children: ReactNode
   path?: string
+  isLoaded?: boolean
 }
 
 // Only acessible when NOT logged in
 function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
   return (
-    <Route
-    {...rest}
-      render={() =>
-        auth.currentUser ? <Redirect to={Routes.Index} /> : children
-      }
-    />
+    <>
+    { !auth.isLoaded ?  <div>Loading...</div>  :
+      <Route
+      {...rest}
+        render={() =>
+          auth.currentUser ? <Redirect to={Routes.Index}/> : children
+        }
+      />
+    }
+    </>
   )
 }
 
 // Only acessible when user logged in
 function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
-  const { pathname } = useLocation()
-  console.log('pathname ', pathname)
   const auth = useUserContext()
   return (
-    <Route
-    {...rest}
-      render={() =>
-        auth.currentUser ? children : <Redirect to={Routes.Index} />
-      }
-    />
+    <>
+    { !auth.isLoaded ?  <div>Loading...</div>  :
+      <Route
+      {...rest}
+        render={() =>
+          auth.currentUser ? children : <Redirect to={Routes.Index} />
+        }
+      />
+    }
+    </>
   )
 }
 

@@ -11,6 +11,7 @@ export interface IUserContext {
   isLoggedIn?: boolean | null
   setIsLoggedIn: (isLoggedIn: boolean) => void
   setCurrentUser: (user: User | null) => void
+  isLoaded?: boolean
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -19,10 +20,11 @@ export const AuthContext = createContext<IUserContext>(null!)
 interface UserProviderProps {
   children: ReactNode
 }
-
 function useProviderAuth() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
   useEffect(() => { 
 
     try {
@@ -41,6 +43,7 @@ function useProviderAuth() {
             const donor = new Donor(getDonor)
             setIsLoggedIn(true)
             setCurrentUser(donor)
+            setIsLoaded(true)
           } else if(userData && userData?.userType  === UserTypes.RECEIVER) {
             const getReceiver = await crudFunctions.getUserByType({
               userType: UserTypes.RECEIVER,
@@ -49,27 +52,28 @@ function useProviderAuth() {
             const receiver = new Receiver(getReceiver)
             setIsLoggedIn(true)
             setCurrentUser(receiver)
+            setIsLoaded(true)
           }
         } else {
           console.log('isSignedIn hook: USER IS NOT SIGNED IN')
           setIsLoggedIn(false)
           setCurrentUser(null)
+          setIsLoaded(true)
         }
       })()
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error in user Auth:', error)
     }
   }, [isLoggedIn])
   // call firebase to check if user is signed in
-  return { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn }
+  return { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn, isLoaded }
 }
 
 export function ProvideAuth({ children }: UserProviderProps) {
-  const { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn } = useProviderAuth()
-
+  const { isLoggedIn, currentUser, setCurrentUser, setIsLoggedIn, isLoaded } = useProviderAuth()
   return (
     <AuthContext.Provider
-      value={{ currentUser, isLoggedIn, setIsLoggedIn, setCurrentUser }}
+      value={{ currentUser, isLoggedIn, setIsLoggedIn, setCurrentUser, isLoaded }}
     >
       {children}
     </AuthContext.Provider>
