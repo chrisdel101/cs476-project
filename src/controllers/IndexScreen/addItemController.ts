@@ -1,4 +1,4 @@
-import { FunctionStatus, Observers, UserTypes } from '../../../constants'
+import { FunctionStatus, ItemTypes, UserTypes } from '../../../constants'
 import crudFunctions from '../../api/crudFunctions'
 import Item, { ItemInterface } from '../../models/Item'
 import User from '../../models/abstractClasses/User'
@@ -10,8 +10,7 @@ interface IHandleSubmit {
   setErrorMsg: (str: string | undefined) => void
   setSuccessMsg: (str: string | undefined) => void
   currentUser?: User |null
-  item?: Item,
-  notify: (observerID: string) => void
+  item?: Item
 }
 
 export const handleSubmit = async ({
@@ -21,8 +20,7 @@ export const handleSubmit = async ({
   setSuccessMsg,
   setErrorMsg,
   currentUser, 
-  item,
-  notify
+  item
 }: IHandleSubmit) => {
   // stop default submission
   e.preventDefault()
@@ -74,8 +72,6 @@ export const handleSubmit = async ({
     setErrorMsg(`Error adding Item: ${response.errorMessage}`)
     return
    }
-  //  call notify using index observer id
-   notify(Observers.INDEX)
   // close modal
   handleCloseAddItemModal(true)
   // set msg

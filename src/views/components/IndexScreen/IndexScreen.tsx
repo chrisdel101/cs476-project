@@ -2,8 +2,9 @@ import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
 import { useEffect, useState } from 'react'
-import { AlertTypes, ItemStates, UserTypes, Observers } from '../../../../constants'
+import { AlertTypes, ItemStates, UserTypes } from '../../../../constants'
 import UpsertItemModal from './UpsertItemModal'
+import crudFunctions from '../../../api/crudFunctions'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
 import Item from '../../../models/Item'
@@ -28,9 +29,8 @@ const Index = () => {
 
   // attach all observers
   const observer: Observer = {
-    id: Observers.INDEX,
-    update: (newItems: Item[]) => {
-      console.log('new items', newItems)
+    id: 'IndexObserver',
+    update: (newItems) => {
       // Update the component's local items state
       setItems(newItems);
     },
@@ -39,20 +39,26 @@ const Index = () => {
     console.log('items in index', items)
     // build observers - this can be class
     if (itemsSubject) {
-      // attach to curent observer on
+      // attach to curent observer
       itemsSubject.attach(observer);
 
       // return () => {
       //   itemsSubject.detach(observer);
       // };
     }
-  }, []);
+  }, [items]);
 
-  useEffect(() => {
-    // call notify on load for init paint  
-    itemsSubject.notify(observer?.id);
-  }, [])
+  useEffect(() => { 
+    itemsSubject.notify(observer);
+  })
 
+  // useEffect(() => {
+  //   (async () => {
+  //     // fetch items test
+  //       const fetchItems = await crudFunctions.getItems()
+  //       setItems(fetchItems)
+  //   })()
+  // }, [])
   return (
     <PageContainer>
       <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
