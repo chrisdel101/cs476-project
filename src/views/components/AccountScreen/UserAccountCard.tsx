@@ -18,26 +18,28 @@ const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSel
 
   return (
     <StyledContainer>
-      <Styledh2>{userType} Details</Styledh2>
-      <Row>
-        <Col xs={4}>Name:</Col>
-        <Col xs={4}>{currentUser?.name}</Col>
-      </Row>
-      <Row>
-        <Col xs={4}>Email:</Col>
-        <Col xs={4}>{currentUser?.email}</Col>
-      </Row>
-      {(currentUser?.phone ?
+      <UserDetailsContainer className="user-details">
+        <Styledh2>{userType} Details</Styledh2>
+        <StyledRow>
+          <Col xs={4}>Name:</Col>
+          <Col xs={4}>{currentUser?.name}</Col>
+        </StyledRow>
+        <StyledRow>
+          <Col xs={4}>Email:</Col>
+          <Col xs={4}>{currentUser?.email}</Col>
+        </StyledRow>
+        {(currentUser?.phone ?
+          <StyledRow>
+            <Col xs={4}>Phone:</Col>
+            <Col xs={4}>{currentUser?.phone}</Col>
+          </StyledRow>
+          : null)
+        }
         <Row>
-          <Col xs={4}>Phone:</Col>
-          <Col xs={4}>{currentUser?.phone}</Col>
+          <Col xs={4}>Location:</Col>
+          <Col xs={4}>{currentUser?.location}</Col>
         </Row>
-        : null)
-      }
-      <Row>
-        <Col xs={4}>Location:</Col>
-        <Col xs={4}>{currentUser?.location}</Col>
-      </Row>
+      </UserDetailsContainer>
       <CardsContainer className='card-container'>       
         {userItems?.map((item: Item, i: number) => {
           return(
@@ -58,13 +60,23 @@ const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSel
 }
 export default UserAccountCard;
 
+const UserDetailsContainer = styled.div`
+  border: 3px solid black;
+  border-radius: 5px;
+  margin: auto;
+  max-width: 20rem;
+  padding: 0 10px
+`
+const StyledRow = styled(Row)`
+border-bottom:  1px solid black;
+`
 const CardsContainer = styled(Row)`
   margin-top: 2em;
 `
 const StyledContainer = styled(Container)`
-  margin: 0 7em;
   padding-top: 3em;
 `
 const Styledh2 = styled.h2`
   margin-bottom: 25px;
+  text-align: center;
 `

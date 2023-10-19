@@ -140,10 +140,11 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
 
 export default UserItemCard
 const StyledCard = styled(Card)`
-  // border: grey solid 1px;
+  border: grey solid 1px;
   width: 350px;
   height: 625px;
-  margin: 10px 0;
+  margin: auto;
+  margin-bottom: 10px;
 `
 // organizes the button content of the item card
 const ButtonContainer = styled.div`
