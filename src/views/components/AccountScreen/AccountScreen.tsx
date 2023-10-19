@@ -70,6 +70,7 @@ const Account = () => {
       setSuccessMsg={setSuccessMsg}
       title={'Update An Item'}
       item={selectedItem}
+      observerID={Observers.ACCOUNT}
   />
     </PageContainer>
   )

@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
-import { ItemTypes, Locations } from '../../../../constants'
+import { ItemTypes, Locations, Notifications, Observers } from '../../../../constants'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
 import { handleSubmit } from '../../../controllers/IndexScreen/addItemController'
 import { useState } from 'react'
@@ -9,9 +9,10 @@ import useItemsContext from '../../../controllers/context/itemContext/useItemsCo
 interface IForm {
   handleCloseAddItemModal: () => void;
   setSuccessMsg: (str: string|undefined) => void;
+  observerID: Observers
   item?: Item
 }
-const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item}: IForm) => {
+const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerID}: IForm) => {
   const [validated, setValidated] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
   
@@ -36,7 +37,9 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item}: IForm) =
           setErrorMsg,
           currentUser,
           item,
-          notify
+          notify,
+          observerID, 
+          notifcationType: item ? Notifications.GET_ITEMS_BY_USER : Notifications.GET_ITEMS,
         })}>
       <Form.Group className="mb-3" controlId="formBasicName">
         <Form.Label>Name</Form.Label>

@@ -96,6 +96,7 @@ const Index = () => {
             handleClose={handleCloseAddItemModal}
             setSuccessMsg={setSuccessMsg}
             title={'Donate An Item'}
+            observerID={Observers.INDEX}
           />
           
         </>

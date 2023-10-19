@@ -1,6 +1,7 @@
 import { Modal, Button } from 'react-bootstrap'
 import UpsertItemForm from './UpsertItemForm';
 import Item from '../../../models/Item';
+import { Observers } from '../../../../constants';
 
 interface IProps {
   show: boolean;
@@ -8,9 +9,10 @@ interface IProps {
   setSuccessMsg: (str: string|undefined) => void;
   title: string;
   item?: Item;
+  observerID: Observers;
 }
 
-const UpsertItemModal = ({show, handleClose, setSuccessMsg, title, item}: IProps) => {
+const UpsertItemModal = ({show, handleClose, setSuccessMsg, title, item, observerID}: IProps) => {
     return(
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -20,7 +22,9 @@ const UpsertItemModal = ({show, handleClose, setSuccessMsg, title, item}: IProps
         <UpsertItemForm 
         handleCloseAddItemModal={handleClose} 
         setSuccessMsg={setSuccessMsg}
-        item={item} />
+        item={item} 
+        observerID={observerID}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
