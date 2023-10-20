@@ -44,9 +44,9 @@ export const handleRejectItem = ({item, notify, currentUser}: FProps
   // confirm item is pending
   if (item.itemState === ItemStates.PENDING) {
     // TODO confirm user and item are matched pre-crud
-    handleCancelRequest(item, currentUser)
+    handleCancelRequest({item, notify, currentUser})
      // call nofity to update page
-     notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+    //  notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
   } else {
     console.error('Item is not available')
   }

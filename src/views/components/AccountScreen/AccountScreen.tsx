@@ -8,32 +8,23 @@ import Item from '../../../models/Item'
 import crudFunctions from '../../../api/crudFunctions'
 import UpsertItemModal from '../IndexScreen/UpsertItemModal'
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
+import Observer from '../../../models/Observer'
 
 const Account = () => {
   const { currentUser } = useUserContext()
-  const [userItems, setUserITems] = useState<Item[]>([])
+  const [userItems, setUserItems] = useState<Item[]>([])
   const [showUpsertItemModal, setShowUpsertItemModal] = useState<boolean>(false)
   const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined)
   const handleCloseUpsertItemModal = () => setShowUpsertItemModal(false)
   const [selectedItem, setSelectedItem] = useState<Item | undefined>(undefined)
   const itemsSubject = useItemsContext()
-
-  // attach all observers
-  const observer: Observer = {
-    id: Observers.ACCOUNT,
+  const [observer] = useState<Observer>(new Observer({id: Observers.ACCOUNT, 
     update: (newItems: Item[]) => {
-      console.log('ACCOUNT new items', newItems)
-      // Update the component's local items state
-      setUserITems(newItems);
-    },
-  };
+    // Update the component's local items state
+    setUserItems(newItems);
+  }}))
+  
   useEffect(() => {
-    // (async () => {
-    //   if (itemsSubject) {
-    //     const fetchedUserItems = await crudFunctions.getItemsByUser(currentUser)
-    //     setUserITems(fetchedUserItems)
-    //   }
-    // })() 
     if (itemsSubject) {
       // attach to curent observer on
       itemsSubject.attach(observer);

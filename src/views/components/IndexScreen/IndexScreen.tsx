@@ -7,10 +7,10 @@ import UpsertItemModal from './UpsertItemModal'
 import { AppAlert as Alert } from '../Alert'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
 import Item from '../../../models/Item'
+import Observer from '../../../models/Observer'
 import ItemCard from './ItemCard'
 import Row from 'react-bootstrap/Row';
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
-import { Observer } from '../../../controllers/context/itemContext/itemProvider'
 import Loading from '../Loading'
 
 const Index = () => {
@@ -24,27 +24,24 @@ const Index = () => {
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
+
+  const [observer] = useState<Observer>(new Observer({id: Observers.INDEX, 
+    update: (newItems: Item[]) => {
+    // Update the component's local items state
+    setItems(newItems);
+  }}))
   const itemsSubject = useItemsContext()
   const [items, setItems] = useState<Item[]>([])
 
-  // attach all observers
-  const observer: Observer = {
-    id: Observers.INDEX,
-    update: (newItems: Item[]) => {
-      // Update the component's local items state
-      setItems(newItems);
-    },
-  };
   useEffect(() => {
-    console.log('items in index', items)
     // build observers - this can be class
     if (itemsSubject) {
       // attach to curent observer on
       itemsSubject.attach(observer);
-
-      // return () => {
-      //   itemsSubject.detach(observer);
-      // };
+      // run this when component unmoounts
+      return () => {
+        itemsSubject.detach(observer);
+      };
     }
   }, []);
 
