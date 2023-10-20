@@ -12,6 +12,8 @@ import ItemCard from './ItemCard'
 import Row from 'react-bootstrap/Row';
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 import Loading from '../Loading'
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
@@ -24,6 +26,17 @@ const Index = () => {
   const handleShowAddUserModal = () => setShowAddUserModal(true)
   const handleCloseAddItemModal = () => setShowAddItemModal(false)
   const handleShowAddItemModal = () => setShowAddItemModal(true)
+
+  const [selectedLocation, setSelectedLocation] = useState('all');
+  const [selectedItemType, setSelectedItemType] = useState('all');
+
+  const handleLocationChange = (event) => {
+    setSelectedLocation(event.target.value);
+  };
+
+  const handleItemTypeChange = (event) => {
+    setSelectedItemType(event.target.value);
+  };
 
   const [observer] = useState<Observer>(new Observer({id: Observers.INDEX, 
     update: (newItems: Item[]) => {
@@ -67,15 +80,84 @@ const Index = () => {
           Donate An Item
         </StyledButton>
           ) : null}
+          {isLoggedIn && currentUser?.userType === UserTypes.RECEIVER ? (
+            <Row>
+            {/* Empty row for spacing */}
+            ""
+            </Row>
+          ) : null }
+          {isLoggedIn && currentUser?.userType === UserTypes.RECEIVER ? (
+          <Row>
+            <Col>
+            <Form.Select value={selectedLocation} onChange={handleLocationChange}>
+            <option value="all">All Locations</option>
+              {(() => {
+                const uniqueLocations = new Set();
+
+                items.forEach((item) => {
+                uniqueLocations.add(item.location);
+                });
+
+                if (items.length === 0 || uniqueLocations.size === 0) {
+                  return null;
+                }
+
+                return Array.from(uniqueLocations).map((location, i) => (
+                  <option key={i} value={location}>
+                    {location}
+                  </option>
+                    ));
+                  })()
+                }
+            </Form.Select>
+            </Col>
+            <Col>
+            <Form.Select value={selectedItemType} onChange={handleItemTypeChange}>
+              <option value="all">All Item Types</option>
+              {(() => {
+                const uniqueItemTypes = new Set();
+
+                items.forEach((item) => {
+                uniqueItemTypes.add(item.itemType);
+                });
+
+                if (items.length === 0 || uniqueItemTypes.size === 0) {
+                  return null;
+                }
+
+                return Array.from(uniqueItemTypes).map((itemType, i) => (
+                  <option key={i} value={itemType}>
+                    {itemType}
+                  </option>
+                    ));
+                  })()
+                }
+            </Form.Select>
+            </Col>
+            <Col>
+              <Form.Select>
+                <option value="all">All Keywords</option>
+              </Form.Select>
+            </Col>
+          </Row>
+          ) : null}
           <CardsContainer className='card-container'>
             {items.length === 0 ? (
             <h2>No Items</h2>
             ) : (
               items.map((item, i) => {
                 if (item.itemState === ItemStates.AVAILABLE) {
-                  return (
-                      <ItemCard key={i} item={item}/>        
-                  );
+                  if (
+                    (selectedLocation === 'all' || item.location === selectedLocation) &&
+                    (selectedItemType === 'all' || item.itemType === selectedItemType)
+                    ) {
+                      return (
+                        <ItemCard key={i} item={item}/>        
+                      );
+                    }
+                    else {
+                      return null;
+                    }
                 } else {
                   return null;
                 }

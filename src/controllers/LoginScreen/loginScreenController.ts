@@ -51,6 +51,16 @@ export const handleLogin = async (
       // TODO // add flash message
       console.error('handleLogin: error getting user data')
       setErrorMsg('handleLogin: error getting user data')
+
+      // THERE IS A BUG THAT EFFECTS LOGIN
+      // IF THE USER TRIES TO LOGIN INTO AN ACCOUNT WITH THE CORRECT
+      // INFORMATION BUT WRONG LOGIN FORM THE LOGIN WILL STILL SUCCEED
+      // FOR EXAMPLE, LOGIN INTO THE RECIEVER LOGIN WITH CORRECT DONER
+      // LOGIN THEN IT WILL POP AN ERROR BUT ON REFRESH THE DONER WILL
+      // BE LOGIN. I'VE ADDED THIS AS A TEMP FIX
+      await authFunctions.logoutUser()
+      setCurrentUser(null)
+      setIsLoggedIn(false)
     }
   }
 }
