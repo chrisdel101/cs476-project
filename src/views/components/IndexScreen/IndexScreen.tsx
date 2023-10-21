@@ -112,7 +112,7 @@ const Index = () => {
                     (selectedLocation === 'all' || item.location === selectedLocation) &&
                     (selectedItemType === 'all' || item.itemType === selectedItemType) &&
                     (selectedKeyword === 'all' || selectedKeyword === '' || 
-                     item.description.toLowerCase().includes(selectedKeyword) || item.name.toLowerCase().includes(selectedKeyword))
+                     item.description.toLowerCase().includes(selectedKeyword.toLowerCase()) || item.name.toLowerCase().includes(selectedKeyword.toLowerCase()))
                     ) {
                       return (
                         <ItemCard key={i} item={item}/>        
