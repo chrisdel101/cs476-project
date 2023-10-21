@@ -40,6 +40,11 @@ const ItemFiltering = ({
   };
 
   return (
+    <div>
+    <Row>
+      {/* Empty row for spacing */}
+      ""
+    </Row>
     <Row>
       <Col>
         <Form.Select value={selectedLocation} onChange={handleLocationChange}>
@@ -87,6 +92,7 @@ const ItemFiltering = ({
         </Form>
       </Col>
     </Row>
+    </div>
   );
 };
 

@@ -87,12 +87,6 @@ const Index = () => {
         </StyledButton>
           ) : null}
           {isLoggedIn && currentUser?.userType === UserTypes.RECEIVER ? (
-            <Row>
-            {/* Empty row for spacing */}
-            ""
-            </Row>
-          ) : null }
-          {isLoggedIn && currentUser?.userType === UserTypes.RECEIVER ? (
             <ItemFiltering
             selectedLocation={selectedLocation}
             handleLocationChange={handleLocationChange}
