@@ -31,7 +31,7 @@ const ItemCard = ({ item }: IProps) => {
           <div className="row no-gutters">
             <ImgContainer className="col-md-3">
               {/* will need an image var here */}
-              <img src={'https://placekitten.com/200/200'} />
+              <StyledImg src={'https://placekitten.com/200/200'} />
             </ImgContainer>
             <TextContainer className="col-md-6">
               <div className="card-body">
@@ -80,6 +80,9 @@ const ImgContainer = styled.div`
   justify-content: center;
   align-content: stretch;
   flex: 1;
+`
+const StyledImg = styled.img`
+  width: initial;
 `
 // organizes the button alignment on the item card
 const ButtonContainer = styled.div`

@@ -43,7 +43,7 @@ const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSel
       <CardsContainer className='card-container'>       
         {userItems?.map((item: Item, i: number) => {
           return(
-            <Col md={6} key={i}>
+            <Col className="d-flex justify-content-center" md={6} key={i}>
               <UserItemCard 
               item={item}
               setShowUpsertItemModal={setShowUpsertItemModal}
