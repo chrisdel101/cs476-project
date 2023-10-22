@@ -41,12 +41,8 @@ const ItemFiltering = ({
 
   return (
     <div>
-    <Row>
-      {/* Empty row for spacing */}
-      ""
-    </Row>
-    <Row>
-      <Col>
+    <Row className="mb-3">
+      <Col md={4}>
         <Form.Select value={selectedLocation} onChange={handleLocationChange}>
           <option value="all">All Locations</option>
           {Array.from(uniqueLocations).map((location, i) => (
@@ -56,7 +52,7 @@ const ItemFiltering = ({
           ))}
         </Form.Select>
       </Col>
-      <Col>
+      <Col md={4}>
         <Form.Select value={selectedItemType} onChange={handleItemTypeChange}>
           <option value="all">All Item Types</option>
           {Array.from(uniqueItemTypes).map((itemType, i) => (
@@ -66,12 +62,12 @@ const ItemFiltering = ({
           ))}
         </Form.Select>
       </Col>
-      <Col>
+      <Col md={4}>
         <Form onSubmit={handleSubmit}>
-          <Row>
-            <Col>
+          <Row className="g-2"> 
+            <Col xs={9}>
                 <Form.Control
-                    type="text" 
+                    type="search" 
                     name="search"
                     placeholder="Search Keyword"
                     value={searchKeyword}
