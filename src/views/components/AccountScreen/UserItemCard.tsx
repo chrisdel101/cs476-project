@@ -142,8 +142,6 @@ export default UserItemCard
 const StyledCard = styled(Card)`
   border: grey solid 1px;
   width: 350px;
-  height: 625px;
-  margin: auto;
   margin-bottom: 10px;
 `
 // organizes the button content of the item card
