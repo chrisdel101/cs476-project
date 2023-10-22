@@ -25,7 +25,6 @@ const LoginScreenForm = ({setSuccessMsg, setErrorMsg}: IForm) => {
         onSubmit={(e) => 
           handleLogin(
             e, 
-            history, 
             setIsLoggedIn, 
             setCurrentUser, 
             userType,

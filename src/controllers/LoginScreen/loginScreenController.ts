@@ -6,7 +6,6 @@ import Receiver from '../../models/Receiver'
 
 export const handleLogin = async (
   e: React.FormEvent<HTMLFormElement>,
-  history: any,
   setIsLoggedIn: (bool: boolean) => void,
   setCurrentUser: (user: Donor | null) => void,
   userType: UserTypes,
@@ -19,7 +18,7 @@ export const handleLogin = async (
   const email: string = target?.email?.value
   const password = target?.password?.value
   const {status, data, errorMessage} = await authFunctions.loginUser(email, password)
-  // console.log('handleLogin: logged in', data)
+  console.log('handleLogin: logged in', data)
 
   if(!(status === FunctionStatus.OK && data)) {
     setValidated(true)
@@ -44,23 +43,14 @@ export const handleLogin = async (
         setIsLoggedIn(true)
       } else {
         console.error('Invalid User Type: is user type correct, check server logs') 
-        // TODO // invalid user type flash message
         setErrorMsg('Invalid User Type: is user type correct, check server logs')
       }
     } else {
-      // TODO // add flash message
       console.error('handleLogin: error getting user data')
       setErrorMsg('handleLogin: error getting user data')
-
-      // THERE IS A BUG THAT EFFECTS LOGIN
-      // IF THE USER TRIES TO LOGIN INTO AN ACCOUNT WITH THE CORRECT
-      // INFORMATION BUT WRONG LOGIN FORM THE LOGIN WILL STILL SUCCEED
-      // FOR EXAMPLE, LOGIN INTO THE RECIEVER LOGIN WITH CORRECT DONER
-      // LOGIN THEN IT WILL POP AN ERROR BUT ON REFRESH THE DONER WILL
-      // BE LOGIN. I'VE ADDED THIS AS A TEMP FIX
+      // - if auth was successful not not userData this sets auth to true on server side and next call will say user is logged in
+      // - use logout to null the server side back to false
       await authFunctions.logoutUser()
-      setCurrentUser(null)
-      setIsLoggedIn(false)
     }
   }
 }
