@@ -27,7 +27,7 @@ export const AppAlert = ({variant, message, show, setShow, duration}: IProps) =>
 
   if (show) {
       return (
-      <Alert onClose={() => setShow("")} key={variant} variant={variant} show={true} dismissible>
+      <Alert className="mx-5" onClose={() => setShow("")} key={variant} variant={variant} show={true} dismissible>
         {message}
       </Alert>
       );
