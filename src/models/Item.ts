@@ -4,6 +4,7 @@ export interface ItemInterface {
     name: string
     description: string
     location: string;
+    pickupAddress: string;
     itemType: ItemTypes
     itemState?: ItemStates
     donorId: string
@@ -19,13 +20,14 @@ class Item implements ItemInterface{
     name: string;
     description: string;
     location: string;
+    pickupAddress: string;
     itemType: ItemTypes;
     itemState?: ItemStates
     donorId: string
     receiverId?: string | null
     addedAtTimeStamp?: number
     donatedAtTimeStamp?: number | null
-    constructor({id, name, description, location, itemType, donorId, receiverId, itemState, addedAtTimeStamp, donatedAtTimeStamp}: ItemInterface) {
+    constructor({id, name, description, location, itemType, donorId, receiverId, itemState, addedAtTimeStamp, donatedAtTimeStamp, pickupAddress}: ItemInterface) {
         // might not need this
         this.id = id || null;
         this.name = name;
@@ -38,6 +40,7 @@ class Item implements ItemInterface{
         this.receiverId = receiverId || null
         this.addedAtTimeStamp = addedAtTimeStamp || Date.now()
         this.donatedAtTimeStamp = donatedAtTimeStamp || undefined
+        this.pickupAddress = pickupAddress
         
     }
     // SETTERS

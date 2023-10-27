@@ -43,6 +43,7 @@ export const handleSubmit = async ({
   const name = form['item-name']?.value
   const description = form?.description?.value
   const location = form?.location?.value
+  const pickupAddress = form['pickup-address']?.value;  
   const category = form?.category?.value
 
   // handle required fields validation
@@ -57,14 +58,16 @@ export const handleSubmit = async ({
     name,
     description,
     location,
-    itemType: category
+    itemType: category,
+    pickupAddress
   } :
   {
     name,
     description,
     location,
     itemType: category,
-    donorId: currentUser.id
+    donorId: currentUser.id,
+    pickupAddress
   }) as ItemInterface
   
    // if !item add item to db

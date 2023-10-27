@@ -19,6 +19,7 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
   const [name, setName] = useState<string>(item?.name || '')
   const [desc, setDesc] = useState<string>(item?.description || '')
   const [location, setLocation] = useState<string>(item?.location || '')
+  const [pickupAddress, setPickupAddress] = useState<string>(item?.pickupAddress || '')
   const [itemType, setItemType] = useState<string>(item?.itemType || '')
   const { notify } = useItemsContext()
 
@@ -64,13 +65,21 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
           })}
         </Form.Select>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicLocationSelect">
+      <Form.Group className="mb-3" controlId="formBasicitemCategorySelect">
         <Form.Label>Item Category</Form.Label>
         <Form.Select required name="category" onChange={(e) => setItemType(e.target.value)} value={itemType}>
           {Object.values(ItemTypes).map((category: string, i: number) => {
             return <option key={i}>{category}</option>
           })}
         </Form.Select>
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicPickupAddress">
+        <Form.Label>Pickup Address</Form.Label>
+        <Form.Control 
+          required
+          name="pickup-address"
+          placeholder="Add Pickup Address"
+          onChange={(e) => setPickupAddress(e.target.value)}  value={pickupAddress} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicUploadImage">
         <Button variant="primary">Upload Image</Button>
