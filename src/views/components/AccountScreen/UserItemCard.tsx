@@ -19,9 +19,13 @@ interface IProps {
   setSelectedItem: (item: Item | undefined) => void
 }
 
-const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) => {
+const UserItemCard = ({
+  item,
+  setShowUpsertItemModal,
+  setSelectedItem,
+}: IProps) => {
   const { currentUser } = useUserContext()
-  const {notify} = useItemsContext()
+  const { notify } = useItemsContext()
   const addedAtTimeStamp = new Date(item.addedAtTimeStamp ?? new Date())
   const day = addedAtTimeStamp.getDate()
   const month = addedAtTimeStamp.getMonth() + 1 // Months are zero-based, so add 1
@@ -40,6 +44,14 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             : item.itemState === ItemStates.CLAIMED
             ? 'warning'
             : ''
+          : currentUser?.userType === UserTypes.RECEIVER
+          ? item.itemState === ItemStates.PENDING
+            ? 'info'
+            : item.itemState === ItemStates.DONATED
+            ? 'primary'
+            : item.itemState === ItemStates.CLAIMED
+            ? 'success'
+            : ''
           : ''
       }
     >
@@ -56,39 +68,54 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
           <span>Item Name: </span>
           {item?.name}
         </Card.Title>
-        <p className="card-text">
+        <Card.Text>
+          <small>Item Region: </small>
+          <small>
+            {item?.location?.toUpperCase()}
+          </small>
+        </Card.Text>
+        <Card.Text>
           <span>Description: </span>
           {item?.description}
-        </p>
-        <p className="card-text">
+        </Card.Text>
+        <Card.Text>
           <span>Status: </span>
           {item?.itemState?.toUpperCase()}
-        </p>
+        </Card.Text>
         {item.receiverId ? (
-          <p className="card-text">
+          <Card.Text>
             <span>Reciever: </span>
             {item?.receiverId}
-          </p>
+          </Card.Text>
         ) : null}
-        <p className="card-text">
+        {item.itemState === ItemStates.DONATED ? 
+          <StyledCardText>
+            <strong>
+              <span>Pickup Address: </span>
+            {item?.pickupAddress}
+              </strong>
+            </StyledCardText>
+          : null
+        }
+        <Card.Text>
           <small className="text-muted">Date posted: </small>
           <small className="text-muted">
             {`${day}-${month}-${year} ${hour}:${minute}`}
           </small>
-        </p>
+        </Card.Text>
         {currentUser && currentUser.userType === UserTypes.DONOR ? (
           // Block for DONOR user
           item.itemState === ItemStates.PENDING ? (
             <ButtonContainer>
               <StyledButton
                 variant="primary"
-                onClick={() => handleAcceptItem({item, notify, currentUser})}
+                onClick={() => handleAcceptItem({ item, notify, currentUser })}
               >
                 Accept Request
               </StyledButton>
               <StyledButton
                 variant="primary"
-                onClick={() => handleRejectItem({item, notify, currentUser})}
+                onClick={() => handleRejectItem({ item, notify, currentUser })}
               >
                 Reject Request
               </StyledButton>
@@ -97,29 +124,38 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
             <ButtonContainer>
               <StyledButton
                 variant="secondary"
-                onClick={() => handleClaimItem({item, notify, currentUser})}
+                onClick={() => handleClaimItem({ item, notify, currentUser })}
               >
                 Item Claimed
               </StyledButton>
               <StyledButton
                 variant="secondary"
-                onClick={() => handleCancelRequest({item, notify, currentUser})}
+                onClick={() =>
+                  handleCancelRequest({ item, notify, currentUser })
+                }
               >
                 Cancel Donation
               </StyledButton>
             </ButtonContainer>
           ) : (
             <ButtonContainer>
-            <StyledButton
-              variant="secondary"
-              onClick={() => {setShowUpsertItemModal(true); setSelectedItem(item)}}>
-              Update Donation
-            </StyledButton>
-            <StyledButton
-              variant="secondary"
-              onClick={() => handleDeleteDonation({item, notify, currentUser})}>
-              Delete Donation
-            </StyledButton>
+              <StyledButton
+                variant="secondary"
+                onClick={() => {
+                  setShowUpsertItemModal(true)
+                  setSelectedItem(item)
+                }}
+              >
+                Update Donation
+              </StyledButton>
+              <StyledButton
+                variant="secondary"
+                onClick={() =>
+                  handleDeleteDonation({ item, notify, currentUser })
+                }
+              >
+                Delete Donation
+              </StyledButton>
             </ButtonContainer>
           )
         ) : (
@@ -127,7 +163,7 @@ const UserItemCard = ({ item, setShowUpsertItemModal,setSelectedItem }: IProps) 
           <ButtonContainer>
             <StyledButton
               variant="secondary"
-              onClick={() => handleCancelRequest({item, notify, currentUser})}
+              onClick={() => handleCancelRequest({ item, notify, currentUser })}
             >
               Cancel Donation
             </StyledButton>
@@ -153,4 +189,10 @@ const ButtonContainer = styled.div`
 const StyledButton = styled(Button)<any>`
   width: 150px;
   align-self: center;
+`
+const StyledCardText = styled(Card.Text)`
+  backdrop-filter: brightness(140%);
+    border-radius: 1px;
+    border: 1px solid #0d6efd;
+    padding-left: 2px
 `
