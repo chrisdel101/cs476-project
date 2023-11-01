@@ -11,8 +11,7 @@ export interface ItemInterface {
     receiverId?: string | null
     addedAtTimeStamp?: number
     donatedAtTimeStamp?: number | null
-    
-
+    changed: boolean;
 }
 
 class Item implements ItemInterface{
@@ -27,7 +26,8 @@ class Item implements ItemInterface{
     receiverId?: string | null
     addedAtTimeStamp?: number
     donatedAtTimeStamp?: number | null
-    constructor({id, name, description, location, itemType, donorId, receiverId, itemState, addedAtTimeStamp, donatedAtTimeStamp, pickupAddress}: ItemInterface) {
+    changed: boolean
+    constructor({id, name, description, location, itemType, donorId, receiverId, itemState, addedAtTimeStamp, donatedAtTimeStamp, pickupAddress, changed}: ItemInterface) {
         // might not need this
         this.id = id || null;
         this.name = name;
@@ -41,6 +41,7 @@ class Item implements ItemInterface{
         this.addedAtTimeStamp = addedAtTimeStamp || Date.now()
         this.donatedAtTimeStamp = donatedAtTimeStamp || undefined
         this.pickupAddress = pickupAddress
+        this.changed = false
         
     }
     // SETTERS
@@ -55,6 +56,9 @@ class Item implements ItemInterface{
     }
     set setDonatedAtTimeStamp(timeStamp: number | null){
         this.donatedAtTimeStamp = timeStamp
+    }
+    set setChanged(change: boolean){
+        this.changed = change
     }
 }
 export default Item;

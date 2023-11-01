@@ -31,7 +31,7 @@ export const handleSubmit = async ({
   // stop default submission
   e.preventDefault()
 
-//   check user it a Donor else return
+  // check user it a Donor else return
     if (!currentUser || currentUser?.userType !== UserTypes.DONOR) {
         console.error('User is not a Donor. Item form should not be visible')
         return
@@ -59,7 +59,8 @@ export const handleSubmit = async ({
     description,
     location,
     itemType: category,
-    pickupAddress
+    pickupAddress,
+    changed: false
   } :
   {
     name,
@@ -67,22 +68,24 @@ export const handleSubmit = async ({
     location,
     itemType: category,
     donorId: currentUser.id,
-    pickupAddress
+    pickupAddress,
+    changed: false
   }) as ItemInterface
   
-   // if !item add item to db
+  // if !item add item to db
   //  if item, update item
-   const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem))
-   if(!response) {
+  const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem))
+  if(!response) {
     setErrorMsg(`Error: item ID is missing. Cannot call DB function`)
     return
-   } else if (response?.status === FunctionStatus.ERROR) {
+  } else if (response?.status === FunctionStatus.ERROR) {
     console.log(`Error in addItem submit ${response.errorMessage}`)
     setErrorMsg(`Error adding Item: ${response.errorMessage}`)
     return
-   }
+  }
+   
   //  call notify using index observer id
-   notify(observerID, notifcationType, currentUser)
+  notify(observerID, notifcationType, currentUser)
   // close modal  
   handleCloseAddItemModal(true)
   // set msg

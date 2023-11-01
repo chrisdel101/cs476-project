@@ -27,6 +27,7 @@ export const handleAcceptItem = ({item, notify, currentUser}: FProps
     // change item state - these don't do anytting :(
     item.setItemState = ItemStates.DONATED
     item.setDonatedAtTimeStamp = Date.now()
+    item.setChanged = true
     // update item in db
     // TODO confirm user and item are matched pre-crud
     crudFunctions.updateEntireItem(item)
@@ -45,7 +46,7 @@ export const handleRejectItem = ({item, notify, currentUser}: FProps
   if (item.itemState === ItemStates.PENDING) {
     // TODO confirm user and item are matched pre-crud
     handleCancelRequest({item, notify, currentUser})
-     // call nofity to update page
+    // call nofity to update page
     //  notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
   } else {
     console.error('Item is not available')
