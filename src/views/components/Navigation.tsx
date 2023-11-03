@@ -8,61 +8,57 @@ import { useHistory } from 'react-router-dom';
 import Redbell from '../../assets/svg/notification-14158.svg';
 import WhiteBell from '../../assets/svg/notification-bell-13079.svg';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react'
-import Observer from '../../models/Observer'
-import Item from '../../models/Item'
-import { AlertTypes, ItemStates, UserTypes, Observers, Notifications } from '../../../constants'
+import { useEffect, useState } from 'react';
+import Observer from '../../models/Observer';
+import { Notifications, Observers } from '../../../constants';
 
+import Item from '../../models/Item';
+import UserItemCard from './AccountScreen/UserItemCard';
+import { handleHideIcon, handleShowIcon } from '../../controllers/Navigation/navigationController';
 
 const Navigation = () => {
-  
-  // create new observer
-  const [observer] = useState<Observer>(new Observer({id: Observers.NOTIFY, 
-    update: (show: boolean) => {
-    // Update the component's local items state
-    setShowRedBell(show);
+  const {currentUser} = useUserContext()
+  const [usersItems, setUsersItems] = useState<Item[]|[]>([])
+  const [observer] = useState<Observer>(
+    new Observer({id: Observers.NAV, 
+    update: (items: Item[]) => {
+    setUsersItems(items);
   }}))
-
-  // watches for item changes
-  // const [observer] = useState<Observer>(new Observer({id: Observers.NAV, 
-  //   update: (newItems: Item[]) => {
-  //   handleChangedItems(items)
-  // }}))  
-
-  const [items, handleChangedItems] = useState<Item[]>([])
   const [showWhiteBell, setShowWhiteBell] = useState<boolean>(true)
   const [showRedBell, setShowRedBell] = useState<boolean>(false)
-  
   const itemsSubject = useItemsContext()
   useEffect(() => {
-    // build observers 
     if (itemsSubject) {
-      // attach to current observer for calling upddate
+      // attach to curent observers on
       itemsSubject.attach(observer);
-      // run this when component unmounts
+      // run this when component unmoounts
       return () => {
         itemsSubject.detach(observer);
       };
     }
-  }, []);
-
-  // this fetches the items
+  });
   useEffect(() => {
-    // call notify on load for init to get items - calls a different observer 
-    itemsSubject.notify(observer?.id, Notifications.GET_ITEMS);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemsSubject.observersArr])
+    // loads all users item onto the page on load
+    itemsSubject.notify(observer?.id, Notifications.GET_ITEMS_BY_USER, currentUser);
 
-  const handleIcon = () => {
-    
-  }
-
+  // 
+  // - check delays on these 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemsSubject.isLoaded, currentUser])
+  
+  useEffect(() => {
+    if(usersItems.length){
+      handleShowIcon(usersItems)
+       // loop over items and check if state is changed
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usersItems])
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <IconContainer>
-            {showWhiteBell ? <img src={WhiteBell} alt="White Bell" /> : null}
-            {showRedBell ? <Nav.Link href='' onClick={() => handleIcon()}><img src={Redbell} alt="Red Bell" /></Nav.Link> : null}
+      <IconContainer onClick={() => handleHideIcon(usersItems)}>
+          {showWhiteBell ? <img src={WhiteBell} alt="an unalerted bell icon" /> : null}
+          {showRedBell ? <img src={Redbell} alt="an alerted bell icon" /> : null}
         </IconContainer>
         <Navbar.Brand className="flex-grow-1" href="/">FreeBee</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

@@ -52,21 +52,25 @@ export function ProvideItems({ children }: IProps) {
   // use this if more than one observer needs run at a time
   const notifyAll = () => {
     observersArr.forEach((observer) => {
-        
+        // TODO: update to make this work and remove the other one
     });
   };
   // notify a only a specific observer - to save memory
   // called only
-  const notify = async (observerID: string, notificationType: Notifications, user?: User) => {
-    // loop up observer in observers list
-    const index = observersArr.findIndex(o => observerID === o.id)
-    if (index !== -1) {
+  const notify = async (
+    observerID: string, 
+    notificationType: Notifications, 
+    user?: User) => {
+      // TODO: make it an object - no need for list
+      // loop over observer in observers list
+      const index = observersArr.findIndex(o => observerID === o.id)
+      if (index !== -1) {
       const currentObserver = observersArr[index]
-      // run operatio based on notification type
+      // run operation based on notification type
       switch(notificationType) {
+        // handles the index page items update
         case Notifications.GET_ITEMS: {
-          try {
-            // fetch all items
+          try {            // fetch all items
             const fetchedItems = await crudFunctions.getItems();
             // pass an observer it's new list of items
             currentObserver.update(fetchedItems);
@@ -79,6 +83,7 @@ export function ProvideItems({ children }: IProps) {
         }
 
         case Notifications.GET_ITEMS_BY_USER:
+          // handles the accoint page items update per user
           if (user) {
             // fetch items by user
             try {

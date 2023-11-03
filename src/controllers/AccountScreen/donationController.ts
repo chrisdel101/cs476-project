@@ -24,7 +24,6 @@ export const handleAcceptItem = ({item, notify, currentUser}: FProps
   if (currentUser.userType === UserTypes.RECEIVER) return
   // confirm item is pending
   if (item.itemState === ItemStates.PENDING) {
-    // change item state - these don't do anytting :(
     item.setItemState = ItemStates.DONATED
     item.setDonatedAtTimeStamp = Date.now()
     item.setChanged = true
@@ -33,6 +32,7 @@ export const handleAcceptItem = ({item, notify, currentUser}: FProps
     crudFunctions.updateEntireItem(item)
     // call nofity to update page
     notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+    notify(Observers.NAV, Notifications.GET_ITEMS_BY_USER, currentUser)
   } else {
     console.error('Item is not in pending state')
   }
@@ -62,6 +62,7 @@ export const handleClaimItem = ({item, notify, currentUser}: FProps) => {
     // TODO confirm user and item are matched pre-crud
     crudFunctions.updateItem(item, 'itemState', ItemStates.CLAIMED)
     notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+    notify(Observers.NAV, Notifications.GET_ITEMS_BY_USER, currentUser)
   } else {
     console.error('Item is not available')
   }
@@ -78,6 +79,7 @@ export const handleCancelRequest = ({item, notify, currentUser}: FProps) => {
   // update item in db
   crudFunctions.updateEntireItem(item)
   notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+  notify(Observers.NAV, Notifications.GET_ITEMS_BY_USER, currentUser)
 }
 // delete the item from the DB - this is bad practice & should just deactivate to keep history - but this is a quick fix
 export const handleDeleteDonation = ({item, notify, currentUser}: FProps) => {
@@ -85,5 +87,6 @@ export const handleDeleteDonation = ({item, notify, currentUser}: FProps) => {
   // TODO confirm user and item are matched pre-crud
   crudFunctions.deleteItem(item)
   notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+  notify(Observers.NAV, Notifications.GET_ITEMS_BY_USER, currentUser)
   // TODO send confirmation
 }
