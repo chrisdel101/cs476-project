@@ -6,6 +6,9 @@ import { handleLogout } from '../../controllers/LoginScreen/loginScreenControlle
 import { useHistory } from 'react-router-dom';
 import Redbell from '../../assets/svg/notification-14158.svg';
 import WhiteBell from '../../assets/svg/notification-bell-13079.svg';
+import DonorLogo from '../../assets/donorlogoresize.png';
+import FreeBeeLogo from '../../assets/freebeelogoresize.png';
+import BeeLogo from '../../assets/receiverlogoresize.png';
 import styled from 'styled-components';
 import { useState } from 'react';
 
@@ -14,12 +17,18 @@ const Navigation = () => {
   const [showRedBell, setShowRedBell] = useState<boolean>(false)
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
+      <Container>      
       <IconContainer>
           {showWhiteBell ? <img src={WhiteBell} alt="Your SVG" /> : null}
           {showRedBell ? <img src={Redbell} alt="Your SVG" /> : null}
         </IconContainer>
+        <LogoContainer>
+        {/* conditionally render logo based on user type, etc */}
+        <img src={BeeLogo} alt="Your SVG" />
+      </LogoContainer>
         <Navbar.Brand className="flex-grow-1" href="/">FreeBee</Navbar.Brand>
+        
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -56,6 +65,12 @@ const NavigationAuth = () => {
 export default Navigation;
 
 const IconContainer = styled.div`
+  height: 40px;
+  width: 40px;
+  margin-right: 15px;
+
+`
+const LogoContainer = styled.div`
   height: 40px;
   width: 40px;
   margin-right: 15px;
