@@ -66,8 +66,11 @@ export enum AlertTypes {
 export enum Observers {
     INDEX = 'index',
     ACCOUNT = 'account',
+    NAV = 'nav',
+    NOTIFY = 'notify'
 }
 export enum Notifications {
     GET_ITEMS = 'get_items',
     GET_ITEMS_BY_USER = 'get_items_by_user',
+    
 }
