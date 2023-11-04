@@ -85,17 +85,15 @@ const Index = () => {
           <StyledButton variant="primary" onClick={handleShowAddItemModal}>
           Donate An Item
         </StyledButton>
-          ) : null}
-          {isLoggedIn && currentUser?.userType === UserTypes.RECEIVER ? (
+          ) : null}      
             <ItemFiltering
             selectedLocation={selectedLocation}
             handleLocationChange={handleLocationChange}
             selectedItemType={selectedItemType}
             handleItemTypeChange={handleItemTypeChange}
-            items={items}
+            items={items.filter(item => item.itemState === ItemStates.AVAILABLE)}
             onFilterSubmit={handleSearch}
-            />
-          ) : null}
+            />         
           <CardsContainer className='card-container'>
             {items.length === 0 ? (
             <h2>No Items</h2>

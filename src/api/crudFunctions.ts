@@ -17,6 +17,7 @@ import { Collections, FunctionStatus } from '../../constants'
 import { UserTypes } from '../../constants'
 import User from '../models/abstractClasses/User'
 import Item from '../models/Item'
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 // wrapper return details on add funcs
 // lets us know if ok or error
@@ -42,8 +43,9 @@ type T = {
   updateEntireItem: (item: Item, ) => Promise<AddFuncStatusReturn | undefined>; 
   updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
   deleteItem: (item: Item) => Promise<AddFuncStatusReturn | undefined>;
-  addNewItem: (item: any) => Promise<AddFuncStatusReturn>;
-  getItems: () =>  Promise<Item[]>; 
+  addNewItem: (item: any, image: File | undefined) => Promise<AddFuncStatusReturn>;
+  getItems: () =>  Promise<Item[]>;
+  addImage: (item: Item, image: File | undefined) => Promise<AddFuncStatusReturn>; 
 }
 const crudFunctions: T = {
   // https://css-tricks.com/user-registration-authentication-firebase-react/#creating-user-registration-functionality
@@ -140,7 +142,7 @@ const crudFunctions: T = {
       })
     }
   },
-  addNewItem: async (Item: Item) => {
+  addNewItem: async (Item: Item, image: File | undefined) => {
     const itemsRef = collection(db, Collections.ITEMS)
     // get JS obj out of class
     const { ...item } = Item
@@ -148,6 +150,11 @@ const crudFunctions: T = {
       // spread into DB to avoid nested obj
       ...item,
     })
+
+    if (image) {
+      await crudFunctions.addImage(Item, image);
+    }
+    
     try {
       return Promise.resolve({
         status: FunctionStatus.OK,
@@ -291,6 +298,36 @@ const crudFunctions: T = {
     } else {
       // docSnap.data() will be undefined in this case
       console.error('No such user document found!')
+    }
+  },
+  addImage: async (item: Item, image: File | undefined) => {
+
+    if (!image) {
+      return Promise.resolve({
+        status: FunctionStatus.OK,
+        errorCode: undefined,
+        errorMessage: 'No image provided',
+      });
+    }
+    try {
+      const fileName = `${item.id}-${image.name}`;
+      const storage = getStorage();
+      const imageRef = ref(storage, 'images/' + fileName);
+
+      // NOT SURE IF THE UPLOAD IS WORKING, should be stored in the database something like images/{itemid}-{imagename}
+      uploadBytes(imageRef, image).then((snapshot) => {console.log('Uploaded a blob or file!');});
+
+      return Promise.resolve({
+        status: FunctionStatus.OK,
+        errorCode: undefined,
+        errorMessage: undefined,
+      });
+    } catch (error) {
+      return Promise.resolve({
+        status: FunctionStatus.ERROR,
+        errorCode: undefined,
+        errorMessage: error as string,
+      });
     }
   },
 }

@@ -9,6 +9,7 @@ import crudFunctions from '../../../api/crudFunctions'
 import UpsertItemModal from '../IndexScreen/UpsertItemModal'
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 import Observer from '../../../models/Observer'
+import ItemFiltering from '../IndexScreen/ItemFiltering'; 
 
 const Account = () => {
   const { currentUser } = useUserContext()
@@ -23,6 +24,10 @@ const Account = () => {
     // Update the component's local items state
     setUserItems(newItems);
   }}))
+
+  const [selectedLocation, setSelectedLocation] = useState('all');
+  const [selectedItemType, setSelectedItemType] = useState('all');
+  const [selectedKeyword, setSearchKeyword] = useState('all');
   
   useEffect(() => {
     if (itemsSubject) {
@@ -36,6 +41,19 @@ const Account = () => {
   })
 
 
+  const handleLocationChange = (event) => {
+    setSelectedLocation(event.target.value);
+  };
+
+  const handleItemTypeChange = (event) => {
+    setSelectedItemType(event.target.value);
+  };
+
+  const handleSearch = (searchKeyword) => {
+    setSearchKeyword(searchKeyword);
+  };
+
+
   useEffect(() => {
     // call notify on load for init paint  
     itemsSubject.notify(observer?.id, Notifications.GET_ITEMS_BY_USER, currentUser);
@@ -45,9 +63,24 @@ const Account = () => {
 
   return (
     <PageContainer $usertypecontainer={currentUser?.userType}>
+      <ItemFiltering
+            selectedLocation={selectedLocation}
+            handleLocationChange={handleLocationChange}
+            selectedItemType={selectedItemType}
+            handleItemTypeChange={handleItemTypeChange}
+            items={userItems}
+            onFilterSubmit={handleSearch}
+            />   
       {currentUser ? (
         <UserAccountCard 
-        userItems={userItems} 
+        userItems={userItems.filter((item) => {
+          return (
+            (selectedLocation === 'all' || item.location === selectedLocation) &&
+            (selectedItemType === 'all' || item.itemType === selectedItemType) &&
+            (selectedKeyword === 'all' || selectedKeyword === '' || 
+              item.description.toLowerCase().includes(selectedKeyword.toLowerCase()) || item.name.toLowerCase().includes(selectedKeyword.toLowerCase()))
+          );
+        })} 
         currentUser={currentUser} 
         setShowUpsertItemModal={setShowUpsertItemModal}
         setSelectedItem={setSelectedItem}

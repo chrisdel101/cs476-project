@@ -12,13 +12,13 @@ const ItemFiltering = ({
 }) => {
   const uniqueLocations = new Set();
   items.forEach((item) => {
-    if (item.itemState === ItemStates.AVAILABLE)
+    if (item.itemState === ItemStates.AVAILABLE || item.itemState === ItemStates.PENDING)
         uniqueLocations.add(item.location);
   });
 
   const uniqueItemTypes = new Set();
   items.forEach((item) => {
-    if (item.itemState === ItemStates.AVAILABLE)
+    if (item.itemState === ItemStates.AVAILABLE || item.itemState === ItemStates.PENDING)
         uniqueItemTypes.add(item.itemType);
   });
 

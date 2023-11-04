@@ -14,6 +14,7 @@ interface IHandleSubmit {
   observerID: Observers
   notify: (observerID: Observers, notificationType: Notifications, user?: User) => void
   notifcationType: Notifications
+  imageFile: File | undefined
 }
 
 export const handleSubmit = async ({
@@ -26,7 +27,8 @@ export const handleSubmit = async ({
   item,
   notify,
   observerID,
-  notifcationType
+  notifcationType,
+  imageFile
 }: IHandleSubmit) => {
   // stop default submission
   e.preventDefault()
@@ -45,6 +47,11 @@ export const handleSubmit = async ({
   const location = form?.location?.value
   const pickupAddress = form['pickup-address']?.value;  
   const category = form?.category?.value
+  const image_file = imageFile;
+  let image = "default"
+  if (imageFile) {
+    image = imageFile.name;
+  } 
 
   // handle required fields validation
   if (form.checkValidity() === false) {
@@ -60,7 +67,8 @@ export const handleSubmit = async ({
     location,
     itemType: category,
     pickupAddress,
-    changed: false
+    changed: false,
+    image
   } :
   {
     name,
@@ -69,12 +77,13 @@ export const handleSubmit = async ({
     itemType: category,
     donorId: currentUser.id,
     pickupAddress,
-    changed: false
+    changed: false,
+    image
   }) as ItemInterface
   
   // if !item add item to db
   //  if item, update item
-  const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem))
+  const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem), image_file)
   if(!response) {
     setErrorMsg(`Error: item ID is missing. Cannot call DB function`)
     return

@@ -6,6 +6,7 @@ import { handleSubmit } from '../../../controllers/IndexScreen/addItemController
 import { useState } from 'react'
 import Item from '../../../models/Item'
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
+import { useRef } from 'react'
 interface IForm {
   handleCloseAddItemModal: () => void;
   setSuccessMsg: (str: string|undefined) => void;
@@ -24,6 +25,15 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
   const { notify } = useItemsContext()
 
   const {currentUser} = useUserContext();
+
+  const imageUploaded = useRef(null);
+  const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setSelectedImage(files[0]);
+    }
+  };
   return (
     <Form
       noValidate
@@ -41,6 +51,7 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
           notify,
           observerID, 
           notifcationType: item ? Notifications.GET_ITEMS_BY_USER : Notifications.GET_ITEMS,
+          imageFile: selectedImage,
         })}>
       <Form.Group className="mb-3" controlId="formBasicName">
         <Form.Label>Name</Form.Label>
@@ -82,7 +93,16 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
           onChange={(e) => setPickupAddress(e.target.value)}  value={pickupAddress} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicUploadImage">
-        <Button variant="primary">Upload Image</Button>
+        <div><Form.Label>Upload Image</Form.Label></div>
+        <label className="custom-file-upload">
+          <input
+          type="file"
+          name="image-upload"
+          accept="image/*"
+          ref={imageUploaded}
+          onChange={handleImageChange}
+          />
+          </label>
       </Form.Group>
 
       <Button variant="primary" type="submit">
