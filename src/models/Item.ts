@@ -41,7 +41,7 @@ class Item implements ItemInterface{
         this.addedAtTimeStamp = addedAtTimeStamp || Date.now()
         this.donatedAtTimeStamp = donatedAtTimeStamp || undefined
         this.pickupAddress = pickupAddress
-        this.changed = false
+        this.changed = changed || false
         
     }
     // SETTERS
