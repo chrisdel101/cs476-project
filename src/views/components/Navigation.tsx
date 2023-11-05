@@ -22,6 +22,7 @@ import { handleHideIcon, handleShowIcon } from '../../controllers/Navigation/nav
 const Navigation = () => {
   const {currentUser} = useUserContext()
   const [usersItems, setUsersItems] = useState<Item[]|[]>([])
+  //console.log(usersItems)
   const [observer] = useState<Observer>(
     new Observer({id: Observers.NAV, 
     update: (items: Item[]) => {
@@ -32,7 +33,7 @@ const Navigation = () => {
   const itemsSubject = useItemsContext()
   useEffect(() => {
     if (itemsSubject) {
-      // attach to curent observers on
+      // attach to current observers on
       itemsSubject.attach(observer);
       // run this when component unmoounts
       return () => {
@@ -51,15 +52,21 @@ const Navigation = () => {
   
   useEffect(() => {
     if(usersItems.length){
-      handleShowIcon(usersItems)
+      // check to see which item should be shown
+      handleShowIcon(usersItems, setShowRedBell, setShowWhiteBell, testFunction)
        // loop over items and check if state is changed
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersItems])
+
+  function testFunction(some_string: string){
+    console.log("Logging:", some_string)
+  }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary" style={{"minHeight": "75px"}}>
       <Container>
-      <IconContainer onClick={() => handleHideIcon(usersItems)}>
+      <IconContainer onClick={() => handleHideIcon(usersItems, setShowRedBell, setShowWhiteBell, testFunction)}>
           {showWhiteBell ? <img src={WhiteBell} alt="an unalerted bell icon" /> : null}
           {showRedBell ? <img src={Redbell} alt="an alerted bell icon" /> : null}
         </IconContainer>
@@ -67,9 +74,9 @@ const Navigation = () => {
         {/* conditionally render logo based on user type, etc */}
         <img src={BeeLogo} alt="Your SVG" />
       </LogoContainer>
-        <Navbar.Brand className="flex-grow-1" href="/">FreeBee</Navbar.Brand>
-        
-
+        <Navbar.Brand href="/">
+          <img src={FreeBeeLogo} alt="FreeBee" width="auto" height="60"></img>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

@@ -85,7 +85,7 @@ export const handleSubmit = async ({
   //  if item, update item
   const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem), image_file)
   if(!response) {
-    setErrorMsg(`Error: item ID is missing. Cannot call DB function`)
+    setErrorMsg(`Error: Item ID is missing. Cannot call DB function`)
     return
   } else if (response?.status === FunctionStatus.ERROR) {
     console.log(`Error in addItem submit ${response.errorMessage}`)
@@ -98,6 +98,6 @@ export const handleSubmit = async ({
   // close modal  
   handleCloseAddItemModal(true)
   // set msg
-  setSuccessMsg(`User Successfully Created`)
+  setSuccessMsg(`Item Successfully Created`)
 }
 
