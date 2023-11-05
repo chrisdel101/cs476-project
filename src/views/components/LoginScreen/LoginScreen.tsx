@@ -36,6 +36,6 @@ const PageContainer = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: light-gray;
+  background-color: LightGray;
   width: 100%;
 `

@@ -76,13 +76,8 @@ const Index = () => {
       <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
       { !itemsSubject?.isLoaded ? <Loading/> : 
         <>
-          {isLoggedIn ? null : (
-            <StyledButton variant="primary" onClick={handleShowAddUserModal}>
-              Create An Account
-            </StyledButton>
-          )}
           {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
-          <StyledButton variant="primary" onClick={handleShowAddItemModal}>
+            <StyledButton variant="primary" onClick={handleShowAddItemModal}>
           Donate An Item
         </StyledButton>
           ) : null}      
@@ -94,6 +89,11 @@ const Index = () => {
             items={items.filter(item => item.itemState === ItemStates.AVAILABLE)}
             onFilterSubmit={handleSearch}
             />         
+            {isLoggedIn ? null : (
+              <StyledButton variant="primary" onClick={handleShowAddUserModal}>
+                Create An Account
+              </StyledButton>
+            )}
           <CardsContainer className='card-container'>
             {items.length === 0 ? (
             <h2>No Items</h2>

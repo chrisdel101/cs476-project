@@ -57,7 +57,7 @@ const Navigation = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersItems])
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-tertiary" style={{"minHeight": "75px"}}>
       <Container>
       <IconContainer onClick={() => handleHideIcon(usersItems)}>
           {showWhiteBell ? <img src={WhiteBell} alt="an unalerted bell icon" /> : null}

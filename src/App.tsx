@@ -92,7 +92,7 @@ export default App
 
 // HERO styles for all pages
 const HeroContainer = styled.div`
-  min-height: 500px;
+  min-height: 600px;
   width: 100%;
   display: flex
 `
@@ -101,4 +101,5 @@ const LayoutContainer = styled.div`
   background-color: whitesmoke;
   width: 100%;
   overflow-y: scroll;
+  min-height: 100vh;
 `
