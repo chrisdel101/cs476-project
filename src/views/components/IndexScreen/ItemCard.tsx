@@ -43,8 +43,8 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
                 <p className="card-text">ITEM STATUS: {item?.itemState}</p>
                 <p className="card-text">{item?.receiverId}</p>
                 <p className="card-text">
-                  <small className="text-muted">Date added: Date posted: </small>
-                  <small className="text-muted">{`${day}-${month}-${year} ${hour}:${minute}`}</small>
+                  <small className="text-muted">Date posted: </small>
+                  <small className="text-muted">{`${day}-${month}-${year}`}</small>
                 </p>
               </div>
             </TextContainer>
