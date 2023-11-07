@@ -5,13 +5,17 @@ import Item from '../../../models/Item'
 import { handleRequestItem } from '../../../controllers/IndexScreen/requestItemController'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
 import { UserTypes } from '../../../../constants'
+import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 
 interface IProps {
   item: Item
+  setErrorMsg: (msg: string) => void
+  setSuccessMsg: (msg: string) => void
 }
 
-const ItemCard = ({ item }: IProps) => {
+const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
   const { currentUser } = useUserContext()
+  const itemsSubject = useItemsContext()
 
   const addedAtTimeStamp = new Date(item.addedAtTimeStamp ?? new Date())
   const day = addedAtTimeStamp.getDate()
@@ -49,8 +53,14 @@ const ItemCard = ({ item }: IProps) => {
               <StyledContainer className="col-md-3">
                 <StyledButton
                   variant="primary"
-                  onClick={() => handleRequestItem(currentUser, item)}
-                >
+                  onClick={() => 
+                    handleRequestItem({
+                      currentUser, 
+                      item, 
+                      notify: itemsSubject?.notify,
+                      setErrorMsg,
+                      setSuccessMsg
+                      })}>
                   Request Item
                 </StyledButton>
               </StyledContainer>

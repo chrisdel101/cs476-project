@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Button from 'react-bootstrap/Button'
 import AddUserModal from './AddUserModal'
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import { AlertTypes, ItemStates, UserTypes, Observers, Notifications } from '../../../../constants'
 import UpsertItemModal from './UpsertItemModal'
 import { AppAlert as Alert } from '../Alert'
@@ -12,14 +12,12 @@ import ItemCard from './ItemCard'
 import Row from 'react-bootstrap/Row';
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 import Loading from '../Loading'
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
 import ItemFiltering from './ItemFiltering'; 
 
 const Index = () => {
   const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false)
   const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
-  const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
+  const [errorMsg, setErrorMsg] = useState<string | undefined>("")
   const [successMsg, setSuccessMsg] = useState<string | undefined>("")
   const { isLoggedIn, currentUser } = useUserContext()
 
@@ -32,15 +30,15 @@ const Index = () => {
   const [selectedItemType, setSelectedItemType] = useState('all');
   const [selectedKeyword, setSearchKeyword] = useState('all');
 
-  const handleLocationChange = (event) => {
+  const handleLocationChange = (event: { target: { value: SetStateAction<string> } }) => {
     setSelectedLocation(event.target.value);
   };
 
-  const handleItemTypeChange = (event) => {
+  const handleItemTypeChange = (event: { target: { value: SetStateAction<string> } }) => {
     setSelectedItemType(event.target.value);
   };
 
-  const handleSearch = (searchKeyword) => {
+  const handleSearch = (searchKeyword: SetStateAction<string>) => {
     setSearchKeyword(searchKeyword);
   };
 
@@ -73,14 +71,13 @@ const Index = () => {
 
   return (
     <PageContainer>
-      <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
+      <AlertContainer $show={successMsg || errorMsg}>
+        <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
+      <Alert variant={AlertTypes.DANGER} message={errorMsg} show={errorMsg} setShow={setErrorMsg} duration={6000}/>
+        
+      </AlertContainer>
       { !itemsSubject?.isLoaded ? <Loading/> : 
         <>
-          {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
-            <StyledButton variant="primary" onClick={handleShowAddItemModal}>
-          Donate An Item
-        </StyledButton>
-          ) : null}      
             <ItemFiltering
             selectedLocation={selectedLocation}
             handleLocationChange={handleLocationChange}
@@ -89,6 +86,11 @@ const Index = () => {
             items={items.filter(item => item.itemState === ItemStates.AVAILABLE)}
             onFilterSubmit={handleSearch}
             />         
+             {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
+            <StyledButton variant="primary" onClick={handleShowAddItemModal}>
+          Donate An Item
+        </StyledButton>
+          ) : null}    
             {isLoggedIn ? null : (
               <StyledButton variant="primary" onClick={handleShowAddUserModal}>
                 Create An Account
@@ -107,7 +109,7 @@ const Index = () => {
                      item.description.toLowerCase().includes(selectedKeyword.toLowerCase()) || item.name.toLowerCase().includes(selectedKeyword.toLowerCase()))
                     ) {
                       return (
-                        <ItemCard key={i} item={item}/>        
+                        <ItemCard key={i} item={item} setSuccessMsg={setSuccessMsg} setErrorMsg={setErrorMsg} />        
                       );
                     }
                     else {
@@ -161,4 +163,9 @@ const CardsContainer = styled(Row)`
 const StyledButton = styled(Button)<any>`
   width: 200px;
   align-self: center;
+`
+const AlertContainer = styled.div<{ $show?: string }>`
+  padding-top: 10px;
+  visibility: ${props => props?.$show ? "visible" : "hidden"};
+  min-height: 85px;
 `

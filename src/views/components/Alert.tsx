@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { AlertTypes } from '../../../constants';
+import { Fade } from 'react-bootstrap';
 
 interface IProps {
   variant: AlertTypes;
@@ -27,7 +28,7 @@ export const AppAlert = ({variant, message, show, setShow, duration}: IProps) =>
 
   if (show) {
       return (
-      <Alert className="mx-5" onClose={() => setShow("")} key={variant} variant={variant} show={true} dismissible>
+      <Alert className="mx-5" onClose={() => setShow("")} key={variant} variant={variant} show={true} dismissible transition={Fade}>
         {message}
       </Alert>
       );
