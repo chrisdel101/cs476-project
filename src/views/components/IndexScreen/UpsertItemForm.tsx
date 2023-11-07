@@ -28,10 +28,17 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
 
   const imageUploaded = useRef(null);
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
+  const [fileValidationError, setFileValidationError] = useState('');
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0) {
+
+    if (files && files.length > 0 && files[0].type.startsWith('image/')) {
+      setFileValidationError('');
       setSelectedImage(files[0]);
+    } else {
+      
+      setFileValidationError('Not an image file');
+      e.target.value = null;
     }
   };
   return (
@@ -103,6 +110,7 @@ const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerI
           onChange={handleImageChange}
           />
           </label>
+          <span className="error-message" style={{ color: 'red' }}>{fileValidationError}</span>
       </Form.Group>
 
       <Button variant="primary" type="submit">
