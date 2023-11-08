@@ -1,5 +1,6 @@
 import { FunctionStatus, UserTypes } from '../../../constants'
 import crudFunctions from '../../api/crudFunctions'
+import { UnregisteredUser } from '../../models/SimpleFactory'
 import Donor from '../../models/Donor'
 import Receiver from '../../models/Receiver'
 
@@ -32,14 +33,15 @@ export const handleSubmit = async ({
   setCurrentUser,
   isLoggedIn
 }: IHandleSubmit) => {
-  // stop default submission
-  e.preventDefault()
-  // don't allow submit when user logged in
-  if(isLoggedIn) return
-  // get user data from form
-  const form = e?.currentTarget
+  
+  e.preventDefault()            // stop default submission
+  
+  if(isLoggedIn) return         // don't allow submit when user logged in
   
   // get user data from form
+  const form = e?.currentTarget 
+  
+  // get individual fields from form
   const name = form['user-name']?.value
   const emailElem = form?.email
   const email = emailElem?.value
@@ -51,7 +53,7 @@ export const handleSubmit = async ({
   const confirmPasswordElem = form['confirm-password']
   const confirmPassword = confirmPasswordElem?.value
 
-  // reset to defualt state of any prev errors
+  // reset to default state of any prev errors
   setPasswordMatchingError(false)
   setFireBaseEmailErrorMsg(undefined)
   setFireBasePasswordErrorMsg(undefined)
@@ -61,7 +63,6 @@ export const handleSubmit = async ({
   emailElem.reportValidity()
   setErrorMsg(undefined)
 
- 
   // if PW fields not blank - check if they match
   if (password && confirmPassword) {
   //  handle password matches
@@ -85,14 +86,20 @@ export const handleSubmit = async ({
     return
   } 
   // sends validations back to form
-  // build User objs
-  const user =
-    userType === UserTypes.DONOR
-      ? new Donor({ name, email, phone, location, userType, password })
-      : new Receiver({ name, email, phone, location, userType, password })
+  
+  // FACTORY PATTERN IMPLEMENTATION
+  const unregisteredUser = new UnregisteredUser(e, userType);
+  const user = unregisteredUser.CallFactory();
+  
+  // old implementation
+  // userType === UserTypes.DONOR
+    //   ? new Donor({ name, email, phone, location, userType, password })
+    //   : new Receiver({ name, email, phone, location, userType, password })
+  
   // add user to db
   const response =  await crudFunctions.createNewUser(user)
   // console.log(response, "HERE2")
+  
   // if firebase error send to form
   if (response.status === FunctionStatus.ERROR) {
     if (response.errorCode === 'auth/email-already-in-use') {
@@ -112,6 +119,7 @@ export const handleSubmit = async ({
     }
     return
   } 
+
   // close modal
   handleCloseAddUserModal(true)
   // set msg
