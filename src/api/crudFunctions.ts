@@ -40,7 +40,7 @@ type T = {
   getItemsByUser: (
     user: User
   ) => Promise<Item[]>
-  updateEntireItem: (item: Item, image: File | undefined) => Promise<AddFuncStatusReturn | undefined>; 
+  updateEntireItem: (item: Item, image?: File | undefined) => Promise<AddFuncStatusReturn | undefined>; 
   updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
   deleteItem: (item: Item) => Promise<AddFuncStatusReturn | undefined>;
   addNewItem: (item: any, image: File | undefined) => Promise<AddFuncStatusReturn>;
@@ -232,7 +232,7 @@ const crudFunctions: T = {
     }
   },
   // overwrite all item values
-  updateEntireItem: async (item: Item, image: File | undefined) => {
+  updateEntireItem: async (item: Item, image?: File | undefined) => {
       try {
         if (!item !|| !item?.id) return
         

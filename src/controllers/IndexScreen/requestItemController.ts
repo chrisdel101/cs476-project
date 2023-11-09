@@ -36,7 +36,7 @@ export const handleRequestItem = async ({currentUser, item, notify, setSuccessMs
         notify(Observers.INDEX, Notifications.GET_ITEMS)
         notify(Observers.NAV, Notifications.GET_ITEMS)
     // update item in db
-      crudFunctions.updateEntireItem(item, undefined)
+      crudFunctions.updateEntireItem(item)
     setSuccessMsg("Your request was a success. Once the donor approves it you will be notified & given their pickup address.")
     } else {
         notify(Observers.INDEX, Notifications.GET_ITEMS)

@@ -27,7 +27,7 @@ export const handleAcceptItem = ({item, notify, currentUser}: FProps
     item.setItemState = ItemStates.DONATED
     item.setDonatedAtTimeStamp = Date.now()
     item.setChanged = true
-    crudFunctions.updateEntireItem(item, undefined)  // update item in db
+    crudFunctions.updateEntireItem(item)  // update item in db
     // TODO confirm user and item are matched pre-crud
     // call nofity to update page
     notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
@@ -77,7 +77,7 @@ export const handleCancelRequest = ({item, notify, currentUser}: FProps) => {
   item.setChanged = true
   // TODO confirm user and item are matched pre-crud
   // update item in db
-  crudFunctions.updateEntireItem(item, undefined)
+  crudFunctions.updateEntireItem(item)
   notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
   notify(Observers.NAV, Notifications.GET_ITEMS_BY_USER, currentUser)
 }
