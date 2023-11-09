@@ -83,7 +83,7 @@ export const handleSubmit = async ({
   
   // if !item add item to db
   //  if item, update item
-  const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem)) : await crudFunctions.addNewItem(new Item(newItem), image_file)
+  const response =  item ? await crudFunctions.updateEntireItem(new Item(newItem), image_file) : await crudFunctions.addNewItem(new Item(newItem), image_file)
   if(!response) {
     setErrorMsg(`Error: Item ID is missing. Cannot call DB function`)
     return
