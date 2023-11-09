@@ -3,7 +3,15 @@ import { ItemStates, Notifications, Observers, UserTypes } from '../../../consta
 import crudFunctions from '../../api/crudFunctions'
 import User from '../../models/abstractClasses/User'
 import Item from '../../models/Item'
+import {
+  collection,
+  getDocs,
+} from 'firebase/firestore'
+import { db } from '../../services/firebase.config'
+import { Collections } from '../../../constants'
 
+// Note that the workaround changes this to be an async function because it has to get data
+// from the database
 interface FProps {
     currentUser: User | null
     item: Item
@@ -15,10 +23,12 @@ interface FProps {
     setErrorMsg: (msg: string) => void
     setSuccessMsg: (msg: string) => void
   }
-export const handleRequestItem = ({currentUser, item, notify, setSuccessMsg, setErrorMsg}: FProps) => {
+export const handleRequestItem = async ({currentUser, item, notify, setSuccessMsg, setErrorMsg}: FProps) => {
     if(currentUser?.userType === UserTypes.DONOR) return
     // confirm item is available
-    if(item.itemState === ItemStates.AVAILABLE) {
+    const querySnapshot_temp = await getDocs(collection(db, Collections.ITEMS));
+    const matchingItem_temp = querySnapshot_temp.docs.find(doc => doc.id === item.id && doc.data().itemState === item.itemState);
+    if(item.itemState === ItemStates.AVAILABLE && matchingItem_temp) {
         // change item state
        item.setItemState = ItemStates.PENDING
        item.setReceiverId = currentUser?.id as string
