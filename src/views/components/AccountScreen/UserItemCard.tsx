@@ -92,7 +92,7 @@ const UserItemCard = ({
           <StyledCardText>
             <strong>
               <span>Pickup Address: </span>
-            {item?.pickupAddress}
+            {item?.pickupAddress || "No pickup address was provided. Please contact the donor."}
               </strong>
             </StyledCardText>
           : null
@@ -108,6 +108,7 @@ const UserItemCard = ({
           item.itemState === ItemStates.PENDING ? (
             <ButtonContainer>
               <StyledButton
+              className="me-2"
                 variant="primary"
                 onClick={() => handleAcceptItem({ item, notify, currentUser })}
               >
@@ -123,6 +124,7 @@ const UserItemCard = ({
           ) : item.itemState === ItemStates.DONATED ? (
             <ButtonContainer>
               <StyledButton
+              className="me-2"
                 variant="secondary"
                 onClick={() => handleClaimItem({ item, notify, currentUser })}
               >
@@ -139,7 +141,7 @@ const UserItemCard = ({
             </ButtonContainer>
           ) : (
             <ButtonContainer>
-              <StyledButton
+              <StyledButton className="me-2"
                 variant="secondary"
                 onClick={() => {
                   setShowUpsertItemModal(true)
@@ -183,7 +185,8 @@ const StyledCard = styled(Card)`
 // organizes the button content of the item card
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-self: center;
 `
 // standardizes the buttons used on this page
 const StyledButton = styled(Button)<any>`
