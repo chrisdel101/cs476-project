@@ -40,7 +40,7 @@ type T = {
   getItemsByUser: (
     user: User
   ) => Promise<Item[]>
-  updateEntireItem: (item: Item, ) => Promise<AddFuncStatusReturn | undefined>; 
+  updateEntireItem: (item: Item, image: File | undefined) => Promise<AddFuncStatusReturn | undefined>; 
   updateItem: (item: Item, propToUpdate: string, value: any) => Promise<AddFuncStatusReturn | undefined>; 
   deleteItem: (item: Item) => Promise<AddFuncStatusReturn | undefined>;
   addNewItem: (item: any, image: File | undefined) => Promise<AddFuncStatusReturn>;
@@ -232,9 +232,21 @@ const crudFunctions: T = {
     }
   },
   // overwrite all item values
-  updateEntireItem: async (item: Item) => {
+  updateEntireItem: async (item: Item, image: File | undefined) => {
       try {
         if (!item !|| !item?.id) return
+        
+        if (image) {
+          await crudFunctions.addImage(item, image);
+        }
+        else {
+          const querySnapshot_temp_2 = await getDocs(collection(db, Collections.ITEMS));
+          const matchingItem_temp_2 = querySnapshot_temp_2.docs.find(doc => doc.id === item.id);
+          if (matchingItem_temp_2) {
+            item.image = matchingItem_temp_2?.data().image
+          }
+        }
+
         const { ...newItem } = item
         await setDoc(doc(db, "items", newItem.id as string), newItem)
          return Promise.resolve({
