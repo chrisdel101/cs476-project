@@ -1,5 +1,4 @@
 import { ReactNode, createContext, useState } from 'react';
-import Item from '../../../models/Item';
 import crudFunctions from '../../../api/crudFunctions';
 import { Notifications } from '../../../../constants';
 import User from '../../../models/abstractClasses/User';

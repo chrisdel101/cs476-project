@@ -21,8 +21,6 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
   const day = addedAtTimeStamp.getDate()
   const month = addedAtTimeStamp.getMonth() + 1 // Months are zero-based, so add 1
   const year = addedAtTimeStamp.getFullYear()
-  const hour = addedAtTimeStamp.getHours()
-  const minute = addedAtTimeStamp.getMinutes()
 
   // template for the card contents
   // if (currentUser) {

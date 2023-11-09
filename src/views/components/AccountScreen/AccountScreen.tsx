@@ -34,11 +34,12 @@ const Account = () => {
       // attach to curent observer on
       itemsSubject.attach(observer);
       console.log('itemsSubject', itemsSubject)
-      // return () => {
-      //   itemsSubject.detach(observer);
-      // };
+      return () => {
+        itemsSubject.detach(observer);
+      };
     }
-  })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
 
   const handleLocationChange = (event) => {
