@@ -34,7 +34,7 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
           <div className="row no-gutters">
             <ImgContainer className="col-md-3">
               {/* will need an image var here */}
-              <StyledImg src={'https://placekitten.com/200/200'} />
+              <StyledImg src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/200/200' : item.image} />
             </ImgContainer>
             <TextContainer className="col-md-6">
               <div className="card-body">

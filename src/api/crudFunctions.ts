@@ -143,6 +143,10 @@ const crudFunctions: T = {
     }
   },
   addNewItem: async (Item: Item, image: File | undefined) => {
+    if (image) {
+      await crudFunctions.addImage(Item, image);
+    }
+
     const itemsRef = collection(db, Collections.ITEMS)
     // get JS obj out of class
     const { ...item } = Item
@@ -150,10 +154,6 @@ const crudFunctions: T = {
       // spread into DB to avoid nested obj
       ...item,
     })
-
-    if (image) {
-      await crudFunctions.addImage(Item, image);
-    }
     
     try {
       return Promise.resolve({
@@ -310,12 +310,22 @@ const crudFunctions: T = {
       });
     }
     try {
-      const fileName = `${item.id}-${image.name}`;
+    
+      const timestamp = new Date().getTime();
+      const fileName = `${timestamp}-${image.name}`;
       const storage = getStorage();
       const imageRef = ref(storage, 'images/' + fileName);
 
-      // NOT SURE IF THE UPLOAD IS WORKING, should be stored in the database something like images/{itemid}-{imagename}
-      uploadBytes(imageRef, image).then((snapshot) => {console.log('Uploaded a blob or file!');});
+      try {
+        const snapshot = await uploadBytes(imageRef, image);
+        console.log('Uploaded a file!');
+        const downloadURL = await getDownloadURL(imageRef);
+        //console.log(downloadURL)
+        item.image = downloadURL;
+        //console.log(item.image)
+      } catch (error) {
+        console.log(error.code)
+      }
 
       return Promise.resolve({
         status: FunctionStatus.OK,

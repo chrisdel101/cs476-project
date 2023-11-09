@@ -55,7 +55,7 @@ const UserItemCard = ({
           : ''
       }
     >
-      <Card.Img src={'https://placekitten.com/100/100'} />
+      <Card.Img src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/100/100' : item.image} style={{width: '100%', height: '15vw', objectFit: 'cover'}}/>
       <Card.Body
         className="card-body"
         style={{
