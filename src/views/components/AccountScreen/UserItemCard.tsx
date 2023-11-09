@@ -183,7 +183,7 @@ const StyledCard = styled(Card)`
 // organizes the button content of the item card
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `
 // standardizes the buttons used on this page
 const StyledButton = styled(Button)<any>`

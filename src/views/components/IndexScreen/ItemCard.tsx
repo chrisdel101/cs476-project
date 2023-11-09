@@ -36,16 +36,16 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
               {/* will need an image var here */}
               <StyledImg src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/200/200' : item.image} />
             </ImgContainer>
-            <TextContainer className="col-md-6">
-              <div className="card-body">
-                <Card.Title>Item Name: {item?.name}</Card.Title>
-                <p className="card-text">Item description: {item?.description}</p>
-                <p className="card-text">ITEM STATUS: {item?.itemState}</p>
-                <p className="card-text">{item?.receiverId}</p>
-                <p className="card-text">
+            <TextContainer className="col-md-6 card-body">
+             
+                <Card.Title>Name: {item?.name}</Card.Title>
+                <div className="card-text">Region: {item?.location?.toUpperCase()}</div>
+                <div className="card-text">Description: {item?.description}</div>
+                <div className="card-text">ITEM STATUS: {item?.itemState}</div>
+                <div className="card-text">{item?.receiverId}</div>
+                <div className="card-text">
                   <small className="text-muted">Date posted: </small>
                   <small className="text-muted">{`${day}-${month}-${year}`}</small>
-                </p>
               </div>
             </TextContainer>
             {/* if item is available (checked before this function call), and the user is a receiver, user can request item */}
@@ -122,6 +122,9 @@ const StyledContainer = styled.div<{ $bgColor?: boolean }>`
 `
 // standardizes the buttons on the card
 const StyledButton = styled(Button)<any>`
+ @media (max-width: 768px) {
+  margin-top: 10px;
+ }
   width: 150px;
   align-self: center;
 `
