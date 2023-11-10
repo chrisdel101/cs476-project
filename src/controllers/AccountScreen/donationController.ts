@@ -13,7 +13,7 @@ interface FProps {
   notify: (
     observerID: string,
     notificationType: Notifications,
-    user: User
+    user?: User
   ) => void
   currentUser?: User | null
 }
@@ -46,7 +46,9 @@ export const handleRejectItem = ({item, notify, currentUser}: FProps
     // TODO confirm user and item are matched pre-crud
     handleCancelRequest({item, notify, currentUser})
     // call nofity to update page
-    //  notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+     notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
+    // notify(Observers.INDEX, Notifications.GET_ITEMS)
+    notify(Observers.NAV, Notifications.GET_ITEMS)
   } else {
     console.error('Item is not available')
   }
@@ -74,7 +76,7 @@ export const handleCancelRequest = ({item, notify, currentUser}: FProps) => {
   item.setItemState = ItemStates.AVAILABLE
   item.setReceiverId = null
   item.setDonatedAtTimeStamp = null
-  item.setChanged = true
+  item.setChanged = false
   // TODO confirm user and item are matched pre-crud
   // update item in db
   crudFunctions.updateEntireItem(item)
