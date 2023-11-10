@@ -232,7 +232,7 @@ const crudFunctions: T = {
     }
   },
   // overwrite all item values
-  updateEntireItem: async (item: Item, image: File | undefined) => {
+  updateEntireItem: async (item: Item, image?: File | undefined) => {
       try {
         if (!item !|| !item?.id) return
         
