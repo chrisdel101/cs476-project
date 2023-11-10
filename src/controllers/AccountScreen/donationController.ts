@@ -76,7 +76,7 @@ export const handleCancelRequest = ({item, notify, currentUser}: FProps) => {
   item.setItemState = ItemStates.AVAILABLE
   item.setReceiverId = null
   item.setDonatedAtTimeStamp = null
-  item.setChanged = true
+  item.setChanged = false
   // TODO confirm user and item are matched pre-crud
   // update item in db
   crudFunctions.updateEntireItem(item)

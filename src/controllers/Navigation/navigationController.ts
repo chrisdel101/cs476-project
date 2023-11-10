@@ -36,7 +36,6 @@ export const handleShowIcon = ({
   setShowWhiteBell,
   setToolTipText
 }: FProps) => {
-    console.log("handleShowIcon", items)
   // loop over items and check if the item state is changed to true
   for (let i = 0; i < items.length; i++) {
     if (items[i]?.changed === true) {
