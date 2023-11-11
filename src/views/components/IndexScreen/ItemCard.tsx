@@ -12,7 +12,7 @@ interface IProps {
   setErrorMsg: (msg: string) => void
   setSuccessMsg: (msg: string) => void
 }
-
+// Component displaying items on the IndexScreen
 const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
   const { currentUser } = useUserContext()
   const itemsSubject = useItemsContext()
@@ -28,8 +28,8 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
       // following the information at https://getbootstrap.com/docs/4.3/components/card/ but with the boostrap 5 card elements found at //https://react-bootstrap.netlify.app/docs/components/cards
       <StyledCard
         border="light">
-        <Card.Body>
-          <div className="row no-gutters">
+        <StyledMobileCardBody className="row no-gutters">
+          {/* <div className="row no-gutters"> */}
             <ImgContainer className="col-md-3">
               {/* will need an image var here */}
               <StyledImg src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/200/200' : item.image} />
@@ -40,7 +40,7 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
                 <div className="card-text">Region: {item?.location?.toUpperCase()}</div>
                 <div className="card-text">Description: {item?.description}</div>
                 <div className="card-text">ITEM STATUS: {item?.itemState}</div>
-                <div className="card-text">{item?.receiverId}</div>
+              
                 <div className="card-text">
                   <small className="text-muted">Date posted: </small>
                   <small className="text-muted">{`${day}-${month}-${year}`}</small>
@@ -48,7 +48,7 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
             </TextContainer>
             {/* if item is available (checked before this function call), and the user is a receiver, user can request item */}
             {currentUser?.userType === UserTypes.RECEIVER ? (
-              <StyledContainer className="col-md-3">
+              <StyledButtonContainer className="col-md-3">
                 <StyledButton
                   variant="primary"
                   onClick={() => 
@@ -61,25 +61,32 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
                       })}>
                   Request Item
                 </StyledButton>
-              </StyledContainer>
+              </StyledButtonContainer>
             ) : !currentUser ? 
             
-            <StyledContainer $bgColor={true}>
+            <StyledButtonContainer $bgColor={true}>
               <div>
                 Create an account to get started
               </div>
                
-                </StyledContainer>
+                </StyledButtonContainer>
           : null
             }
-          </div>
-        </Card.Body>
+          {/* </div> */}
+        </StyledMobileCardBody>
       </StyledCard>
     )
   // }
 }
 
 export default ItemCard
+
+const StyledMobileCardBody = styled(Card.Body)`
+  @media (max-width: 609px) {
+    flex-direction: column;
+  }
+  flex-direction: row;
+`
 
 const StyledCard = styled(Card)`
   width: 90%;
@@ -88,6 +95,9 @@ const StyledCard = styled(Card)`
 `
 // organizes the text content of the item card
 const TextContainer = styled.div`
+@media (max-width: 768px) {
+  flex: 2;
+ }
   flex-direction: column;
   display: flex;
   justify-content: space-evenly;
@@ -95,27 +105,41 @@ const TextContainer = styled.div`
 `
 // organizes the image content of the item card
 const ImgContainer = styled.div`
+  @media (max-width: 768px) {
+    width: 50%;
+    margin: auto;
+  }
+  @media (max-width: 460px) {
+    width: 90%;
+    margin: auto;
+  }
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
   align-content: stretch;
   flex: 1;
+  width: 150px;
+  max-height: 150px;
 `
 const StyledImg = styled.img`
-  width: initial;
+  object-fit: cover;
 `
 // organizes the button alignment on the item card
-const StyledContainer = styled.div<{ $bgColor?: boolean }>`
+const StyledButtonContainer = styled.div<{ $bgColor?: boolean }>`
+  @media (max-width: 609px) {
+    min-height: 100px;
+    justify-content: center;
+  }
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  // only applies when button showing
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  gap: 10px;
   flex: 1;
-  background-color: ${props => props.$bgColor ? "whitesmoke" : "initial"};
+  background-color: whitesmoke;
   border-radius: 5px;
 `
 // standardizes the buttons on the card

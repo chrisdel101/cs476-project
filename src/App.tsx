@@ -1,9 +1,15 @@
+// ****************************************************************
+//  * FREEBEE: Written by Chris Dielschnieder, Dayne Blair and Nguyen Truong
+//  * Novemeber 13th 2023
+//  * University of Reginsa, Dept of Computer Science
+//  * CS 476
+//  ***************************************************************"
+//
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-  useLocation,
 } from 'react-router-dom'
 import { Routes } from '../constants'
 import styled from 'styled-components'
@@ -24,66 +30,68 @@ interface CustomRouteProps {
   isLoaded?: boolean
 }
 
-// Only acessible when NOT logged in
+// Routes: Only acessible when NOT logged in
 function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
   return (
     <>
-    { !auth.isLoaded ?   <Loading/>  :
-      <Route
-      {...rest}
-        render={() =>
-          auth.currentUser ? <Redirect to={Routes.Index}/> : children
-        }
-      />
-    }
+      {!auth.isLoaded ? (
+        <Loading />
+      ) : (
+        <Route
+          {...rest}
+          render={() =>
+            auth.currentUser ? <Redirect to={Routes.Index} /> : children
+          }
+        />
+      )}
     </>
   )
 }
 
-// Only acessible when user logged in
+// Routes: Only acessible when user logged in
 function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
   return (
     <>
-    { !auth.isLoaded ? <Loading/>  :
-      <Route
-      {...rest}
-        render={() =>
-          auth.currentUser ? children : <Redirect to={Routes.Index} />
-        }
-      />
-    }
+      {!auth.isLoaded ? (
+        <Loading />
+      ) : (
+        <Route
+          {...rest}
+          render={() =>
+            auth.currentUser ? children : <Redirect to={Routes.Index} />
+          }
+        />
+      )}
     </>
   )
 }
 
 const App = () => {
- 
-
   return (
     <ProvideAuth>
       <ProvideItems>
-      <Router>
-        <LayoutContainer>
-          <Navigation />
-          <HeroContainer>
-            <Switch>
-              <AuthenticatedRoute path={Routes.Account}>
-                <AccountScreen />
-              </AuthenticatedRoute>
-              <NonAuthenticatedRoute path={Routes.Login}>
-                <LoginScreen />
-              </NonAuthenticatedRoute>
-              <Route exact path={Routes.Index}>
-                <IndexScreen />
-              </Route>
-            </Switch>
-          </HeroContainer>
-          <Footer />
-        </LayoutContainer>
-      </Router>
-          </ProvideItems>
+        <Router>
+          <LayoutContainer>
+            <Navigation />
+            <HeroContainer>
+              <Switch>
+                <AuthenticatedRoute path={Routes.Account}>
+                  <AccountScreen />
+                </AuthenticatedRoute>
+                <NonAuthenticatedRoute path={Routes.Login}>
+                  <LoginScreen />
+                </NonAuthenticatedRoute>
+                <Route exact path={Routes.Index}>
+                  <IndexScreen />
+                </Route>
+              </Switch>
+            </HeroContainer>
+            <Footer />
+          </LayoutContainer>
+        </Router>
+      </ProvideItems>
     </ProvideAuth>
   )
 }
@@ -92,9 +100,9 @@ export default App
 
 // HERO styles for all pages
 const HeroContainer = styled.div`
-  min-height: 600px;
+  min-height: 75vh;
   width: 100%;
-  display: flex
+  display: flex;
 `
 // LAYOUT styles for all pages
 const LayoutContainer = styled.div`

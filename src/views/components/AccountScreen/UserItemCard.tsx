@@ -18,7 +18,7 @@ interface IProps {
   setShowUpsertItemModal: (show: boolean) => void
   setSelectedItem: (item: Item | undefined) => void
 }
-
+// Component displaying cards on Account page
 const UserItemCard = ({
   item,
   setShowUpsertItemModal,
@@ -36,7 +36,7 @@ const UserItemCard = ({
   return (
     <StyledCard
       bg={
-        currentUser?.userType === 'donor'
+        currentUser?.userType === UserTypes.DONOR
           ? item.itemState === ItemStates.PENDING
             ? 'success'
             : item.itemState === ItemStates.DONATED
@@ -55,7 +55,7 @@ const UserItemCard = ({
           : ''
       }
     >
-      <Card.Img src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/100/100' : item.image} style={{width: '100%', height: '15vw', objectFit: 'cover'}}/>
+      <Card.Img src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/100/100' : item.image} style={{width: '100%', objectFit: 'cover'}}/>
       <Card.Body
         className="card-body"
         style={{
@@ -161,7 +161,7 @@ const UserItemCard = ({
             </ButtonContainer>
           )
         ) : (
-          // Block for receiver user
+          // Block for RECEIVER user
           <ButtonContainer>
             <StyledButton
               variant="secondary"
