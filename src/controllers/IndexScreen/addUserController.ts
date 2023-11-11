@@ -41,12 +41,8 @@ export const handleSubmit = async ({
   // get user data from form
   const form = e?.currentTarget 
   
-  // get individual fields from form
-  const name = form['user-name']?.value
+  
   const emailElem = form?.email
-  const email = emailElem?.value
-  const phone = form?.phone?.value
-  const location = form?.location?.value
   const userType = currentRadio
   const passwordElem = form?.password
   const password = passwordElem?.value
@@ -85,20 +81,13 @@ export const handleSubmit = async ({
     setValidated(true)
     return
   } 
-  // sends validations back to form
   
   // FACTORY PATTERN IMPLEMENTATION
   const unregisteredUser = new UnregisteredUser(e, userType);
   const user = unregisteredUser.CallFactory();
   
-  // old implementation
-  // userType === UserTypes.DONOR
-    //   ? new Donor({ name, email, phone, location, userType, password })
-    //   : new Receiver({ name, email, phone, location, userType, password })
-  
   // add user to db
   const response =  await crudFunctions.createNewUser(user)
-  // console.log(response, "HERE2")
   
   // if firebase error send to form
   if (response.status === FunctionStatus.ERROR) {
@@ -127,7 +116,6 @@ export const handleSubmit = async ({
   setIsLoggedIn(true)
   // attempt to remove PW as plain text
   user && delete user?.password
-  console.log(user, "Add to session")
   setCurrentUser(user)
 }
 

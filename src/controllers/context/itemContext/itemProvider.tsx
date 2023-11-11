@@ -20,8 +20,8 @@ export const ItemsContext = createContext<Subject>(null!)
 interface IProps {
   children: ReactNode
 }
-// handle storing all item Observers
-// put into a context allows access in children
+// Observers Pattern implementation
+// putting into a context allows access in children
 export function ProvideItems({ children }: IProps) {
   // stores all items from the DB
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -47,8 +47,8 @@ export function ProvideItems({ children }: IProps) {
       setObserversArr(observersArrCopy);
     }
   };
-  // notify all observers - unused 
-  // use this if more than one observer needs run at a time
+  // notify all observers - UNUSED 
+  // TODO: update to this version
   const notifyAll = () => {
     observersArr.forEach((observer) => {
         // TODO: update to make this work and remove the other one

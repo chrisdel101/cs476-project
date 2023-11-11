@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
 import { ItemStates } from '../../../../constants';
 

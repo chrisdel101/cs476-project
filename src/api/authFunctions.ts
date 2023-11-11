@@ -1,4 +1,3 @@
-// import { getFirestore } from 'firebase-admin/firestore'
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -61,7 +60,6 @@ const authFunctions: T = {
       .catch((error) => {
         console.error(error, 'logoutUser')
         return false
-        // An error happened.
       })
   },
 }

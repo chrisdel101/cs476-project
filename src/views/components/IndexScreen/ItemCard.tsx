@@ -23,13 +23,11 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
   const year = addedAtTimeStamp.getFullYear()
 
   // template for the card contents
-  // if (currentUser) {
     return (
       // following the information at https://getbootstrap.com/docs/4.3/components/card/ but with the boostrap 5 card elements found at //https://react-bootstrap.netlify.app/docs/components/cards
       <StyledCard
         border="light">
         <StyledMobileCardBody className="row no-gutters">
-          {/* <div className="row no-gutters"> */}
             <ImgContainer className="col-md-3">
               {/* will need an image var here */}
               <StyledImg src={item.image === 'default' || item.image === undefined ? 'https://placekitten.com/200/200' : item.image} />
@@ -72,11 +70,9 @@ const ItemCard = ({ item, setErrorMsg, setSuccessMsg }: IProps) => {
                 </StyledButtonContainer>
           : null
             }
-          {/* </div> */}
         </StyledMobileCardBody>
       </StyledCard>
     )
-  // }
 }
 
 export default ItemCard

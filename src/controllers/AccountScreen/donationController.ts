@@ -47,7 +47,6 @@ export const handleRejectItem = ({item, notify, currentUser}: FProps
     handleCancelRequest({item, notify, currentUser})
     // call nofity to update page
      notify(Observers.ACCOUNT, Notifications.GET_ITEMS_BY_USER, currentUser)
-    // notify(Observers.INDEX, Notifications.GET_ITEMS)
     notify(Observers.NAV, Notifications.GET_ITEMS)
   } else {
     console.error('Item is not available')
