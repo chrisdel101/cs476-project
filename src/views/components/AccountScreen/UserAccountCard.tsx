@@ -12,8 +12,10 @@ interface IProps {
   userItems: Item[]
   setShowUpsertItemModal: (show: boolean) => void
   setSelectedItem: (item: Item | undefined) => void
+  setSuccessMsg: (str: string|undefined) => void;
+  setErrorMsg: (str: string|undefined) => void;
 }
-const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSelectedItem}: IProps) => {
+const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSelectedItem, setErrorMsg, setSuccessMsg}: IProps) => {
   const userType = capitalizeFirstLetter(currentUser.userType); 
 
   return (
@@ -48,6 +50,8 @@ const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSel
               item={item}
               setShowUpsertItemModal={setShowUpsertItemModal}
               setSelectedItem={setSelectedItem}
+              setErrorMsg={setErrorMsg}
+              setSuccessMsg={setSuccessMsg}
               />
             </Col>
           )

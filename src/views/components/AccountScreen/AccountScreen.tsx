@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import useUserContext from '../../../controllers/context/userContext/useUserContext'
-
-import { Notifications, Observers, UserTypes } from '../../../../constants'
+import { AppAlert as Alert } from '../Alert'
+import { AlertTypes, Notifications, Observers, UserTypes } from '../../../../constants'
 import UserAccountCard from './UserAccountCard'
 import { useEffect, useState } from 'react'
 import Item from '../../../models/Item'
@@ -16,6 +16,7 @@ const Account = () => {
   const [userItems, setUserItems] = useState<Item[]>([])
   const [showUpsertItemModal, setShowUpsertItemModal] = useState<boolean>(false)
   const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined)
+  const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
   const handleCloseUpsertItemModal = () => setShowUpsertItemModal(false)
   const [selectedItem, setSelectedItem] = useState<Item | undefined>(undefined)
   const itemsSubject = useItemsContext()
@@ -72,6 +73,11 @@ const Account = () => {
       { !itemsSubject?.isLoaded ? 
         <Loading/> : 
        <>
+       <AlertContainer>
+        <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
+        <Alert variant={AlertTypes.DANGER} message={errorMsg} show={errorMsg} setShow={setErrorMsg} duration={6000}/>
+        
+      </AlertContainer>
           <ItemFiltering
                 selectedLocation={selectedLocation}
                 handleLocationChange={handleLocationChange}
@@ -93,6 +99,8 @@ const Account = () => {
             currentUser={currentUser} 
             setShowUpsertItemModal={setShowUpsertItemModal}
             setSelectedItem={setSelectedItem}
+            setSuccessMsg={setSuccessMsg}
+            setErrorMsg={setErrorMsg}
             />
           ) : (
             <Loading/>
@@ -101,6 +109,7 @@ const Account = () => {
           show={showUpsertItemModal}
           handleClose={handleCloseUpsertItemModal}
           setSuccessMsg={setSuccessMsg}
+          setErrorMsg={setErrorMsg}
           title={'Update An Item'}
           item={selectedItem}
           observerID={Observers.ACCOUNT}
@@ -118,4 +127,8 @@ const PageContainer = styled.div<{ $usertypecontainer?: UserTypes }>`
     props.$usertypecontainer === UserTypes.DONOR ? 'powderblue' : 'salmon'};
   width: 100%;
   flex: 1;
+`
+const AlertContainer = styled.div<{ $show?: string }>`
+  padding-top: 10px;
+  min-height: 110px;
 `

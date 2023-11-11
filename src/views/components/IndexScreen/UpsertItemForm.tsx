@@ -10,12 +10,12 @@ import { useRef } from 'react'
 interface IForm {
   handleCloseAddItemModal: () => void;
   setSuccessMsg: (str: string|undefined) => void;
+  setErrorMsg: (str: string|undefined) => void;
   observerID: Observers
   item?: Item
 }
-const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, item, observerID}: IForm) => {
+const UpsertItemForm = ({handleCloseAddItemModal, setSuccessMsg, setErrorMsg, item, observerID}: IForm) => {
   const [validated, setValidated] = useState(false)
-  const [errorMsg, setErrorMsg] = useState<string|undefined>(undefined)
   
   const [name, setName] = useState<string>(item?.name || '')
   const [desc, setDesc] = useState<string>(item?.description || '')

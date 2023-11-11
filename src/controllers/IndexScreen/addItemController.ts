@@ -89,7 +89,7 @@ export const handleSubmit = async ({
     return
   } else if (response?.status === FunctionStatus.ERROR) {
     console.log(`Error in addItem submit ${response.errorMessage}`)
-    setErrorMsg(`Error adding Item: ${response.errorMessage}`)
+    setErrorMsg(`Error adding/updating Item: ${response.errorMessage}`)
     return
   }
    
@@ -98,6 +98,6 @@ export const handleSubmit = async ({
   // close modal  
   handleCloseAddItemModal(true)
   // set msg
-  setSuccessMsg(`Item Successfully Created`)
+  setSuccessMsg(item ? `Item Successfully Updated` : `Item Successfully Created`)
 }
 
