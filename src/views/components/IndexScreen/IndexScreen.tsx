@@ -60,12 +60,14 @@ const Index = () => {
         itemsSubject.detach(observer);
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     // call notify on load for init paint  
     itemsSubject.notify(observer?.id, Notifications.GET_ITEMS);
     // make sure observersArr state is udated before notify called 
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsSubject.observersArr])
 

@@ -61,7 +61,7 @@ const UserItemCard = ({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-evenly',
+          justifyContent: 'space-between',
         }}
       >
         <Card.Title>
