@@ -10,6 +10,7 @@ import UpsertItemModal from '../IndexScreen/UpsertItemModal'
 import useItemsContext from '../../../controllers/context/itemContext/useItemsContext'
 import Observer from '../../../models/Observer'
 import ItemFiltering from '../IndexScreen/ItemFiltering'; 
+import Loading from '../Loading'
 
 const Account = () => {
   const { currentUser } = useUserContext()
@@ -33,13 +34,12 @@ const Account = () => {
     if (itemsSubject) {
       // attach to curent observer on
       itemsSubject.attach(observer);
-      console.log('itemsSubject', itemsSubject)
-      return () => {
-        itemsSubject.detach(observer);
-      };
+      // return () => {
+      //   itemsSubject.detach(observer);
+      // };
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  },[itemsSubject])
 
 
   const handleLocationChange = (event) => {
@@ -64,39 +64,44 @@ const Account = () => {
 
   return (
     <PageContainer $usertypecontainer={currentUser?.userType}>
-      <ItemFiltering
-            selectedLocation={selectedLocation}
-            handleLocationChange={handleLocationChange}
-            selectedItemType={selectedItemType}
-            handleItemTypeChange={handleItemTypeChange}
-            items={userItems}
-            onFilterSubmit={handleSearch}
-            />   
-      {currentUser ? (
-        <UserAccountCard 
-        userItems={userItems.filter((item) => {
-          return (
-            (selectedLocation === 'all' || item.location === selectedLocation) &&
-            (selectedItemType === 'all' || item.itemType === selectedItemType) &&
-            (selectedKeyword === 'all' || selectedKeyword === '' || 
-              item.description.toLowerCase().includes(selectedKeyword.toLowerCase()) || item.name.toLowerCase().includes(selectedKeyword.toLowerCase()))
-          );
-        })} 
-        currentUser={currentUser} 
-        setShowUpsertItemModal={setShowUpsertItemModal}
-        setSelectedItem={setSelectedItem}
-        />
-      ) : (
-        <div>Loading....</div>
-      )}
-    <UpsertItemModal
-      show={showUpsertItemModal}
-      handleClose={handleCloseUpsertItemModal}
-      setSuccessMsg={setSuccessMsg}
-      title={'Update An Item'}
-      item={selectedItem}
-      observerID={Observers.ACCOUNT}
-  />
+      { !itemsSubject?.isLoaded ? 
+        <Loading/> : 
+       <>
+          <ItemFiltering
+                selectedLocation={selectedLocation}
+                handleLocationChange={handleLocationChange}
+                selectedItemType={selectedItemType}
+                handleItemTypeChange={handleItemTypeChange}
+                items={userItems}
+                onFilterSubmit={handleSearch}
+                />   
+          {currentUser ? (
+            <UserAccountCard 
+            userItems={userItems.filter((item) => {
+              return (
+                (selectedLocation === 'all' || item.location === selectedLocation) &&
+                (selectedItemType === 'all' || item.itemType === selectedItemType) &&
+                (selectedKeyword === 'all' || selectedKeyword === '' || 
+                  item.description.toLowerCase().includes(selectedKeyword.toLowerCase()) || item.name.toLowerCase().includes(selectedKeyword.toLowerCase()))
+              );
+            })} 
+            currentUser={currentUser} 
+            setShowUpsertItemModal={setShowUpsertItemModal}
+            setSelectedItem={setSelectedItem}
+            />
+          ) : (
+            <Loading/>
+          )}
+        <UpsertItemModal
+          show={showUpsertItemModal}
+          handleClose={handleCloseUpsertItemModal}
+          setSuccessMsg={setSuccessMsg}
+          title={'Update An Item'}
+          item={selectedItem}
+          observerID={Observers.ACCOUNT}
+      />
+       </>
+      } 
     </PageContainer>
   )
 }
