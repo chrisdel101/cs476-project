@@ -46,8 +46,8 @@ export const handleLogin = async (
         setErrorMsg('Invalid User Type: is user type correct, check server logs')
       }
     } else {
-      console.error('handleLogin: error getting user data')
-      setErrorMsg('handleLogin: error getting user data')
+      console.error('handleLogin: error getting user data. Possible wrong login user type')
+      setErrorMsg('handleLogin: error getting user data. Possible wrong login user type')
       // - if auth was successful not not userData this sets auth to true on server side and next call will say user is logged in
       // - use logout to null the server side back to false
       await authFunctions.logoutUser()

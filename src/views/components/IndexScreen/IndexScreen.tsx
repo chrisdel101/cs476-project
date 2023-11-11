@@ -165,11 +165,7 @@ const StyledButton = styled(Button)<any>`
   align-self: center;
 `
 const AlertContainer = styled.div<{ $show?: string }>`
-  position: fixed;
-  top: 0;
-  width: 100%;
   padding-top: 10px;
   visibility: ${props => props?.$show ? "visible" : "hidden"};
   min-height: 85px;
-  z-index: 1000; 
 `
