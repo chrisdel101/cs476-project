@@ -61,13 +61,10 @@ const crudFunctions: T = {
       .then(async (userCredential) => {
         // Signed in + created auth user ok
         const authUser = userCredential.user
-        console.log(authUser, 'authUser')
         // add ID to user obj
         User.setId = authUser.uid
-        // const {...user} = User
         try {
-          const newUser = await crudFunctions.addNewUser(User)
-          console.log('NEW USER', newUser)
+          await crudFunctions.addNewUser(User)
           return {
             status: FunctionStatus.OK,
             errorCode: undefined,
@@ -302,7 +299,6 @@ const crudFunctions: T = {
   // gets user of known type by id
   getUserByType: async ({ id, userType }) => {
     const pluarlizedUserType = `${userType}s`
-    // console.log(id, 'getUserByType id')
     const docRef = doc(db, pluarlizedUserType, id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
@@ -329,7 +325,7 @@ const crudFunctions: T = {
       const imageRef = ref(storage, 'images/' + fileName);
 
       try {
-        const snapshot = await uploadBytes(imageRef, image);
+        await uploadBytes(imageRef, image);
         console.log('Uploaded a file!');
         const downloadURL = await getDownloadURL(imageRef);
         //console.log(downloadURL)

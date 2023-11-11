@@ -18,7 +18,6 @@ export const handleLogin = async (
   const email: string = target?.email?.value
   const password = target?.password?.value
   const {status, data, errorMessage} = await authFunctions.loginUser(email, password)
-  console.log('handleLogin: logged in', data)
 
   if(!(status === FunctionStatus.OK && data)) {
     setValidated(true)
@@ -62,7 +61,7 @@ export const handleLogout = async (
 ) => {
   const isLoggedOut = await authFunctions.logoutUser()
   if (isLoggedOut) {
-    console.log('handleLogout: logged out')
+    console.log('Logged out')
     history.push(Routes.Index)
     setCurrentUser(null)
     setIsLoggedIn(false)

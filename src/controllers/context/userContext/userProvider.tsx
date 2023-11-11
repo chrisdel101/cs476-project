@@ -55,7 +55,6 @@ function useProviderAuth() {
             setIsLoaded(true)
           }
         } else {
-          console.log('isSignedIn hook: USER IS NOT SIGNED IN')
           setIsLoggedIn(false)
           setCurrentUser(null)
           setIsLoaded(true)
