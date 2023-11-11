@@ -34,9 +34,9 @@ const Account = () => {
     if (itemsSubject) {
       // attach to curent observer on
       itemsSubject.attach(observer);
-      // return () => {
-      //   itemsSubject.detach(observer);
-      // };
+      return () => {
+        itemsSubject.detach(observer);
+      };
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[itemsSubject])
