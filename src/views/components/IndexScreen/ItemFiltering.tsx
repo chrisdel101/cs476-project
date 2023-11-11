@@ -41,7 +41,7 @@ const ItemFiltering = ({
 
   return (
     <div>
-    <Row className="m-3">
+    <Row className="me-3 ms-3">
       <Col md={4}>
         <Form.Select value={selectedLocation} onChange={handleLocationChange}>
           <option value="all">All Locations</option>

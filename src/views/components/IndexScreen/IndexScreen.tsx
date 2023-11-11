@@ -71,7 +71,7 @@ const Index = () => {
 
   return (
     <PageContainer>
-      <AlertContainer $show={successMsg || errorMsg}>
+      <AlertContainer>
         <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
       <Alert variant={AlertTypes.DANGER} message={errorMsg} show={errorMsg} setShow={setErrorMsg} duration={6000}/>
         
@@ -166,6 +166,5 @@ const StyledButton = styled(Button)<any>`
 `
 const AlertContainer = styled.div<{ $show?: string }>`
   padding-top: 10px;
-  visibility: ${props => props?.$show ? "visible" : "hidden"};
-  min-height: 85px;
+  min-height: 110px;
 `
