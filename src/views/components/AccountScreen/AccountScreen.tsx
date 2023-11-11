@@ -33,11 +33,18 @@ const Account = () => {
     if (itemsSubject) {
       // attach to curent observer on
       itemsSubject.attach(observer);
+    }
+  },[itemsSubject, observer])
+
+  useEffect(() => {
+    if (itemsSubject) {
+      // attach to curent observer on
       return () => {
         itemsSubject.detach(observer);
       };
     }
-  },[itemsSubject, observer])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
 
   const handleLocationChange = (event) => {
