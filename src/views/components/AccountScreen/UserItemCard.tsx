@@ -187,10 +187,10 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-self: center;
+  width: 100%;
 `
 // standardizes the buttons used on this page
 const StyledButton = styled(Button)<any>`
-  width: 150px;
   align-self: center;
 `
 const StyledCardText = styled(Card.Text)`
