@@ -37,8 +37,7 @@ const Account = () => {
         itemsSubject.detach(observer);
       };
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[itemsSubject])
+  },[itemsSubject, observer])
 
 
   const handleLocationChange = (event) => {
