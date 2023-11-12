@@ -33,18 +33,20 @@ interface CustomRouteProps {
 // Routes: Only acessible when NOT logged in
 function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
+  console.log(auth.isLoaded)
+  console.log(auth)
   return (
     <>
       {!auth.isLoaded ? (
-        <Loading />
-      ) : (
-        <Route
-          {...rest}
-          render={() =>
-            auth.currentUser ? <Redirect to={Routes.Index} /> : children
-          }
-        />
-      )}
+         <>
+         <Loading />
+         </>
+      ) : 
+        auth?.currentUser ? 
+          <Redirect to={Routes.Index} /> 
+        : 
+       children
+      }
     </>
   )
 }
@@ -55,14 +57,14 @@ function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   return (
     <>
       {!auth.isLoaded ? (
-        <Loading />
+         <>
+         <Loading />
+         </>
       ) : (
-        <Route
-          {...rest}
-          render={() =>
-            auth.currentUser ? children : <Redirect to={Routes.Index} />
-          }
-        />
+        auth?.currentUser ? 
+         children
+        : 
+        <Redirect to={Routes.Index} />
       )}
     </>
   )
