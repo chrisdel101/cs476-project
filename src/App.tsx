@@ -10,6 +10,7 @@ import {
   Switch,
   Route,
   Redirect,
+  useHistory,
 } from 'react-router-dom'
 import { Routes } from '../constants'
 import styled from 'styled-components'
@@ -22,7 +23,8 @@ import useUserContext from './controllers/context/userContext/useUserContext'
 import { ReactNode } from 'react'
 import AccountScreen from './views/components/AccountScreen/AccountScreen'
 import { ProvideItems } from './controllers/context/itemContext/itemProvider'
-import Loading from './views/components/Loading'
+
+
 
 interface CustomRouteProps {
   children: ReactNode
@@ -35,8 +37,9 @@ function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   const auth = useUserContext()
   return (
     <>
-      {!auth.isLoaded ? (
-        <Loading />
+      {auth.isLoaded ? (
+      // if IS logged in redirect
+        <Redirect to={Routes.Index} />
       ) : (
         <Route
           {...rest}
@@ -46,7 +49,7 @@ function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
         />
       )}
     </>
-  )
+  );
 }
 
 // Routes: Only acessible when user logged in
@@ -55,7 +58,8 @@ function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   return (
     <>
       {!auth.isLoaded ? (
-        <Loading />
+        // if not logged in redirect
+        <Redirect to={Routes.Index} />
       ) : (
         <Route
           {...rest}
