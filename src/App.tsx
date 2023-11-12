@@ -38,15 +38,15 @@ function NonAuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   return (
     <>
       {!auth.isLoaded ? (
-         <>
-         <Loading />
-         </>
-      ) : 
-        auth?.currentUser ? 
-          <Redirect to={Routes.Index} /> 
-        : 
-       children
-      }
+        <Loading />
+      ) : (
+        <Route
+          {...rest}
+          render={() =>
+            auth.currentUser ? <Redirect to={Routes.Index} /> : children
+          }
+        />
+      )}
     </>
   )
 }
@@ -57,9 +57,7 @@ function AuthenticatedRoute({ children, ...rest }: CustomRouteProps) {
   return (
     <>
       {!auth.isLoaded ? (
-         <>
-         <Loading />
-         </>
+        <Loading />
       ) : (
         auth?.currentUser ? 
          children
