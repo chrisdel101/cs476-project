@@ -9,6 +9,7 @@ import Redbell from '../../assets/svg/notification-14158.svg'
 import WhiteBell from '../../assets/svg/notification-bell-13079.svg'
 import FreeBeeLogo from '../../assets/freebeelogoresize.png'
 import BeeLogo from '../../assets/receiverlogoresize.png'
+import FlowerLogo from '../../assets/donorlogoresize.png'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import Observer from '../../models/Observer'
@@ -20,6 +21,7 @@ import {
   handleShowIcon,
 } from '../../controllers/Navigation/navigationController'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import User from '../../models/abstractClasses/User'
 
 const Navigation = () => {
   const location = useLocation();
@@ -114,8 +116,12 @@ const Navigation = () => {
          : null
       }
         <LogoContainer>
-          {/* conditionally render logo based on user type, etc */}
-          <img src={BeeLogo} alt="Your SVG" />
+          {currentUser?.userType === UserTypes.RECEIVER ?
+            <img src={BeeLogo} alt="Receiver" /> : null
+          }
+          {currentUser?.userType === UserTypes.DONOR ?
+            <img src={FlowerLogo} alt="Donor" /> : null
+          }
         </LogoContainer>
         <Navbar.Brand href="/">
           <img src={FreeBeeLogo} alt="FreeBee" width="auto" height="60"></img>

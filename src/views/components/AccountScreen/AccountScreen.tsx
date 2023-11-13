@@ -124,7 +124,7 @@ export default Account
 
 const PageContainer = styled.div<{ $usertypecontainer?: UserTypes }>`
   background-color: ${(props) =>
-    props.$usertypecontainer === UserTypes.DONOR ? 'powderblue' : 'salmon'};
+    props.$usertypecontainer === UserTypes.DONOR ? '#ffb5bf' : '#ffd12b'};
   width: 100%;
   flex: 1;
 `

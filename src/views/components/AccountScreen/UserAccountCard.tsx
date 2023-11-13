@@ -6,6 +6,10 @@ import Item from "../../../models/Item";
 import Receiver from "../../../models/Receiver";
 import UserItemCard from "./UserItemCard";
 import { capitalizeFirstLetter } from "../../../utilities/utils";
+import { UserTypes } from '../../../../constants'
+import BeeLogo from '../../../assets/receiverlogoresize.png'
+import FlowerLogo from '../../../assets/donorlogoresize.png'
+
 
 interface IProps {
   currentUser: Receiver
@@ -21,7 +25,18 @@ const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSel
   return (
     <StyledContainer>
       <UserDetailsContainer className="user-details">
-        <Styledh2>{userType} Details</Styledh2>
+        
+        <Styledh2>
+          <ImgHolder>
+            {currentUser?.userType === UserTypes.RECEIVER ?
+              <img src={BeeLogo} height="45px" width="45px" alt="" /> : null
+            }
+            {currentUser?.userType === UserTypes.DONOR ?
+              <img src={FlowerLogo} height="45px" width="45px"  alt="" /> : null
+            }
+          </ImgHolder>
+          {userType} Details
+        </Styledh2>
         <StyledRow>
           <Col xs={4}>Name:</Col>
           <Col xs={4}>{currentUser?.name}</Col>
@@ -64,11 +79,16 @@ const UserAccountCard = ({currentUser, userItems, setShowUpsertItemModal, setSel
 }
 export default UserAccountCard;
 
+const ImgHolder = styled.div`
+  display: inline-block;
+  margin-right: 10px;
+`
+
 const UserDetailsContainer = styled.div`
   border: 3px solid black;
   border-radius: 5px;
   margin: auto;
-  max-width: 20rem;
+  max-width: 22rem;
   padding: 0 10px
 `
 const StyledRow = styled(Row)`
@@ -81,6 +101,7 @@ const StyledContainer = styled(Container)`
   padding-top: 3em;
 `
 const Styledh2 = styled.h2`
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   text-align: center;
+  display: inline-block;
 `

@@ -75,12 +75,21 @@ const Index = () => {
     <PageContainer>
       <AlertContainer>
         <Alert variant={AlertTypes.SUCCESS} message={successMsg} show={successMsg} setShow={setSuccessMsg} duration={6000}/>
-      <Alert variant={AlertTypes.DANGER} message={errorMsg} show={errorMsg} setShow={setErrorMsg} duration={6000}/>
-        
+      <Alert variant={AlertTypes.DANGER} message={errorMsg} show={errorMsg} setShow={setErrorMsg} duration={6000}/>  
       </AlertContainer>
       { !itemsSubject?.isLoaded ? <Loading/> : 
         <>
-            <ItemFiltering
+          {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
+            <StyledButton variant="primary" onClick={handleShowAddItemModal}>
+              Donate An Item
+            </StyledButton>
+          ) : null}    
+          {isLoggedIn ? null : (
+            <StyledButton variant="primary" onClick={handleShowAddUserModal}>
+              Create An Account
+            </StyledButton>
+          )}
+          <ItemFiltering
             selectedLocation={selectedLocation}
             handleLocationChange={handleLocationChange}
             selectedItemType={selectedItemType}
@@ -88,16 +97,6 @@ const Index = () => {
             items={items.filter(item => item.itemState === ItemStates.AVAILABLE)}
             onFilterSubmit={handleSearch}
             />         
-             {isLoggedIn && currentUser?.userType === UserTypes.DONOR ? (
-            <StyledButton variant="primary" onClick={handleShowAddItemModal}>
-          Donate An Item
-        </StyledButton>
-          ) : null}    
-            {isLoggedIn ? null : (
-              <StyledButton variant="primary" onClick={handleShowAddUserModal}>
-                Create An Account
-              </StyledButton>
-            )}
           <CardsContainer className='card-container'>
             {items.length === 0 ? (
             <h2>No Items</h2>
@@ -148,7 +147,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   display: flex;
   justify-content: space-evenly;
-  background-color: blue;
+  background-color: #abe388;
   width: 100%;
 `
 
@@ -165,6 +164,7 @@ const CardsContainer = styled(Row)`
 const StyledButton = styled(Button)<any>`
   width: 200px;
   align-self: center;
+  margin-bottom: 30px;
 `
 const AlertContainer = styled.div<{ $show?: string }>`
   padding-top: 10px;
